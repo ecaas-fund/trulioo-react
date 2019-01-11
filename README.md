@@ -13,7 +13,7 @@ const handleResponse = (e) => {
     // handle verification submission result here ...
 }
 
-render(<EmbedID url='PROXY_URL' handleResponse={handleResponse} />
+<EmbedID url='PROXY_URL' handleResponse={handleResponse} />
 ```
 
 ## Add Bootstrap CSS for better looks 💇🏼
