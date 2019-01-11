@@ -1,6 +1,6 @@
 {
   "name": "trulioo-react",
-  "version": "0.0.2",
+  "version": "0.0.2-rc.1",
   "author": "Menelaos Kotsolalris",
   "description": "A React component for integrating with Trulioo GlobalGateway API.",
   "license": "Apache 2",
