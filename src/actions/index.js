@@ -4,6 +4,7 @@ import { GET_COUNTRIES, GET_FIELDS } from './types'
 import * as R from 'ramda'
 
 let BASE_URL
+let originFieldsResponse
 
 export const getCountries = (url) => async dispatch => {
     BASE_URL = url
@@ -20,7 +21,8 @@ export const getFields = countryCode => async dispatch => {
     }
     const URL = `${BASE_URL}/api/getFields/${countryCode}`
     let promise = await axios.get(URL)
-    let parsedFields = parseFields(JSON.parse(promise.data.response))
+    originFieldsResponse = JSON.parse(promise.data.response)
+    let parsedFields = parseFields(JSON.parse(JSON.stringify(originFieldsResponse))) //deep clone originFieldsResponse
     removeAdditionalFields(parsedFields)
 
     dispatch({
@@ -119,18 +121,6 @@ const parseFields = (obj) => {
     return obj
 }
 
-function removeAdditionalFields(obj) {
-    Object.keys(obj).forEach(function (k) {
-        if (obj[k] !== null && typeof obj[k] === 'object') {
-            if (obj[k].AdditionalFields) {
-                obj[k] = R.omit(['AdditionalFields'], obj[k])
-            }
-            removeAdditionalFields(obj[k]);
-            return;
-        }
-    });
-}
-
 const parseAdditionalFields = (obj, key) => {
     if (key === 'AdditionalFields') {
         const additionalFieldsObj = obj[key]
@@ -139,15 +129,27 @@ const parseAdditionalFields = (obj, key) => {
         for (let [innerKey, _] of Object.entries(innerObj)) {
             let innerObj = obj.AdditionalFields.properties.properties[innerKey]
             childObj = {
-                ...childObj,
                 [innerKey]: innerObj
             }
         }
-        const omitObj = R.omit([key], obj)
-        obj[key] = omitObj
-        obj = R.omit([key], obj)
+        for (let [key, value] of Object.entries(childObj)) {
+            obj[key] = value
+        }
     }
-    return obj
+}
+
+const removeAdditionalFields = (obj) => {
+    Object.keys(obj).forEach((k) => {
+        if (obj[k] !== null && typeof obj[k] === 'object') {
+            if (obj[k].AdditionalFields) {
+                const requiredFields = obj[k].AdditionalFields.properties.required
+                obj.required = obj.required.filter(requiredProp => requiredProp !== 'AdditionalFields').concat(requiredFields)
+                obj[k] = R.omit(['AdditionalFields'], obj[k])
+            }
+            removeAdditionalFields(obj[k]);
+            return;
+        }
+    });
 }
 
 const convertIntToInteger = (obj, key) => {
