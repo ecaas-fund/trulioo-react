@@ -22,8 +22,8 @@ export const getFields = countryCode => async dispatch => {
     const URL = `${BASE_URL}/api/getFields/${countryCode}`
     let promise = await axios.get(URL)
     originFieldsResponse = JSON.parse(promise.data.response)
-    let parsedFields = parseFields(JSON.parse(JSON.stringify(originFieldsResponse))) //deep clone originFieldsResponse
-    removeAdditionalFields(parsedFields)
+    //deep clone originFieldsResponse
+    let parsedFields = parseAllFields(JSON.parse(JSON.stringify(originFieldsResponse)))
 
     dispatch({
         type: GET_FIELDS,
@@ -56,7 +56,30 @@ const getBody = (form) => {
     }
 }
 
+const parseFormDataAdditionalFields = (formData) => {
+    Object.keys(originFieldsResponse).forEach(key => {
+        if (key === 'AdditionalFields') {
+            //getFormData equiv. value
+            const wantedObj = findObjInFormDataByKey(formData, key)
+            console.log('!wantedObj', wantedObj)
+        }
+        if (typeof originFieldsResponse[key] === 'object') {
+            parseFormDataAdditionalFields(originFieldsResponse[key])
+        }
+    })
+}
+
+const findObjInFormDataByKey = (formatData, wantedKey) => {
+    Object.keys(formatData).forEach(key => {
+        if (key === wantedKey) {
+            return obj[key]
+        }
+    })
+}
+
+
 export const submitForm = (form) => async () => {
+    parseFormDataAdditionalFields(form.formData)
     const body = getBody(form.formData)
     const URL = `${BASE_URL}/api/verify`
     const promiseResult = await axios.post(URL, body).then(response => {
@@ -88,6 +111,12 @@ const keysThatShouldBeObjects = ['Communication', 'CountrySpecific', 'Location']
 const keysThatShouldBeStrings = ['EnhancedProfile']
 const keysThatShouldBeBooleans = ['AcceptIncompleteDocument']
 const keysThatShouldBeFileData = ['LivePhoto', 'DocumentBackImage', 'DocumentFrontImage']
+
+const parseAllFields = (obj) => {
+    let parsedFields = parseFields(obj)
+    removeAdditionalFields(parsedFields)
+    return parsedFields
+}
 
 const parseFields = (obj) => {
     for (let [key, _] of Object.entries(obj)) {
