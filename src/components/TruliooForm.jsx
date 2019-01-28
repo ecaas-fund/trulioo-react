@@ -7,7 +7,6 @@ class TruliooForm extends React.Component {
 
     componentDidMount() {
         this.props.getCountries(this.props.url)
-        this.props.getFields("IE")
     }
 
     handleChange = (e) => {

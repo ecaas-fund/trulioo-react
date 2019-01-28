@@ -73,16 +73,15 @@ const parseFormDataAdditionalFields = (obj, formData) => {
     })
 }
 
-//TODO fix this by returning value of function
-let foundObjInFormDataByKey
-
 const findObjInFormDataByKey = (formData, wantedKey) => {
     Object.keys(formData).forEach(key => {
         if (wantedKey === key) {
-            foundObjInFormDataByKey = formData[key]
             // temporary hackaround getAdditionalFields (forcing input undefined for the form to be proper)
-
+            formData.AdditionalFields = {
+                [key]: formData[key]
+            }
             formData[key] = undefined
+            return
         }
         if (typeof formData[key] === 'object') {
             findObjInFormDataByKey(formData[key], wantedKey)
