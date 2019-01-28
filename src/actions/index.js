@@ -12,7 +12,7 @@ export const getCountries = (url) => async dispatch => {
     const URL = `${BASE_URL}/api/countryCodes`
     const promise = await axios.get(URL)
 
-    dispatch({ type: GET_COUNTRIES, payload: promise.data.response })
+    dispatch({ type: GET_COUNTRIES, payload: promise.data.response.sort() })
 }
 
 export const getFields = countryCode => async dispatch => {
@@ -22,6 +22,7 @@ export const getFields = countryCode => async dispatch => {
     const URL = `${BASE_URL}/api/getFields/${countryCode}`
     let promise = await axios.get(URL)
     originFieldsResponse = JSON.parse(promise.data.response)
+
     //deep clone originFieldsResponse
     let parsedFields = parseAllFields(JSON.parse(JSON.stringify(originFieldsResponse)))
 
@@ -50,40 +51,54 @@ const getBody = (form) => {
     return {
         "AcceptTruliooTermsAndConditions": true,
         "CleansedAddress": false,
-        "@gdc-test": true,
         "ConfigurationName": "Identity Verification",
         "CountryCode": countryCode, "DataFields": form.Properties
     }
 }
 
-const parseFormDataAdditionalFields = (formData) => {
-    Object.keys(originFieldsResponse).forEach(key => {
+const parseFormDataAdditionalFields = (obj, formData) => {
+    Object.keys(obj).forEach(key => {
         if (key === 'AdditionalFields') {
-            //getFormData equiv. value
-            const wantedObj = findObjInFormDataByKey(formData, key)
-            console.log('!wantedObj', wantedObj)
+            //getFormData equivillant value
+            const additionalFieldsObj = obj[key]
+            const additionalFieldsKeys = Object.keys(additionalFieldsObj.properties.properties)
+
+            additionalFieldsKeys.forEach(additionalKey => {
+                findObjInFormDataByKey(formData, additionalKey)
+            })
         }
-        if (typeof originFieldsResponse[key] === 'object') {
-            parseFormDataAdditionalFields(originFieldsResponse[key])
+        if (typeof obj[key] === 'object') {
+            parseFormDataAdditionalFields(obj[key], formData)
         }
     })
 }
 
-const findObjInFormDataByKey = (formatData, wantedKey) => {
-    Object.keys(formatData).forEach(key => {
-        if (key === wantedKey) {
-            return obj[key]
+//TODO fix this by returning value of function
+let foundObjInFormDataByKey
+
+const findObjInFormDataByKey = (formData, wantedKey) => {
+    Object.keys(formData).forEach(key => {
+        if (wantedKey === key) {
+            foundObjInFormDataByKey = formData[key]
+            // temporary hackaround getAdditionalFields (forcing input undefined for the form to be proper)
+
+            formData[key] = undefined
+        }
+        if (typeof formData[key] === 'object') {
+            findObjInFormDataByKey(formData[key], wantedKey)
         }
     })
 }
-
 
 export const submitForm = (form) => async () => {
-    parseFormDataAdditionalFields(form.formData)
+    parseFormDataAdditionalFields(originFieldsResponse, form.formData)
     const body = getBody(form.formData)
     const URL = `${BASE_URL}/api/verify`
     const promiseResult = await axios.post(URL, body).then(response => {
-        return response
+        return {
+            ...response,
+            body
+        }
     })
     return promiseResult
 }
@@ -144,10 +159,17 @@ const parseFields = (obj) => {
             currentInnerObj.type = 'string'
         }
         obj[key] = convertIntToInteger(obj, key)
+        parseAdditionalFieldRequired(obj, key)
         parseAdditionalFields(obj, key)
         parseFields(obj[key])
     }
     return obj
+}
+
+const parseAdditionalFieldRequired = (obj, key) => {
+    if (key === 'NationalIds') {
+        obj.NationalIds.required = obj.NationalIds.required.filter(element => element !== 'nationalid').concat('Type', 'Number')
+    }
 }
 
 const parseAdditionalFields = (obj, key) => {
