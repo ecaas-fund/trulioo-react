@@ -37,7 +37,7 @@ export const getFields = countryCode => async dispatch => {
     })
 }
 
-const getCountryCode = (form) => {
+const getCountryCode = form => {
     for (let [key, value] of Object.entries(form)) {
         if (key === 'countries') {
             return value
@@ -45,7 +45,7 @@ const getCountryCode = (form) => {
     }
 }
 
-const getBody = (form) => {
+const getBody = form => {
     const countryCode = getCountryCode(form)
     form = parseFormData(form)
     return {
