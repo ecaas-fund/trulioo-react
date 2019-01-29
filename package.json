@@ -1,8 +1,8 @@
 {
   "name": "trulioo-react",
-  "version": "0.0.2-rc.1",
+  "version": "0.0.2-rc.2",
   "author": "Menelaos Kotsolalris",
-  "description": "A React component for integrating with Trulioo GlobalGateway API.",
+  "description": "React components for integrating with the Trulioo GlobalGateway API https://www.trulioo.com/",
   "license": "Apache 2",
   "main": "index.js",
   "homepage": "https://www.trulioo.com",
@@ -10,7 +10,13 @@
     "type": "git",
     "url": "https://github.com/Trulioo/trulioo-react"
   },
-  "keywords":["verify","trulioo","react","kyb","kyc"],
+  "keywords": [
+    "verify",
+    "trulioo",
+    "react",
+    "kyb",
+    "kyc"
+  ],
   "dependencies": {
     "@babel/preset-env": "^7.2.3",
     "axios": "^0.18.0",

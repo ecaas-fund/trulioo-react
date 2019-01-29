@@ -40,7 +40,6 @@ class TruliooForm extends React.Component {
 
 const mapStateToProps = (state) => {
     let schema = {
-        title: "Trulioo Embed",
         type: "object",
         properties: {
             countries: {

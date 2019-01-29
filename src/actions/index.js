@@ -4,6 +4,7 @@ import { GET_COUNTRIES, GET_FIELDS } from './types'
 import * as R from 'ramda'
 
 let BASE_URL
+let originFieldsResponse
 
 export const getCountries = (url) => async dispatch => {
     BASE_URL = url
@@ -11,7 +12,7 @@ export const getCountries = (url) => async dispatch => {
     const URL = `${BASE_URL}/api/countryCodes`
     const promise = await axios.get(URL)
 
-    dispatch({ type: GET_COUNTRIES, payload: promise.data.response })
+    dispatch({ type: GET_COUNTRIES, payload: promise.data.response.sort() })
 }
 
 export const getFields = countryCode => async dispatch => {
@@ -20,8 +21,10 @@ export const getFields = countryCode => async dispatch => {
     }
     const URL = `${BASE_URL}/api/getFields/${countryCode}`
     let promise = await axios.get(URL)
-    let parsedFields = parseFields(JSON.parse(promise.data.response))
-    removeAdditionalFields(parsedFields)
+    originFieldsResponse = JSON.parse(promise.data.response)
+
+    //deep clone originFieldsResponse
+    let parsedFields = parseAllFields(JSON.parse(JSON.stringify(originFieldsResponse)))
 
     dispatch({
         type: GET_FIELDS,
@@ -34,7 +37,7 @@ export const getFields = countryCode => async dispatch => {
     })
 }
 
-const getCountryCode = (form) => {
+const getCountryCode = form => {
     for (let [key, value] of Object.entries(form)) {
         if (key === 'countries') {
             return value
@@ -42,23 +45,59 @@ const getCountryCode = (form) => {
     }
 }
 
-const getBody = (form) => {
+const getBody = form => {
     const countryCode = getCountryCode(form)
     form = parseFormData(form)
     return {
         "AcceptTruliooTermsAndConditions": true,
         "CleansedAddress": false,
-        "@gdc-test": true,
         "ConfigurationName": "Identity Verification",
         "CountryCode": countryCode, "DataFields": form.Properties
     }
 }
 
+const parseFormDataAdditionalFields = (obj, formData) => {
+    Object.keys(obj).forEach(key => {
+        if (key === 'AdditionalFields') {
+            //getFormData equivillant value
+            const additionalFieldsObj = obj[key]
+            const additionalFieldsKeys = Object.keys(additionalFieldsObj.properties.properties)
+
+            additionalFieldsKeys.forEach(additionalKey => {
+                findObjInFormDataByKey(formData, additionalKey)
+            })
+        }
+        if (typeof obj[key] === 'object') {
+            parseFormDataAdditionalFields(obj[key], formData)
+        }
+    })
+}
+
+const findObjInFormDataByKey = (formData, wantedKey) => {
+    Object.keys(formData).forEach(key => {
+        if (wantedKey === key) {
+            // temporary hackaround getAdditionalFields (forcing input undefined for the form to be proper)
+            formData.AdditionalFields = {
+                [key]: formData[key]
+            }
+            formData[key] = undefined
+            return
+        }
+        if (typeof formData[key] === 'object') {
+            findObjInFormDataByKey(formData[key], wantedKey)
+        }
+    })
+}
+
 export const submitForm = (form) => async () => {
+    parseFormDataAdditionalFields(originFieldsResponse, form.formData)
     const body = getBody(form.formData)
     const URL = `${BASE_URL}/api/verify`
     const promiseResult = await axios.post(URL, body).then(response => {
-        return response
+        return {
+            ...response,
+            body
+        }
     })
     return promiseResult
 }
@@ -87,6 +126,12 @@ const keysThatShouldBeStrings = ['EnhancedProfile']
 const keysThatShouldBeBooleans = ['AcceptIncompleteDocument']
 const keysThatShouldBeFileData = ['LivePhoto', 'DocumentBackImage', 'DocumentFrontImage']
 
+const parseAllFields = (obj) => {
+    let parsedFields = parseFields(obj)
+    removeAdditionalFields(parsedFields)
+    return parsedFields
+}
+
 const parseFields = (obj) => {
     for (let [key, _] of Object.entries(obj)) {
         if (key == 0) {
@@ -113,22 +158,17 @@ const parseFields = (obj) => {
             currentInnerObj.type = 'string'
         }
         obj[key] = convertIntToInteger(obj, key)
+        parseAdditionalFieldRequired(obj, key)
         parseAdditionalFields(obj, key)
         parseFields(obj[key])
     }
     return obj
 }
 
-function removeAdditionalFields(obj) {
-    Object.keys(obj).forEach(function (k) {
-        if (obj[k] !== null && typeof obj[k] === 'object') {
-            if (obj[k].AdditionalFields) {
-                obj[k] = R.omit(['AdditionalFields'], obj[k])
-            }
-            removeAdditionalFields(obj[k]);
-            return;
-        }
-    });
+const parseAdditionalFieldRequired = (obj, key) => {
+    if (key === 'NationalIds') {
+        obj.NationalIds.required = obj.NationalIds.required.filter(element => element !== 'nationalid').concat('Type', 'Number')
+    }
 }
 
 const parseAdditionalFields = (obj, key) => {
@@ -139,15 +179,27 @@ const parseAdditionalFields = (obj, key) => {
         for (let [innerKey, _] of Object.entries(innerObj)) {
             let innerObj = obj.AdditionalFields.properties.properties[innerKey]
             childObj = {
-                ...childObj,
                 [innerKey]: innerObj
             }
         }
-        const omitObj = R.omit([key], obj)
-        obj[key] = omitObj
-        obj = R.omit([key], obj)
+        for (let [key, value] of Object.entries(childObj)) {
+            obj[key] = value
+        }
     }
-    return obj
+}
+
+const removeAdditionalFields = (obj) => {
+    Object.keys(obj).forEach((k) => {
+        if (obj[k] !== null && typeof obj[k] === 'object') {
+            if (obj[k].AdditionalFields) {
+                const requiredFields = obj[k].AdditionalFields.properties.required
+                obj.required = obj.required.filter(requiredProp => requiredProp !== 'AdditionalFields').concat(requiredFields)
+                obj[k] = R.omit(['AdditionalFields'], obj[k])
+            }
+            removeAdditionalFields(obj[k]);
+            return;
+        }
+    });
 }
 
 const convertIntToInteger = (obj, key) => {
