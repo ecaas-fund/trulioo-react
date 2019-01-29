@@ -2,6 +2,9 @@ import React from "react"
 import { connect } from 'react-redux'
 import { getCountries, getFields, submitForm } from '../actions'
 import Form from "react-jsonschema-form"
+/** @jsx jsx */
+import { jsx, css } from '@emotion/core'
+
 
 class TruliooForm extends React.Component {
 
@@ -27,7 +30,8 @@ class TruliooForm extends React.Component {
     }
 
     render() {
-        return <div>
+        const style = css`padding: 2rem;`
+        return <div css={style}>
             <Form
                 schema={this.props.schema}
                 onChange={e => this.handleChange(e)}
