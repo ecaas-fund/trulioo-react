@@ -12,7 +12,7 @@ export const getCountries = (url) => async dispatch => {
     const URL = `${BASE_URL}/api/countryCodes`
     const promise = await axios.get(URL)
 
-    dispatch({ type: GET_COUNTRIES, payload: promise.data.response.sort() })
+    dispatch({ type: GET_COUNTRIES, payload: JSON.parse(promise.data.response).sort() })
 }
 
 export const getFields = countryCode => async dispatch => {
