@@ -1,4 +1,4 @@
-# Trulioo Embed ID
+# Trulioo Embed ID (Beta)
 
 ## Install
 
