@@ -4,6 +4,10 @@
 
 `npm install trulioo-react`
 
+## Description
+
+⚡[Trulioo EmbedID](https://github.com/Trulioo/trulioo-react)⚡ (private BETA) leverages the GlobalGateway RestFul API, this API can not be invoked directly through web browser, therefore an intermediary (proxy) hosted on your web server is required to complete the request. For demonstration purposes Trulioo provides the **trulioo-react-sample-app** (sample code of a lightweight Node.js proxy server). Trulioo recommends developing your own intermediary (proxy) for production purposes.
+
 ## Use
 
 ```
@@ -13,29 +17,26 @@ const handleResponse = (e) => {
     // handle verification submission result here ...
 }
 
-<EmbedID url='PROXY_URL' handleResponse={handleResponse} />
+<EmbedID url='TRULIOO_PROXY_SERVER_URL' handleResponse={handleResponse} />
 ```
 
 ## Add Bootstrap CSS for better looks 💇🏼
 
 `<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">`
 
-## Proxy Server
+## Proxy Server Quickstart
 
 To make requests at Trulioo GlobalGateway and get around [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS), it is required that an intermediate server (proxy) in-between is used.
 
-You have the option to develop your own, or simply use [Trulioo-Proxy](https://github.com/Trulioo/trulioo-proxy), a lightweight server implemented in Node 🚀 which reduces boilerplate code.
+You have the option to develop your own, or simply use [trulioo-quickstart project](https://github.com/Trulioo/trulioo-react-sample-app), an easy to follow guide to boostrap your server 🚀.
 
-```
-git clone https://github.com/Trulioo/trulioo-proxy.git
-node bin/trulioo-proxy
-```
+# Best Practice
 
-Simply edit the `.env` file with your credentials, and you are ready to start verifying!
+Trulioo EmbedID passes user input data to the "proxy" on your server. When developing systems that consume internet exposed fields for the purpose of data collection, ensure you take all necessary precautions to protect your system from from denial of service attacks, exploits or security vulnerabilities. Please refer to the [Legal disclaimer](https://developer.trulioo.com/docs/legal) on the Trulioo Developer Portal.
 
 ## Learn More
 
-Learn more about  [Trulioo](https://www.trulioo.com/).
+Trulioo is a global identity verification company that provides secure access to reliable and independent data sources to instantly verify individuals and business entities online. Hundreds of organizations across the world use GlobalGateway, Trulioo’s RESTful API used to verify five billion people and 250 million businesses across 195 countries. In addition to helping organizations meet compliance requirements, GlobalGateway also streamlines the customer onboarding process, mitigates risk, and performs the first layer of defense against fraud. Learn more about [Trulioo](https://www.trulioo.com/).
 
 ## License
 
