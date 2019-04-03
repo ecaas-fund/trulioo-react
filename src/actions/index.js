@@ -50,7 +50,7 @@ const getBody = form => {
     form = parseFormData(form)
     return {
         "AcceptTruliooTermsAndConditions": true,
-        "CleansedAddress": false,
+        "CleansedAddress": true,
         "ConfigurationName": "Identity Verification",
         "CountryCode": countryCode, "DataFields": form.Properties
     }
