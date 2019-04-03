@@ -24,7 +24,7 @@ yarn-error.log*
 /actions
 /components
 /reducers
-App.js
+/App.js
 App.test.js
 EmbedID.js
 /index.js
