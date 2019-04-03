@@ -2,6 +2,7 @@ import React from "react"
 import { connect } from 'react-redux'
 import { getCountries, getFields, submitForm } from '../actions'
 import Form from "react-jsonschema-form"
+import { getName } from "country-list"
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
 
@@ -42,15 +43,25 @@ class TruliooForm extends React.Component {
     }
 }
 
+const getCountryInputSchema = (countries) => {
+    return {
+        title: "Country",
+        type: "string",
+        anyOf: countries && countries.map(x => { 
+                    return {
+                        type: "string",
+                        title: getName(x),
+                        enum: [x]
+                    }
+                }),
+    }
+}
+
 const mapStateToProps = (state) => {
     let schema = {
         type: "object",
         properties: {
-            countries: {
-                title: "Countries",
-                type: "string",
-                enum: state.getCountries.countries,
-            },
+            countries: getCountryInputSchema(state.getCountries.countries)
         }
     }
     if (state.fields && state.fields.fields && state.fields.fields.properties) {

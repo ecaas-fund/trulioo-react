@@ -52,7 +52,8 @@ const getBody = form => {
         "AcceptTruliooTermsAndConditions": true,
         "CleansedAddress": true,
         "ConfigurationName": "Identity Verification",
-        "CountryCode": countryCode, "DataFields": form.Properties
+        "CountryCode": countryCode, 
+        "DataFields": form.Properties
     }
 }
 
