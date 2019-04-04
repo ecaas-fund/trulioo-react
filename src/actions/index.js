@@ -1,6 +1,6 @@
 import axios from 'axios'
 import 'core-js'
-import { GET_COUNTRIES, GET_FIELDS } from './types'
+import { GET_COUNTRIES, GET_FIELDS, GET_SUBDIVISIONS } from './types'
 import * as R from 'ramda'
 
 let BASE_URL
@@ -35,6 +35,36 @@ export const getFields = countryCode => async dispatch => {
             }
         }
     })
+}
+
+export const getSubdivisions = countryCode => async dispatch => {
+    if (countryCode === '' || !countryCode) {
+        return
+    }
+    const URL = `${BASE_URL}/api/countrysubdivisions/${countryCode}`
+    let promise = await axios.get(URL)
+    originFieldsResponse = JSON.parse(promise.data.response)
+
+    let subdivisions = JSON.parse(JSON.stringify(originFieldsResponse))
+    subdivisions.sort(subdivisionComparator)
+    dispatch({
+        type: GET_SUBDIVISIONS,
+        payload: {
+            subdivisions: subdivisions,
+        }
+    })
+}
+
+const subdivisionComparator = (a, b) => {
+    let nameA = a.Name.toUpperCase()
+    let nameB = b.Name.toUpperCase()
+    if (nameA < nameB) {
+        return -1
+    }
+    if (nameA > nameB) {
+        return 1
+    }
+    return 0
 }
 
 const getCountryCode = form => {

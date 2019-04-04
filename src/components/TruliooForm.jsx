@@ -1,6 +1,6 @@
 import React from "react"
 import { connect } from 'react-redux'
-import { getCountries, getFields, submitForm } from '../actions'
+import { getCountries, getFields, getSubdivisions, submitForm } from '../actions'
 import Form from "react-jsonschema-form"
 import { getName } from "country-list"
 import { CountryRegionData } from "react-country-region-selector"
@@ -18,6 +18,7 @@ class TruliooForm extends React.Component {
         let shouldUpdateFormData = (this.props.fields.formData === undefined) || (e.formData.countries !== this.props.fields.formData.countries)
         if (shouldUpdateFormData) {
             this.props.getFields(e.formData.countries)
+            this.props.getSubdivisions(e.formData.countries)
         }
     }
 
@@ -63,47 +64,45 @@ const parseSubRegions = (subRegionString) => {
     })
 }
 
-const getCountryInputSchema = (countries) => {
-    let result = {
-        title: "Country",
-        type: "string",
-        anyOf: countries && countries.map(x => { 
-            // console.log("Regions")
-            // console.log(findSubRegions(x))
-                    return {
-                        type: "string",
-                        title: getName(x),
-                        enum: [x]
-                    }
-                }),
-    }
-    console.log("country input")
-    console.log(result)
-    return result
+const recursivelyUpdateStateProvince_old = (obj, countryCode) => {
+    Object.keys(obj).forEach((k) => {
+        if (k === "StateProvinceCode") {
+            let subRegions = findSubRegions(countryCode)
+            obj[k] = {
+                ...obj[k],
+                enum: subRegions.map(x => x.regionCode),
+                enumNames: subRegions.map(x => x.name)
+            }
+        } else if (obj[k] !== null && typeof obj[k] === 'object') {
+            recursivelyUpdateStateProvince_old(obj[k], countryCode);
+        }
+    });
 }
 
-const getStateProvinceSchema = (countryCode) => {
-    let subRegions = findSubRegions(countryCode)
-    let result =  subRegions.map(x => { 
-            // console.log("Regions")
-            // console.log(findSubRegions(x))
-                    return {
-                        type: "string",
-                        title: x.name,
-                        enum: [x.regionCode]
-                    }
-                })
-    
-    console.log("country input")
-    console.log(result)
-    return result
+const recursivelyUpdateStateProvince = (obj, subdivisions) => {
+    Object.keys(obj).forEach((k) => {
+        if (k === "StateProvinceCode") {
+            obj[k] = {
+                ...obj[k],
+                enum: subdivisions.map(x => x.Code),
+                enumNames: subdivisions.map(x => x.Name)
+            }
+        } else if (obj[k] !== null && typeof obj[k] === 'object') {
+            recursivelyUpdateStateProvince(obj[k], subdivisions);
+        }
+    });
 }
 
 const mapStateToProps = (state) => {
     let schema = {
         type: "object",
         properties: {
-            countries: getCountryInputSchema(state.getCountries.countries)
+            countries: {
+                title: "Country",
+                type: "string",
+                enum: state.getCountries.countries,
+                enumNames: state.getCountries.countries && state.getCountries.countries.map(x => getName(x))
+            }
         }
     }
     if (state.fields && state.fields.fields && state.fields.fields.properties) {
@@ -113,11 +112,20 @@ const mapStateToProps = (state) => {
             type: "object",
             properties: state.fields && state.fields.fields && state.fields.fields.properties
         }
-        // let stateProvince = state.fields.fields.properties.Properties.properties.Location.properties.StateProvinceCode
-        // stateProvince.anyOf = 
     }
     console.log("state")
     console.log(state)
+    console.log("schema before")
+    console.log(schema)
+    // if (state.fields && state.fields.formData && state.fields.formData.countries) {
+    //     let countryCode = state.fields.formData.countries
+    if (state.fields && state.fields.subdivisions) {
+        recursivelyUpdateStateProvince(schema, state.fields.subdivisions)
+    }
+        // recursivelyUpdateStateProvince(schema, countryCode)
+    // }
+    console.log("schema after")
+    console.log(schema)
     return {
         fields: state.fields,
         schema,
@@ -125,4 +133,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, { getCountries, getFields, submitForm })(TruliooForm)
+export default connect(mapStateToProps, { getCountries, getFields, getSubdivisions, submitForm })(TruliooForm)
