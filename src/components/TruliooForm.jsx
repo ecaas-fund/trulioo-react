@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import { getCountries, getFields, getSubdivisions, submitForm } from '../actions'
 import Form from "react-jsonschema-form"
 import { getName } from "country-list"
-import { CountryRegionData } from "react-country-region-selector"
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
 
@@ -43,40 +42,6 @@ class TruliooForm extends React.Component {
             />
         </div>
     }
-}
-
-const findSubRegions = (countryCode) => {
-    let country = CountryRegionData.find(x => {
-        return x[1] === countryCode 
-    }) 
-    let subRegions = country[2]
-    return parseSubRegions(subRegions)
-}
-
-const parseSubRegions = (subRegionString) => {
-    let regionArray = subRegionString.split("|")
-    return regionArray.map(x => {
-        let nameCode = x.split("~")
-        return {
-            name: nameCode[0], 
-            regionCode: nameCode[1]
-        }
-    })
-}
-
-const recursivelyUpdateStateProvince_old = (obj, countryCode) => {
-    Object.keys(obj).forEach((k) => {
-        if (k === "StateProvinceCode") {
-            let subRegions = findSubRegions(countryCode)
-            obj[k] = {
-                ...obj[k],
-                enum: subRegions.map(x => x.regionCode),
-                enumNames: subRegions.map(x => x.name)
-            }
-        } else if (obj[k] !== null && typeof obj[k] === 'object') {
-            recursivelyUpdateStateProvince_old(obj[k], countryCode);
-        }
-    });
 }
 
 const recursivelyUpdateStateProvince = (obj, subdivisions) => {
