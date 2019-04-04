@@ -43,25 +43,16 @@ class TruliooForm extends React.Component {
     }
 }
 
-const getCountryInputSchema = (countries) => {
-    return {
-        title: "Country",
-        type: "string",
-        anyOf: countries && countries.map(x => { 
-                    return {
-                        type: "string",
-                        title: getName(x),
-                        enum: [x]
-                    }
-                }),
-    }
-}
-
 const mapStateToProps = (state) => {
-    let schema = {
+     let schema = {
         type: "object",
         properties: {
-            countries: getCountryInputSchema(state.getCountries.countries)
+            countries: {
+                title: "Countries",
+                type: "string",
+                enum: state.getCountries.countries,
+                enumNames: state.getCountries.countries && state.getCountries.countries.map(x => getName(x))
+            },
         }
     }
     if (state.fields && state.fields.fields && state.fields.fields.properties) {
