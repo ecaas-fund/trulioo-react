@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { getCountries, getFields, submitForm } from '../actions'
 import Form from "react-jsonschema-form"
 import { getName } from "country-list"
+import { CountryRegionData } from "react-country-region-selector"
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
 
@@ -43,11 +44,32 @@ class TruliooForm extends React.Component {
     }
 }
 
+const findSubRegions = (countryCode) => {
+    let country = CountryRegionData.find(x => {
+        return x[1] === countryCode 
+    }) 
+    let subRegions = country[2]
+    return parseSubRegions(subRegions)
+}
+
+const parseSubRegions = (subRegionString) => {
+    let regionArray = subRegionString.split("|")
+    return regionArray.map(x => {
+        let nameCode = x.split("~")
+        return {
+            name: nameCode[0], 
+            regionCode: nameCode[1]
+        }
+    })
+}
+
 const getCountryInputSchema = (countries) => {
-    return {
+    let result = {
         title: "Country",
         type: "string",
         anyOf: countries && countries.map(x => { 
+            // console.log("Regions")
+            // console.log(findSubRegions(x))
                     return {
                         type: "string",
                         title: getName(x),
@@ -55,6 +77,26 @@ const getCountryInputSchema = (countries) => {
                     }
                 }),
     }
+    console.log("country input")
+    console.log(result)
+    return result
+}
+
+const getStateProvinceSchema = (countryCode) => {
+    let subRegions = findSubRegions(countryCode)
+    let result =  subRegions.map(x => { 
+            // console.log("Regions")
+            // console.log(findSubRegions(x))
+                    return {
+                        type: "string",
+                        title: x.name,
+                        enum: [x.regionCode]
+                    }
+                })
+    
+    console.log("country input")
+    console.log(result)
+    return result
 }
 
 const mapStateToProps = (state) => {
@@ -65,12 +107,17 @@ const mapStateToProps = (state) => {
         }
     }
     if (state.fields && state.fields.fields && state.fields.fields.properties) {
+        console.log(state.fields)
         schema.properties.Properties = {
             title: "Properties",
             type: "object",
             properties: state.fields && state.fields.fields && state.fields.fields.properties
         }
+        // let stateProvince = state.fields.fields.properties.Properties.properties.Location.properties.StateProvinceCode
+        // stateProvince.anyOf = 
     }
+    console.log("state")
+    console.log(state)
     return {
         fields: state.fields,
         schema,

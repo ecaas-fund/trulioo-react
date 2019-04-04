@@ -27,6 +27,7 @@
     "country-list": "^2.1.0",
     "ramda": "^0.26.1",
     "react": "^16.6.3",
+    "react-country-region-selector": "^1.4.3",
     "react-dom": "^16.6.3",
     "react-jsonschema-form": "^1.0.6",
     "react-redux": "^6.0.0",
