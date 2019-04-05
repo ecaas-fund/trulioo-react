@@ -27,9 +27,9 @@ class TruliooForm extends React.Component {
 
         this.props.handleCustomFields && this.props.handleCustomFields(customFields)
 
-        // this.props.submitForm(e).then(res => {
-        //     this.props.handleResponse(res)
-        // })
+        this.props.submitForm(e).then(res => {
+            this.props.handleResponse(res)
+        })
     } 
 
     triggerSubmitResponse = (e) => {
@@ -67,8 +67,6 @@ class TruliooForm extends React.Component {
         const style = css`padding: 2rem;`
         let schema = JSON.parse(JSON.stringify(this.props.schema))
         schema = this.joinCustomFields(schema)
-        console.log("schema")
-        console.log(schema)
         return <div css={style}>
             <Form
                 schema={schema}
