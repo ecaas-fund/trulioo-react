@@ -13,6 +13,11 @@ const store = createStore(
 
 export default function EmbedID(props) {
     return <Provider store={store}>
-        <App handleResponse={props.handleResponse} url={props.url} />
+        <App 
+            handleResponse={props.handleResponse} 
+            url={props.url} 
+            customFields={props.customFields} 
+            handleCustomFields={props.handleCustomFields} 
+        />
     </Provider>
 }

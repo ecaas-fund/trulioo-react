@@ -5,6 +5,7 @@ import Form from "react-jsonschema-form"
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
 
+let reservedFormDataKeys = new Set(["countries", "Properties"])
 
 class TruliooForm extends React.Component {
 
@@ -20,20 +21,57 @@ class TruliooForm extends React.Component {
     }
 
     handleSubmit = (e) => {
-        this.props.submitForm(e).then(res => {
-            this.props.handleResponse(res)
-        })
-    }
+        let splitForm = this.splitForm(e.formData)
+        e.formData = splitForm[0]
+        let customFields = splitForm[1]
+
+        this.props.handleCustomFields && this.props.handleCustomFields(customFields)
+
+        // this.props.submitForm(e).then(res => {
+        //     this.props.handleResponse(res)
+        // })
+    } 
 
     triggerSubmitResponse = (e) => {
         this.props.handleResponse(e)
     }
 
+    joinCustomFields = (schema) => {
+        
+        if (schema.properties && this.props.customFields) {
+            // check that user hasn't used a reserved field key 
+            Object.keys(this.props.customFields).forEach(key => {
+                if (reservedFormDataKeys.has(key)) {
+                    throw Error(key + " is a reserved field key. Please use another key for your custom field.")
+                }
+            })
+            schema.properties = {...this.props.customFields, ...schema.properties}
+        } 
+        return schema
+    }
+
+    splitForm = (formData) => {
+        let customFields = {}
+        let truliooFields = {}
+        Object.keys(formData).forEach(key => {
+            if (reservedFormDataKeys.has(key)) {
+                truliooFields[key] = formData[key]
+            } else {
+                customFields[key] = formData[key]
+            }
+        })
+        return [truliooFields, customFields]
+    }
+
     render() {
         const style = css`padding: 2rem;`
+        let schema = JSON.parse(JSON.stringify(this.props.schema))
+        schema = this.joinCustomFields(schema)
+        console.log("schema")
+        console.log(schema)
         return <div css={style}>
             <Form
-                schema={this.props.schema}
+                schema={schema}
                 onChange={e => this.handleChange(e)}
                 onSubmit={e => this.handleSubmit(e)}
                 formData={this.props.fields.formData}
@@ -47,7 +85,7 @@ const mapStateToProps = (state) => {
         type: "object",
         properties: {
             countries: {
-                title: "Countries",
+                title: "Country",
                 type: "string",
                 enum: state.getCountries.countries,
             },
@@ -60,6 +98,11 @@ const mapStateToProps = (state) => {
             properties: state.fields && state.fields.fields && state.fields.fields.properties
         }
     }
+
+    if (this && this.props && this.props.customFields) {
+        schema.customFields = this.props.customFields
+    }
+    console.log(schema)
     return {
         fields: state.fields,
         schema,
