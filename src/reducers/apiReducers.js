@@ -1,7 +1,6 @@
 import {
     GET_COUNTRIES,
     GET_FIELDS,
-    GET_SUBDIVISIONS
 } from '../actions/types'
 
 const INTIAL_STATE = {};
@@ -14,11 +13,6 @@ export default (state = INTIAL_STATE, action) => {
                 countries: action.payload
             };
         case GET_FIELDS:
-            return {
-                ...state,
-                ...action.payload
-            };
-        case GET_SUBDIVISIONS:
             return {
                 ...state,
                 ...action.payload

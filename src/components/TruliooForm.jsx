@@ -1,6 +1,6 @@
 import React from "react"
 import { connect } from 'react-redux'
-import { getCountries, getFields, getSubdivisions, submitForm } from '../actions'
+import { getCountries, getFields, submitForm } from '../actions'
 import Form from "react-jsonschema-form"
 import { getName } from "country-list"
 /** @jsx jsx */
@@ -17,7 +17,6 @@ class TruliooForm extends React.Component {
         let shouldUpdateFormData = (this.props.fields.formData === undefined) || (e.formData.countries !== this.props.fields.formData.countries)
         if (shouldUpdateFormData) {
             this.props.getFields(e.formData.countries)
-            this.props.getSubdivisions(e.formData.countries)
         }
     }
 
@@ -44,53 +43,25 @@ class TruliooForm extends React.Component {
     }
 }
 
-const recursivelyUpdateStateProvince = (obj, subdivisions) => {
-    Object.keys(obj).forEach((k) => {
-        if (k === "StateProvinceCode") {
-            obj[k] = {
-                ...obj[k],
-                enum: subdivisions.map(x => x.Code),
-                enumNames: subdivisions.map(x => x.Name)
-            }
-        } else if (obj[k] !== null && typeof obj[k] === 'object') {
-            recursivelyUpdateStateProvince(obj[k], subdivisions);
-        }
-    });
-}
-
 const mapStateToProps = (state) => {
-    let schema = {
+     let schema = {
         type: "object",
         properties: {
             countries: {
-                title: "Country",
+                title: "Countries",
                 type: "string",
                 enum: state.getCountries.countries,
                 enumNames: state.getCountries.countries && state.getCountries.countries.map(x => getName(x))
-            }
+            },
         }
     }
     if (state.fields && state.fields.fields && state.fields.fields.properties) {
-        console.log(state.fields)
         schema.properties.Properties = {
             title: "Properties",
             type: "object",
             properties: state.fields && state.fields.fields && state.fields.fields.properties
         }
     }
-    console.log("state")
-    console.log(state)
-    console.log("schema before")
-    console.log(schema)
-    // if (state.fields && state.fields.formData && state.fields.formData.countries) {
-    //     let countryCode = state.fields.formData.countries
-    if (state.fields && state.fields.subdivisions) {
-        recursivelyUpdateStateProvince(schema, state.fields.subdivisions)
-    }
-        // recursivelyUpdateStateProvince(schema, countryCode)
-    // }
-    console.log("schema after")
-    console.log(schema)
     return {
         fields: state.fields,
         schema,
@@ -98,4 +69,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, { getCountries, getFields, getSubdivisions, submitForm })(TruliooForm)
+export default connect(mapStateToProps, { getCountries, getFields, submitForm })(TruliooForm)

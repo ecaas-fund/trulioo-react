@@ -1,6 +1,6 @@
 import axios from 'axios'
 import 'core-js'
-import { GET_COUNTRIES, GET_FIELDS, GET_SUBDIVISIONS } from './types'
+import { GET_COUNTRIES, GET_FIELDS } from './types'
 import * as R from 'ramda'
 
 let BASE_URL
@@ -16,42 +16,45 @@ export const getCountries = (url) => async dispatch => {
 }
 
 export const getFields = countryCode => async dispatch => {
-    if (countryCode === '' || !countryCode) {
-        return
-    }
-    const URL = `${BASE_URL}/api/getFields/${countryCode}`
-    let promise = await axios.get(URL)
-    originFieldsResponse = JSON.parse(promise.data.response)
+    let fields = await requestFields(countryCode)
+    let subdivisions = await requestSubdivisions(countryCode)
 
-    //deep clone originFieldsResponse
-    let parsedFields = parseAllFields(JSON.parse(JSON.stringify(originFieldsResponse)))
+    if (fields && fields.properties) {
+        recursivelyUpdateStateProvince(fields.properties, subdivisions)
+    }
 
     dispatch({
         type: GET_FIELDS,
         payload: {
-            fields: parsedFields,
+            fields: fields,
             formData: {
-                countries: countryCode
+                countries: countryCode,
             }
         }
     })
 }
 
-export const getSubdivisions = countryCode => async dispatch => {
+const requestFields = countryCode => {
+    if (countryCode === '' || !countryCode) {
+        return
+    }
+    const URL = `${BASE_URL}/api/getFields/${countryCode}`
+    return axios.get(URL).then(response => {
+        originFieldsResponse = JSON.parse(response.data.response)
+        let parsedFields = parseAllFields(JSON.parse(JSON.stringify(originFieldsResponse)))
+        return parsedFields
+    })
+}
+
+const requestSubdivisions = countryCode => {
     if (countryCode === '' || !countryCode) {
         return
     }
     const URL = `${BASE_URL}/api/countrysubdivisions/${countryCode}`
-    let promise = await axios.get(URL)
-    originFieldsResponse = JSON.parse(promise.data.response)
-
-    let subdivisions = JSON.parse(JSON.stringify(originFieldsResponse))
-    subdivisions.sort(subdivisionComparator)
-    dispatch({
-        type: GET_SUBDIVISIONS,
-        payload: {
-            subdivisions: subdivisions,
-        }
+    return axios.get(URL).then(response => {
+        originFieldsResponse = JSON.parse(response.data.response)
+        let subdivisions = JSON.parse(JSON.stringify(originFieldsResponse))
+        return subdivisions.sort(subdivisionComparator)
     })
 }
 
@@ -65,6 +68,20 @@ const subdivisionComparator = (a, b) => {
         return 1
     }
     return 0
+}
+
+const recursivelyUpdateStateProvince = (obj, subdivisions) => {
+    Object.keys(obj).forEach((k) => {
+        if (k === "StateProvinceCode") {
+            obj[k] = {
+                ...obj[k],
+                enum: subdivisions.map(x => x.Code),
+                enumNames: subdivisions.map(x => x.Name)
+            }
+        } else if (obj[k] !== null && typeof obj[k] === 'object') {
+            recursivelyUpdateStateProvince(obj[k], subdivisions);
+        }
+    });
 }
 
 const getCountryCode = form => {
