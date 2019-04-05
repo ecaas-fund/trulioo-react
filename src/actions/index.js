@@ -57,11 +57,9 @@ const getBody = form => {
 }
 
 const parseFormDataAdditionalFields = (obj, formData) => {
-    console.log("formData")
-    console.log(formData)
     Object.keys(obj).forEach(key => {
-        if (key === 'AdditionalFields') {
-            //getFormData equivillant value
+        if (key === 'AdditionalFields') { 
+            //getFormData equivalent value
             const additionalFieldsObj = obj[key]
             const additionalFieldsKeys = Object.keys(additionalFieldsObj.properties.properties)
 

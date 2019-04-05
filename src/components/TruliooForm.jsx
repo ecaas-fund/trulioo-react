@@ -37,7 +37,6 @@ class TruliooForm extends React.Component {
     }
 
     joinCustomFields = (schema) => {
-        
         if (schema.properties && this.props.customFields) {
             // check that user hasn't used a reserved field key 
             Object.keys(this.props.customFields).forEach(key => {
@@ -100,7 +99,6 @@ const mapStateToProps = (state) => {
     if (this && this.props && this.props.customFields) {
         schema.customFields = this.props.customFields
     }
-    console.log(schema)
     return {
         fields: state.fields,
         schema,
