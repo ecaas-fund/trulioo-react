@@ -20,7 +20,6 @@ let customFields = {
         type: "string",
     },
     field3: {
-   
         title: "What is your favourite color?", 
         type: "string",
         enum: ["red", "yellow", "blue"]
