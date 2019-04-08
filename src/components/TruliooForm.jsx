@@ -9,7 +9,7 @@ import { jsx, css } from '@emotion/core'
 
 class TruliooForm extends React.Component {
 
-    componentDidMount() {
+    componentDidMount() { 
         this.props.getCountries(this.props.url)
     }
 
