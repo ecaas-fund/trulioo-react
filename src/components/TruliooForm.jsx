@@ -51,7 +51,7 @@ const mapStateToProps = (state) => {
                 title: "Countries",
                 type: "string",
                 enum: state.getCountries.countries,
-                enumNames: state.getCountries.countries && state.getCountries.countries.map(x => getName(x))
+                enumNames: state.getCountries.countries && state.getCountries.countries.map(country => getName(country))
             },
         }
     }
