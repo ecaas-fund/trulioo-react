@@ -6,10 +6,6 @@ import * as R from 'ramda'
 let BASE_URL
 let originFieldsResponse
 
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
 
 export const getCountries = (url) => async dispatch => {
     BASE_URL = url
@@ -19,8 +15,6 @@ export const getCountries = (url) => async dispatch => {
 
     dispatch({ type: GET_COUNTRIES, payload: JSON.parse(promise.data.response).sort() })
 }
-
-
 
 export const getFields = countryCode => async dispatch => {
     if (countryCode === '' || !countryCode) {
