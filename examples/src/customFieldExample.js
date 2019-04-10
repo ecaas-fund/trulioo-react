@@ -6,11 +6,12 @@ const handleResponse = (e) => {
     console.log('Client Recieved Response: ', e)
 }
 
-const handleCustomFields = (fields) => {
-    console.log("Custom fields: ", fields)
+const handleSubmit = (e) => {
+    console.log("Submitted form: ", e)
 }
 
-let customFields = {
+// defining custom fields on base level
+let customFields1 = {
     field1: {
         title: "What is your name?",
         type: "string"
@@ -23,8 +24,40 @@ let customFields = {
         title: "What is your favourite color?", 
         type: "string",
         enum: ["red", "yellow", "blue"]
+    },
+    field4: {
+        title: "What is the air-speed velocity of an unladen swallow?", 
+        type: "number",
     }
 }
 
-render(<EmbedID url='http://localhost:3111' handleResponse={handleResponse} customFields={customFields} handleCustomFields={handleCustomFields} />, 
+// defining custom fields section with required fields
+let customFields2 = {
+    CustomFieldObj: {
+      title: "Keeper's Questions",
+      type: "object", 
+      required: ["name", "speed"],
+      properties: {
+        name: {
+          title: "What is your name?",
+          type: "string"
+        }, 
+        quest: {
+            title: "What is your quest?", 
+            type: "string",
+        },
+        color: {
+            title: "What is your favourite color?", 
+            type: "string",
+            enum: ["red", "yellow", "blue"]
+        }, 
+        speed: {
+          title: "What is the air-speed velocity of an unladen swallow?", 
+          type: "number",
+        }
+      }
+    }
+  }
+
+render(<EmbedID url='http://localhost:3111' handleResponse={handleResponse} customFields={customFields2} handleSubmit={handleSubmit} />, 
 document.getElementById("root"))

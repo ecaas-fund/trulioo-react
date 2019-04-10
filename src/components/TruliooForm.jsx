@@ -5,7 +5,7 @@ import Form from "react-jsonschema-form"
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
 
-let reservedFormDataKeys = new Set(["countries", "Properties"])
+let reservedFormDataKeys = new Set(["countries", "TruliooFields"])
 
 class TruliooForm extends React.Component {
 
@@ -21,13 +21,9 @@ class TruliooForm extends React.Component {
     }
 
     handleSubmit = (e) => {
-        let splitForm = this.splitForm(e.formData)
-        e.formData = splitForm[0]
-        let customFields = splitForm[1]
-
-        this.props.handleCustomFields && this.props.handleCustomFields(customFields)
-
-        this.props.submitForm(e).then(res => {
+        this.props.handleSubmit && this.props.handleSubmit(e)
+        let truliooFormData = this.parseTruliooFields(e.formData)
+        this.props.submitForm(truliooFormData).then(res => {
             this.props.handleResponse(res)
         })
     } 
@@ -37,29 +33,27 @@ class TruliooForm extends React.Component {
     }
 
     joinCustomFields = (schema) => {
-        if (schema.properties && this.props.customFields) {
+        // we check schema.properties.TruliooFields so that custom fields aren't populated until getFields is called
+        if (schema.properties && schema.properties.TruliooFields && this.props.customFields) {
             // check that user hasn't used a reserved field key 
             Object.keys(this.props.customFields).forEach(key => {
                 if (reservedFormDataKeys.has(key)) {
                     throw Error(key + " is a reserved field key. Please use another key for your custom field.")
                 }
             })
-            schema.properties = {...this.props.customFields, ...schema.properties}
+            schema.properties = {...schema.properties, ...this.props.customFields}
         } 
         return schema
     }
 
-    splitForm = (formData) => {
-        let customFields = {}
+    parseTruliooFields = (formData) => {
         let truliooFields = {}
         Object.keys(formData).forEach(key => {
             if (reservedFormDataKeys.has(key)) {
                 truliooFields[key] = formData[key]
-            } else {
-                customFields[key] = formData[key]
-            }
+            } 
         })
-        return [truliooFields, customFields]
+        return truliooFields
     }
 
     render() {
@@ -89,7 +83,7 @@ const mapStateToProps = (state) => {
         }
     }
     if (state.fields && state.fields.fields && state.fields.fields.properties) {
-        schema.properties.Properties = {
+        schema.properties.TruliooFields = {
             title: "Properties",
             type: "object",
             properties: state.fields && state.fields.fields && state.fields.fields.properties
@@ -99,6 +93,7 @@ const mapStateToProps = (state) => {
     if (this && this.props && this.props.customFields) {
         schema.customFields = this.props.customFields
     }
+    
     return {
         fields: state.fields,
         schema,

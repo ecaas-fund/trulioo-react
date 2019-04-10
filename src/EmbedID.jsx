@@ -17,7 +17,7 @@ export default function EmbedID(props) {
             handleResponse={props.handleResponse} 
             url={props.url} 
             customFields={props.customFields} 
-            handleCustomFields={props.handleCustomFields} 
+            handleSubmit={props.handleSubmit}
         />
     </Provider>
 }

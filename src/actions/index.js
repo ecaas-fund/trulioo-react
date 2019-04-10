@@ -35,6 +35,7 @@ export const getFields = countryCode => async dispatch => {
             }
         }
     })
+    return Promise.resolve(true)
 }
 
 const getCountryCode = form => {
@@ -52,7 +53,7 @@ const getBody = form => {
         "AcceptTruliooTermsAndConditions": true,
         "CleansedAddress": false,
         "ConfigurationName": "Identity Verification",
-        "CountryCode": countryCode, "DataFields": form.Properties
+        "CountryCode": countryCode, "DataFields": form.TruliooFields
     }
 }
 
@@ -89,9 +90,9 @@ const findObjInFormDataByKey = (formData, wantedKey) => {
     })
 }
 
-export const submitForm = (form) => async () => {
-    parseFormDataAdditionalFields(originFieldsResponse, form.formData)
-    const body = getBody(form.formData)
+export const submitForm = (formData) => async () => {
+    parseFormDataAdditionalFields(originFieldsResponse, formData)
+    const body = getBody(formData)
     const URL = `${BASE_URL}/api/verify`
     const promiseResult = await axios.post(URL, body).then(response => {
         return {
@@ -103,20 +104,20 @@ export const submitForm = (form) => async () => {
 }
 
 const parseFormData = (form) => {
-    if (form.Properties.Document) {
-        var docFront = form.Properties.Document.DocumentFrontImage
-        form.Properties.Document.DocumentFrontImage = docFront.substr(docFront.indexOf(',') + 1)
-        var docBack = form.Properties.Document.DocumentBackImage
+    if (form.TruliooFields.Document) {
+        var docFront = form.TruliooFields.Document.DocumentFrontImage
+        form.TruliooFields.Document.DocumentFrontImage = docFront.substr(docFront.indexOf(',') + 1)
+        var docBack = form.TruliooFields.Document.DocumentBackImage
         if (docBack) {
-            form.Properties.Document.DocumentBackImage = docBack.substr(docBack.indexOf(',') + 1)
+            form.TruliooFields.Document.DocumentBackImage = docBack.substr(docBack.indexOf(',') + 1)
         }
-        var livePhoto = form.Properties.Document.LivePhoto
+        var livePhoto = form.TruliooFields.Document.LivePhoto
         if (livePhoto) {
-            form.Properties.Document.LivePhoto = livePhoto.substr(livePhoto.indexOf(',') + 1)
+            form.TruliooFields.Document.LivePhoto = livePhoto.substr(livePhoto.indexOf(',') + 1)
         }
     }
-    if (form.Properties.NationalIds) {
-        form.Properties.NationalIds = [form.Properties.NationalIds]
+    if (form.TruliooFields.NationalIds) {
+        form.TruliooFields.NationalIds = [form.TruliooFields.NationalIds]
     }
     return form
 }
