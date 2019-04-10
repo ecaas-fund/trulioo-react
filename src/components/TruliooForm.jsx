@@ -44,7 +44,7 @@ class TruliooForm extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-     let schema = {
+    let schema = {
         type: "object",
         properties: {
             countries: {

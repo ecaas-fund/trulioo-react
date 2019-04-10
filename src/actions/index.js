@@ -6,7 +6,6 @@ import * as R from 'ramda'
 let BASE_URL
 let originFieldsResponse
 
-
 export const getCountries = (url) => async dispatch => {
     BASE_URL = url
 
