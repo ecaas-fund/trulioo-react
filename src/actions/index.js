@@ -18,11 +18,9 @@ export const getCountries = (url) => async dispatch => {
 export const getFields = countryCode => async dispatch => {
     let fields = await requestFields(countryCode)
     let subdivisions = await requestSubdivisions(countryCode)
-
     if (fields && fields.properties) {
         recursivelyUpdateStateProvince(fields.properties, subdivisions)
     }
-
     dispatch({
         type: GET_FIELDS,
         payload: {
@@ -34,28 +32,25 @@ export const getFields = countryCode => async dispatch => {
     })
 }
 
-const requestFields = countryCode => {
+const requestFields = async countryCode => {
     if (countryCode === '' || !countryCode) {
         return
     }
     const URL = `${BASE_URL}/api/getFields/${countryCode}`
-    return axios.get(URL).then(response => {
-        originFieldsResponse = JSON.parse(response.data.response)
-        let parsedFields = parseAllFields(JSON.parse(JSON.stringify(originFieldsResponse)))
-        return parsedFields
-    })
+    let response = await axios.get(URL)
+    originFieldsResponse = JSON.parse(response.data.response)
+    let parsedFields = parseAllFields(JSON.parse(JSON.stringify(originFieldsResponse)))
+    return parsedFields
 }
 
-const requestSubdivisions = countryCode => {
+const requestSubdivisions = async countryCode => {
     if (countryCode === '' || !countryCode) {
         return
     }
     const URL = `${BASE_URL}/api/countrysubdivisions/${countryCode}`
-    return axios.get(URL).then(response => {
-        originFieldsResponse = JSON.parse(response.data.response)
-        let subdivisions = JSON.parse(JSON.stringify(originFieldsResponse))
-        return subdivisions.sort(subdivisionComparator)
-    })
+    let response =  await axios.get(URL)
+    let subdivisions = JSON.parse(response.data.response)
+    return subdivisions.sort(subdivisionComparator)
 }
 
 const subdivisionComparator = (a, b) => {
