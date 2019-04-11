@@ -2,6 +2,7 @@ import React from "react"
 import { connect } from 'react-redux'
 import { getCountries, getFields, submitForm } from '../actions'
 import Form from "react-jsonschema-form"
+import { getName } from "country-list"
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
 
@@ -9,7 +10,7 @@ let reservedFormDataKeys = new Set(["countries", "TruliooFields"])
 
 class TruliooForm extends React.Component {
 
-    componentDidMount() {
+    componentDidMount() { 
         this.props.getCountries(this.props.url)
     }
 
@@ -79,6 +80,7 @@ const mapStateToProps = (state) => {
                 title: "Country",
                 type: "string",
                 enum: state.getCountries.countries,
+                enumNames: state.getCountries.countries && state.getCountries.countries.map(country => getName(country))
             },
         }
     }
