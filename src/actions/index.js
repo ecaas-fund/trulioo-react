@@ -19,23 +19,68 @@ export const getFields = countryCode => async dispatch => {
     if (countryCode === '' || !countryCode) {
         return
     }
-    const URL = `${BASE_URL}/api/getFields/${countryCode}`
-    let promise = await axios.get(URL)
-    originFieldsResponse = JSON.parse(promise.data.response)
-
-    //deep clone originFieldsResponse
-    let parsedFields = parseAllFields(JSON.parse(JSON.stringify(originFieldsResponse)))
-
+    let fields = await requestFields(countryCode)
+    let subdivisions = await requestSubdivisions(countryCode)
+    if (fields && fields.properties) {
+        recursivelyUpdateStateProvince(fields.properties, subdivisions)
+    }
     dispatch({
         type: GET_FIELDS,
         payload: {
-            fields: parsedFields,
+            fields: fields,
             formData: {
-                countries: countryCode
+                countries: countryCode,
             }
         }
     })
     return Promise.resolve(true)
+}
+
+const requestFields = async countryCode => {
+    if (countryCode === '' || !countryCode) {
+        return
+    }
+    const URL = `${BASE_URL}/api/getFields/${countryCode}`
+    let response = await axios.get(URL)
+    originFieldsResponse = JSON.parse(response.data.response)
+    let parsedFields = parseAllFields(JSON.parse(JSON.stringify(originFieldsResponse)))
+    return parsedFields
+}
+
+const requestSubdivisions = async countryCode => {
+    if (countryCode === '' || !countryCode) {
+        return
+    }
+    const URL = `${BASE_URL}/api/countrysubdivisions/${countryCode}`
+    let response =  await axios.get(URL)
+    let subdivisions = JSON.parse(response.data.response)
+    return subdivisions.sort(subdivisionComparator)
+}
+
+const subdivisionComparator = (a, b) => {
+    let nameA = a.Name.toUpperCase()
+    let nameB = b.Name.toUpperCase()
+    if (nameA < nameB) {
+        return -1
+    }
+    if (nameA > nameB) {
+        return 1
+    }
+    return 0
+}
+
+const recursivelyUpdateStateProvince = (obj, subdivisions) => {
+    Object.keys(obj).forEach((k) => {
+        if (k === "StateProvinceCode") {
+            obj[k] = {
+                ...obj[k],
+                enum: subdivisions.map(x => x.Code),
+                enumNames: subdivisions.map(x => x.Name)
+            }
+        } else if (obj[k] !== null && typeof obj[k] === 'object') {
+            recursivelyUpdateStateProvince(obj[k], subdivisions);
+        }
+    });
 }
 
 const getCountryCode = form => {
