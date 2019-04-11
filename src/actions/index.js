@@ -16,6 +16,9 @@ export const getCountries = (url) => async dispatch => {
 }
 
 export const getFields = countryCode => async dispatch => {
+    if (countryCode === '' || !countryCode) {
+        return
+    }
     let fields = await requestFields(countryCode)
     let subdivisions = await requestSubdivisions(countryCode)
     if (fields && fields.properties) {
