@@ -8,7 +8,7 @@ import { jsx, css } from '@emotion/core'
 
 let reservedFormDataKeys = new Set(["countries", "TruliooFields"])
 
-class TruliooForm extends React.Component {
+export class TruliooForm extends React.Component {
 
     componentDidMount() { 
         this.props.getCountries(this.props.url)
@@ -77,7 +77,7 @@ const mapStateToProps = (state) => {
         type: "object",
         properties: {
             countries: {
-                title: "Country",
+                title: "Countries",
                 type: "string",
                 enum: state.getCountries.countries,
                 enumNames: state.getCountries.countries && state.getCountries.countries.map(country => getName(country))
@@ -95,6 +95,8 @@ const mapStateToProps = (state) => {
     if (this && this.props && this.props.customFields) {
         schema.customFields = this.props.customFields
     }
+    
+    console.log(schema)
     
     return {
         fields: state.fields,
