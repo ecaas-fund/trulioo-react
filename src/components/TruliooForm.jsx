@@ -96,8 +96,6 @@ const mapStateToProps = (state) => {
         schema.customFields = this.props.customFields
     }
     
-    console.log(schema)
-    
     return {
         fields: state.fields,
         schema,
