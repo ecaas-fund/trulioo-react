@@ -22,12 +22,12 @@ export const getFields = countryCode => async dispatch => {
     let fields = await requestFields(countryCode)
     let subdivisions = await requestSubdivisions(countryCode)
     if (fields && fields.properties) {
-        recursivelyUpdateStateProvince(fields.properties, subdivisions)
+        updateStateProvince(fields.properties, subdivisions)
     }
     dispatch({
         type: GET_FIELDS,
         payload: {
-            fields: fields,
+            fields,
             formData: {
                 countries: countryCode,
             }
@@ -69,8 +69,8 @@ const subdivisionComparator = (a, b) => {
     return 0
 }
 
-const recursivelyUpdateStateProvince = (obj, subdivisions) => {
-    Object.keys(obj).forEach((k) => {
+const updateStateProvince = (obj, subdivisions) => {
+    Object.keys(obj).forEach(k => {
         if (k === "StateProvinceCode") {
             obj[k] = {
                 ...obj[k],
@@ -78,7 +78,7 @@ const recursivelyUpdateStateProvince = (obj, subdivisions) => {
                 enumNames: subdivisions.map(x => x.Name)
             }
         } else if (obj[k] !== null && typeof obj[k] === 'object') {
-            recursivelyUpdateStateProvince(obj[k], subdivisions);
+            updateStateProvince(obj[k], subdivisions);
         }
     });
 }

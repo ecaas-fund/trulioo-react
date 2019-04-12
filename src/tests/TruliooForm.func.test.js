@@ -12,7 +12,7 @@ const response = data => {
   return {status: 200, data: { response: data } }
 }
 
-axios.get.mockImplementation((url) => {
+axios.get.mockImplementation(url => {
   if (url.includes('countryCodes')) {
     return Promise.resolve(response(countries))
   }
@@ -24,8 +24,8 @@ axios.get.mockImplementation((url) => {
   }
 });
 
-it('renders countries as select', async () => {
-  const embedID = await renderer.create(<EmbedID url='http://localhost:3111' handleResponse={(e) => { }} />);
+it('renders countries as a select element', async () => {
+  const embedID = await renderer.create(<EmbedID url='http://localhost:3111' handleResponse={e => { }} />);
   expect(axios.get).toBeCalled();
   const instance = embedID.root;
 

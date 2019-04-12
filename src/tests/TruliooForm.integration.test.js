@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // note: proxy server must be running for this integration test to pass successfully 
-it('makes requests to backend', async (done) => {
+it('makes requests to backend', async done => {
     expect.assertions(1);
     const response = await requestCountries()
     expect(response).toBeTruthy()
