@@ -21,7 +21,7 @@ axios.get.mockImplementation((url) => {
     if (url.includes('getFields')) {
       return Promise.resolve(response(fields))
     }
-    if (url.includes('countrysubdivisions')) {
+    if (url.includes('getCountrySubdivisions')) {
       return Promise.resolve(response(subDivisions))
     }
   });

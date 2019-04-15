@@ -11,7 +11,7 @@ const handleSubmit = (e) => {
 }
 
 // defining custom fields on base level
-let customFields1 = {
+let simpleExample = {
     field1: {
         title: "What is your name?",
         type: "string"
@@ -32,7 +32,7 @@ let customFields1 = {
 }
 
 // defining custom fields section with required fields
-let customFields2 = {
+let sectionExample = {
     CustomFieldObj: {
       title: "Keeper's Questions",
       type: "object", 
@@ -59,5 +59,5 @@ let customFields2 = {
     }
   }
 
-render(<EmbedID url='http://localhost:3111' handleResponse={handleResponse} customFields={customFields2} handleSubmit={handleSubmit} />, 
+render(<EmbedID url='http://localhost:3111' handleResponse={handleResponse} customFields={sectionExample} handleSubmit={handleSubmit} />, 
 document.getElementById("root"))
