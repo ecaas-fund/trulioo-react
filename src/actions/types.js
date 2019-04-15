@@ -1,3 +1,3 @@
-export const GET_COUNTRIES = 'GET_COUNTRIES'
-export const GET_FIELDS = 'GET_FIELDS'
-export const TRIGGER_SUBMIT = 'TRIGGER_SUBMIT'
+export const GET_COUNTRIES = 'GET_COUNTRIES';
+export const GET_FIELDS = 'GET_FIELDS';
+export const TRIGGER_SUBMIT = 'TRIGGER_SUBMIT';

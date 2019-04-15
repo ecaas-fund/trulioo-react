@@ -1,5 +1,5 @@
-import React from "react";
-import TruliooForm from "./components/TruliooForm";
+import React from 'react';
+import TruliooForm from './components/TruliooForm';
 
 export default function App(props) {
   return (
