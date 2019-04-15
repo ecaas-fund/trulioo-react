@@ -19,22 +19,56 @@ export const getFields = countryCode => async dispatch => {
     if (countryCode === '' || !countryCode) {
         return
     }
-    const URL = `${BASE_URL}/api/getFields/${countryCode}`
-    let promise = await axios.get(URL)
-    originFieldsResponse = JSON.parse(promise.data.response)
-
-    //deep clone originFieldsResponse
-    let parsedFields = parseAllFields(JSON.parse(JSON.stringify(originFieldsResponse)))
-
+    let fields = await requestFields(countryCode)
+    let subdivisions = await requestSubdivisions(countryCode)
+    if (fields && fields.properties) {
+        updateStateProvince(fields.properties, subdivisions)
+    }
     dispatch({
         type: GET_FIELDS,
         payload: {
-            fields: parsedFields,
+            fields,
             formData: {
-                countries: countryCode
+                countries: countryCode,
             }
         }
     })
+}
+
+const requestFields = async countryCode => {
+    if (countryCode === '' || !countryCode) {
+        return
+    }
+    const URL = `${BASE_URL}/api/getFields/${countryCode}`
+    let response = await axios.get(URL)
+    originFieldsResponse = JSON.parse(response.data.response)
+    let parsedFields = parseAllFields(JSON.parse(JSON.stringify(originFieldsResponse)))
+    return parsedFields
+}
+
+const requestSubdivisions = async countryCode => {
+    if (countryCode === '' || !countryCode) {
+        return
+    }
+    const URL = `${BASE_URL}/api/getCountrySubdivisions/${countryCode}`
+    let response =  await axios.get(URL)
+    let subdivisions = JSON.parse(response.data.response)
+    // sorting subdivisions by 'Name'
+    return R.sortBy(R.compose(R.toLower, R.prop('Name')))(subdivisions)
+}
+
+const updateStateProvince = (obj, subdivisions) => {
+    Object.keys(obj).forEach(k => {
+        if (k === "StateProvinceCode") {
+            obj[k] = {
+                ...obj[k],
+                enum: subdivisions.map(x => x.Code),
+                enumNames: subdivisions.map(x => x.Name)
+            }
+        } else if (obj[k] !== null && typeof obj[k] === 'object') {
+            updateStateProvince(obj[k], subdivisions);
+        }
+    });
 }
 
 const getCountryCode = form => {
