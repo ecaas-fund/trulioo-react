@@ -27,7 +27,7 @@ export class TruliooForm extends React.Component {
         this.props.submitForm(truliooFormData).then(res => {
             this.props.handleResponse(res)
         })
-    } 
+    }
 
     triggerSubmitResponse = (e) => {
         this.props.handleResponse(e)
