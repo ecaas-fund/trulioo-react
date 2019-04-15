@@ -33,7 +33,6 @@ export const getFields = countryCode => async dispatch => {
             }
         }
     })
-    // return Promise.resolve(true)
 }
 
 const requestFields = async countryCode => {
