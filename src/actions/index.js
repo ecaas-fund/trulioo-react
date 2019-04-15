@@ -50,22 +50,11 @@ const requestSubdivisions = async countryCode => {
     if (countryCode === '' || !countryCode) {
         return
     }
-    const URL = `${BASE_URL}/api/countrysubdivisions/${countryCode}`
+    const URL = `${BASE_URL}/api/getCountrySubdivisions/${countryCode}`
     let response =  await axios.get(URL)
     let subdivisions = JSON.parse(response.data.response)
-    return subdivisions.sort(subdivisionComparator)
-}
-
-const subdivisionComparator = (a, b) => {
-    let nameA = a.Name.toUpperCase()
-    let nameB = b.Name.toUpperCase()
-    if (nameA < nameB) {
-        return -1
-    }
-    if (nameA > nameB) {
-        return 1
-    }
-    return 0
+    // sorting subdivisions by 'Name'
+    return R.sortBy(R.compose(R.toLower, R.prop('Name')))(subdivisions)
 }
 
 const updateStateProvince = (obj, subdivisions) => {
