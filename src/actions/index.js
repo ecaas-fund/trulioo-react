@@ -5,6 +5,7 @@ import * as R from 'ramda'
 
 let BASE_URL
 let originFieldsResponse
+let reservedFormDataKeys = new Set(["countries", "TruliooFields"])
 
 export const getCountries = (url) => async dispatch => {
     BASE_URL = url
@@ -15,10 +16,11 @@ export const getCountries = (url) => async dispatch => {
     dispatch({ type: GET_COUNTRIES, payload: JSON.parse(promise.data.response).sort() })
 }
 
-export const getFields = countryCode => async dispatch => {
+export const getFields = (countryCode, customFields) => async dispatch => {
     if (countryCode === '' || !countryCode) {
         return
     }
+    validateCustomFields(customFields)
     let fields = await requestFields(countryCode)
     let subdivisions = await requestSubdivisions(countryCode)
     if (fields && fields.properties) {
@@ -28,6 +30,7 @@ export const getFields = countryCode => async dispatch => {
         type: GET_FIELDS,
         payload: {
             fields,
+            customFields,
             formData: {
                 countries: countryCode,
             }
@@ -86,14 +89,26 @@ const getBody = form => {
         "AcceptTruliooTermsAndConditions": true,
         "CleansedAddress": true,
         "ConfigurationName": "Identity Verification",
-        "CountryCode": countryCode, "DataFields": form.Properties
+        "CountryCode": countryCode, "DataFields": form.TruliooFields
     }
+}
+
+const validateCustomFields = (customFields) => {
+    if (customFields) {
+        Object.keys(customFields).forEach(key => {
+            console.log(key)
+            if (reservedFormDataKeys.has(key)) {
+                console.log("reserved!")
+                throw Error(key + " is a reserved field key. Please use another key for your custom field.")
+            }
+        })
+    } 
 }
 
 const parseFormDataAdditionalFields = (obj, formData) => {
     Object.keys(obj).forEach(key => {
-        if (key === 'AdditionalFields') {
-            //getFormData equivillant value
+        if (key === 'AdditionalFields') { 
+            //getFormData equivalent value
             const additionalFieldsObj = obj[key]
             const additionalFieldsKeys = Object.keys(additionalFieldsObj.properties.properties)
 
@@ -123,9 +138,12 @@ const findObjInFormDataByKey = (formData, wantedKey) => {
     })
 }
 
-export const submitForm = (form) => async () => {
-    parseFormDataAdditionalFields(originFieldsResponse, form.formData)
-    const body = getBody(form.formData)
+export const submitForm = (formData) => async () => {
+    let truliooFormData = parseTruliooFields(formData)
+    console.log("truliooFormData")
+    console.log(truliooFormData)
+    parseFormDataAdditionalFields(originFieldsResponse, truliooFormData)
+    const body = getBody(truliooFormData)
     const URL = `${BASE_URL}/api/verify`
     const promiseResult = await axios.post(URL, body).then(response => {
         return {
@@ -137,20 +155,20 @@ export const submitForm = (form) => async () => {
 }
 
 const parseFormData = (form) => {
-    if (form.Properties.Document) {
-        var docFront = form.Properties.Document.DocumentFrontImage
-        form.Properties.Document.DocumentFrontImage = docFront.substr(docFront.indexOf(',') + 1)
-        var docBack = form.Properties.Document.DocumentBackImage
+    if (form.TruliooFields.Document) {
+        var docFront = form.TruliooFields.Document.DocumentFrontImage
+        form.TruliooFields.Document.DocumentFrontImage = docFront.substr(docFront.indexOf(',') + 1)
+        var docBack = form.TruliooFields.Document.DocumentBackImage
         if (docBack) {
-            form.Properties.Document.DocumentBackImage = docBack.substr(docBack.indexOf(',') + 1)
+            form.TruliooFields.Document.DocumentBackImage = docBack.substr(docBack.indexOf(',') + 1)
         }
-        var livePhoto = form.Properties.Document.LivePhoto
+        var livePhoto = form.TruliooFields.Document.LivePhoto
         if (livePhoto) {
-            form.Properties.Document.LivePhoto = livePhoto.substr(livePhoto.indexOf(',') + 1)
+            form.TruliooFields.Document.LivePhoto = livePhoto.substr(livePhoto.indexOf(',') + 1)
         }
     }
-    if (form.Properties.NationalIds) {
-        form.Properties.NationalIds = [form.Properties.NationalIds]
+    if (form.TruliooFields.NationalIds) {
+        form.TruliooFields.NationalIds = [form.TruliooFields.NationalIds]
     }
     return form
 }
@@ -164,6 +182,16 @@ const parseAllFields = (obj) => {
     let parsedFields = parseFields(obj)
     removeAdditionalFields(parsedFields)
     return parsedFields
+}
+
+const parseTruliooFields = (formData) => {
+    let truliooFields = {}
+    Object.keys(formData).forEach(key => {
+        if (reservedFormDataKeys.has(key)) {
+            truliooFields[key] = formData[key]
+        } 
+    })
+    return truliooFields
 }
 
 const parseFields = (obj) => {

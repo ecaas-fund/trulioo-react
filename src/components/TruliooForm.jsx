@@ -6,8 +6,7 @@ import { getName } from "country-list"
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
 
-
-class TruliooForm extends React.Component {
+export class TruliooForm extends React.Component {
 
     componentDidMount() { 
         this.props.getCountries(this.props.url)
@@ -16,12 +15,13 @@ class TruliooForm extends React.Component {
     handleChange = (e) => {
         let shouldUpdateFormData = (this.props.fields.formData === undefined) || (e.formData.countries !== this.props.fields.formData.countries)
         if (shouldUpdateFormData) {
-            this.props.getFields(e.formData.countries)
+            this.props.getFields(e.formData.countries, this.props.customFields)
         }
     }
 
     handleSubmit = (e) => {
-        this.props.submitForm(e).then(res => {
+        this.props.handleSubmit && this.props.handleSubmit(e)
+        this.props.submitForm(e.formData).then(res => {
             this.props.handleResponse(res)
         })
     }
@@ -56,12 +56,19 @@ const mapStateToProps = (state) => {
         }
     }
     if (state.fields && state.fields.fields && state.fields.fields.properties) {
-        schema.properties.Properties = {
+        schema.properties.TruliooFields = {
             title: "Properties",
             type: "object",
             properties: state.fields && state.fields.fields && state.fields.fields.properties
         }
+        console.log('state')
+        console.log(state)
+        if (state.fields.customFields) {
+            schema.properties = {...schema.properties, ...state.fields.customFields}
+        }
     }
+    console.log('schema')
+    console.log(schema)
     return {
         fields: state.fields,
         schema,
