@@ -6,8 +6,6 @@ import { getName } from "country-list"
 /** @jsx jsx */
 import { jsx, css } from '@emotion/core'
 
-let reservedFormDataKeys = new Set(["countries", "TruliooFields"])
-
 export class TruliooForm extends React.Component {
 
     componentDidMount() { 
