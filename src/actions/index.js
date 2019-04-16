@@ -4,7 +4,6 @@ import * as R from 'ramda';
 import { GET_COUNTRIES, GET_FIELDS } from './types';
 
 let BASE_URL;
-let originFieldsResponse;
 
 export const getCountries = url => async (dispatch) => {
   BASE_URL = url;
@@ -27,6 +26,20 @@ const requestFields = async (countryCode) => {
   return JSON.parse(response.data.response);
 };
 
+const updateStateProvince = (obj, subdivisions) => {
+  Object.keys(obj).forEach((k) => {
+    if (k === 'StateProvinceCode' && subdivisions.length > 0) {
+      obj[k] = {
+        ...obj[k],
+        enum: subdivisions.map(x => x.Code),
+        enumNames: subdivisions.map(x => x.Name),
+      };
+    } else if (obj[k] !== null && typeof obj[k] === 'object') {
+      updateStateProvince(obj[k], subdivisions);
+    }
+  });
+};
+
 const requestSubdivisions = async (countryCode) => {
   if (countryCode === '' || !countryCode) {
     return;
@@ -34,7 +47,7 @@ const requestSubdivisions = async (countryCode) => {
   const URL = `${BASE_URL}/api/getCountrySubdivisions/${countryCode}`;
   const response = await axios.get(URL);
   const subdivisions = JSON.parse(response.data.response);
-  console.log('subdivisions', response);
+
   // sorting subdivisions by 'Name'
   return R.sortBy(
     R.compose(
@@ -61,20 +74,6 @@ export const getFields = countryCode => async (dispatch) => {
         countries: countryCode,
       },
     },
-  });
-};
-
-const updateStateProvince = (obj, subdivisions) => {
-  Object.keys(obj).forEach((k) => {
-    if (k === 'StateProvinceCode') {
-      obj[k] = {
-        ...obj[k],
-        enum: subdivisions.map(x => x.Code),
-        enumNames: subdivisions.map(x => x.Name),
-      };
-    } else if (obj[k] !== null && typeof obj[k] === 'object') {
-      updateStateProvince(obj[k], subdivisions);
-    }
   });
 };
 

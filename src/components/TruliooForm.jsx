@@ -12,36 +12,36 @@ class TruliooForm extends React.Component {
     this.props.getCountries(this.props.url);
   }
 
-    handleChange = (e) => {
-      const shouldUpdateFormData = (this.props.fields.formData === undefined) || (e.formData.countries !== this.props.fields.formData.countries);
-      if (shouldUpdateFormData) {
-        this.props.getFields(e.formData.countries);
-      }
+  handleChange = (e) => {
+    const shouldUpdateFormData = (this.props.fields.formData === undefined) || (e.formData.countries !== this.props.fields.formData.countries);
+    if (shouldUpdateFormData) {
+      this.props.getFields(e.formData.countries);
     }
+  }
 
-    handleSubmit = (e) => {
-      this.props.submitForm(e).then((res) => {
-        this.props.handleResponse(res);
-      });
-    }
+  handleSubmit = (e) => {
+    this.props.submitForm(e).then((res) => {
+      this.props.handleResponse(res);
+    });
+  }
 
-    triggerSubmitResponse = (e) => {
-      this.props.handleResponse(e);
-    }
+  triggerSubmitResponse = (e) => {
+    this.props.handleResponse(e);
+  }
 
-    render() {
-      const style = css`padding: 2rem;`;
-      return (
-        <div css={style}>
-          <Form
-            schema={this.props.schema}
-            onChange={e => this.handleChange(e)}
-            onSubmit={e => this.handleSubmit(e)}
-            formData={this.props.fields.formData}
-          />
-        </div>
-      );
-    }
+  render() {
+    const style = css`padding: 2rem;`;
+    return (
+      <div css={style}>
+        <Form
+          schema={this.props.schema}
+          onChange={e => this.handleChange(e)}
+          onSubmit={e => this.handleSubmit(e)}
+          formData={this.props.fields.formData}
+        />
+      </div>
+    );
+  }
 }
 
 const mapStateToProps = (state) => {
