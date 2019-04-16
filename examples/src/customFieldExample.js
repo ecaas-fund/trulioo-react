@@ -17,43 +17,35 @@ let simpleExample = {
         type: "string"
     }, 
     field2: {
-        title: "What is your quest?", 
-        type: "string",
+        title: "What is your age?", 
+        type: "number",
     },
     field3: {
         title: "What is your favourite color?", 
         type: "string",
         enum: ["red", "yellow", "blue"]
-    },
-    field4: {
-        title: "What is the air-speed velocity of an unladen swallow?", 
-        type: "number",
     }
 }
 
 // defining custom fields section with required fields
 let sectionExample = {
     CustomFieldObj: {
-      title: "Keeper's Questions",
+      title: "Custom Fields",
       type: "object", 
-      required: ["name", "speed"],
+      required: ["name", "age"],
       properties: {
         name: {
           title: "What is your name?",
           type: "string"
         }, 
-        quest: {
-            title: "What is your quest?", 
-            type: "string",
+        age: {
+            title: "What is your age?", 
+            type: "number",
         },
         color: {
             title: "What is your favourite color?", 
             type: "string",
             enum: ["red", "yellow", "blue"]
-        }, 
-        speed: {
-          title: "What is the air-speed velocity of an unladen swallow?", 
-          type: "number",
         }
       }
     }

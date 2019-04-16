@@ -5,6 +5,7 @@ import * as R from 'ramda'
 
 let BASE_URL
 let originFieldsResponse
+let reservedFormDataKeys = new Set(["countries", "TruliooFields"])
 
 export const getCountries = (url) => async dispatch => {
     BASE_URL = url
@@ -15,10 +16,11 @@ export const getCountries = (url) => async dispatch => {
     dispatch({ type: GET_COUNTRIES, payload: JSON.parse(promise.data.response).sort() })
 }
 
-export const getFields = countryCode => async dispatch => {
+export const getFields = (countryCode, customFields) => async dispatch => {
     if (countryCode === '' || !countryCode) {
         return
     }
+    validateCustomFields(customFields)
     let fields = await requestFields(countryCode)
     let subdivisions = await requestSubdivisions(countryCode)
     if (fields && fields.properties) {
@@ -28,6 +30,7 @@ export const getFields = countryCode => async dispatch => {
         type: GET_FIELDS,
         payload: {
             fields,
+            customFields,
             formData: {
                 countries: countryCode,
             }
@@ -90,6 +93,18 @@ const getBody = form => {
     }
 }
 
+const validateCustomFields = (customFields) => {
+    if (customFields) {
+        Object.keys(customFields).forEach(key => {
+            console.log(key)
+            if (reservedFormDataKeys.has(key)) {
+                console.log("reserved!")
+                throw Error(key + " is a reserved field key. Please use another key for your custom field.")
+            }
+        })
+    } 
+}
+
 const parseFormDataAdditionalFields = (obj, formData) => {
     Object.keys(obj).forEach(key => {
         if (key === 'AdditionalFields') { 
@@ -124,8 +139,11 @@ const findObjInFormDataByKey = (formData, wantedKey) => {
 }
 
 export const submitForm = (formData) => async () => {
-    parseFormDataAdditionalFields(originFieldsResponse, formData)
-    const body = getBody(formData)
+    let truliooFormData = parseTruliooFields(formData)
+    console.log("truliooFormData")
+    console.log(truliooFormData)
+    parseFormDataAdditionalFields(originFieldsResponse, truliooFormData)
+    const body = getBody(truliooFormData)
     const URL = `${BASE_URL}/api/verify`
     const promiseResult = await axios.post(URL, body).then(response => {
         return {
@@ -164,6 +182,16 @@ const parseAllFields = (obj) => {
     let parsedFields = parseFields(obj)
     removeAdditionalFields(parsedFields)
     return parsedFields
+}
+
+const parseTruliooFields = (formData) => {
+    let truliooFields = {}
+    Object.keys(formData).forEach(key => {
+        if (reservedFormDataKeys.has(key)) {
+            truliooFields[key] = formData[key]
+        } 
+    })
+    return truliooFields
 }
 
 const parseFields = (obj) => {
