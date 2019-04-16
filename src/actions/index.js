@@ -85,6 +85,25 @@ const getCountryCode = (form) => {
   }
 };
 
+const parseFormData = (form) => {
+  if (form.Properties.Document) {
+    const docFront = form.Properties.Document.DocumentFrontImage;
+    form.Properties.Document.DocumentFrontImage = docFront.substr(docFront.indexOf(',') + 1);
+    const docBack = form.Properties.Document.DocumentBackImage;
+    if (docBack) {
+      form.Properties.Document.DocumentBackImage = docBack.substr(docBack.indexOf(',') + 1);
+    }
+    const livePhoto = form.Properties.Document.LivePhoto;
+    if (livePhoto) {
+      form.Properties.Document.LivePhoto = livePhoto.substr(livePhoto.indexOf(',') + 1);
+    }
+  }
+  if (form.Properties.NationalIds) {
+    form.Properties.NationalIds = [form.Properties.NationalIds];
+  }
+  return form;
+};
+
 const getBody = (form) => {
   const countryCode = getCountryCode(form);
   form = parseFormData(form);
@@ -98,10 +117,11 @@ const getBody = (form) => {
 };
 
 export const submitForm = form => async () => {
+  const body = getBody(form.formData);
   const URL = `${BASE_URL}/api/verify`;
-  const promiseResult = await axios.post(URL, form.formData).then(response => ({
+  const promiseResult = await axios.post(URL, body).then(response => ({
     ...response,
-    ...form.formData,
+    body,
   }));
   return promiseResult;
 };
