@@ -20,10 +20,13 @@ axios.get.mockImplementation((url) => {
   if (url.includes('countrysubdivisions')) {
     return Promise.resolve(response(subDivisions));
   }
+  return Promise.reject();
 });
 
 it('renders countries as a select element', async () => {
-  const embedID = await renderer.create(<EmbedID url="http://localhost:3111" handleResponse={(e) => { }} />);
+  const embedID = await renderer.create(
+    <EmbedID url="http://localhost:3111" handleResponse={() => { }} />,
+  );
   expect(axios.get).toBeCalled();
   const instance = embedID.root;
 

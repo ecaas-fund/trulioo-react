@@ -1,7 +1,8 @@
 module.exports = {
   env: {
     browser: true,
-    es6: true
+    es6: true,
+    jest: true
   },
   extends: "airbnb",
   globals: {
@@ -17,5 +18,7 @@ module.exports = {
     sourceType: "module"
   },
   plugins: ["react"],
-  rules: {}
+  rules: {
+    "linebreak-style": 0
+  }
 };
