@@ -12,28 +12,72 @@ export const getCountries = url => async (dispatch) => {
   const URL = `${BASE_URL}/api/countryCodes`;
   const promise = await axios.get(URL);
 
-  dispatch({ type: GET_COUNTRIES, payload: JSON.parse(promise.data.response).sort() });
+  dispatch({
+    type: GET_COUNTRIES,
+    payload: JSON.parse(promise.data.response).sort(),
+  });
 };
 
 export const getFields = countryCode => async (dispatch) => {
   if (countryCode === '' || !countryCode) {
     return;
   }
-  const URL = `${BASE_URL}/api/getFields/${countryCode}`;
-  const promise = await axios.get(URL);
-  originFieldsResponse = JSON.parse(promise.data.response);
-
-  // deep clone originFieldsResponse
-  const parsedFields = parseAllFields(JSON.parse(JSON.stringify(originFieldsResponse)));
-
+  const fields = await requestFields(countryCode);
+  const subdivisions = await requestSubdivisions(countryCode);
+  if (fields && fields.properties) {
+    updateStateProvince(fields.properties, subdivisions);
+  }
   dispatch({
     type: GET_FIELDS,
     payload: {
-      fields: parsedFields,
+      fields,
       formData: {
         countries: countryCode,
       },
     },
+  });
+};
+
+const requestFields = async (countryCode) => {
+  if (countryCode === '' || !countryCode) {
+    return;
+  }
+  const URL = `${BASE_URL}/api/getFields/${countryCode}`;
+  const response = await axios.get(URL);
+  originFieldsResponse = JSON.parse(response.data.response);
+  const parsedFields = parseAllFields(
+    JSON.parse(JSON.stringify(originFieldsResponse)),
+  );
+  return parsedFields;
+};
+
+const requestSubdivisions = async (countryCode) => {
+  if (countryCode === '' || !countryCode) {
+    return;
+  }
+  const URL = `${BASE_URL}/api/getCountrySubdivisions/${countryCode}`;
+  const response = await axios.get(URL);
+  const subdivisions = JSON.parse(response.data.response);
+  // sorting subdivisions by 'Name'
+  return R.sortBy(
+    R.compose(
+      R.toLower,
+      R.prop('Name'),
+    ),
+  )(subdivisions);
+};
+
+const updateStateProvince = (obj, subdivisions) => {
+  Object.keys(obj).forEach((k) => {
+    if (k === 'StateProvinceCode') {
+      obj[k] = {
+        ...obj[k],
+        enum: subdivisions.map(x => x.Code),
+        enumNames: subdivisions.map(x => x.Name),
+      };
+    } else if (obj[k] !== null && typeof obj[k] === 'object') {
+      updateStateProvince(obj[k], subdivisions);
+    }
   });
 };
 
@@ -62,7 +106,9 @@ const parseFormDataAdditionalFields = (obj, formData) => {
     if (key === 'AdditionalFields') {
       // getFormData equivillant value
       const additionalFieldsObj = obj[key];
-      const additionalFieldsKeys = Object.keys(additionalFieldsObj.properties.properties);
+      const additionalFieldsKeys = Object.keys(
+        additionalFieldsObj.properties.properties,
+      );
 
       additionalFieldsKeys.forEach((additionalKey) => {
         findObjInFormDataByKey(formData, additionalKey);
@@ -104,14 +150,20 @@ export const submitForm = form => async () => {
 const parseFormData = (form) => {
   if (form.Properties.Document) {
     const docFront = form.Properties.Document.DocumentFrontImage;
-    form.Properties.Document.DocumentFrontImage = docFront.substr(docFront.indexOf(',') + 1);
+    form.Properties.Document.DocumentFrontImage = docFront.substr(
+      docFront.indexOf(',') + 1,
+    );
     const docBack = form.Properties.Document.DocumentBackImage;
     if (docBack) {
-      form.Properties.Document.DocumentBackImage = docBack.substr(docBack.indexOf(',') + 1);
+      form.Properties.Document.DocumentBackImage = docBack.substr(
+        docBack.indexOf(',') + 1,
+      );
     }
     const livePhoto = form.Properties.Document.LivePhoto;
     if (livePhoto) {
-      form.Properties.Document.LivePhoto = livePhoto.substr(livePhoto.indexOf(',') + 1);
+      form.Properties.Document.LivePhoto = livePhoto.substr(
+        livePhoto.indexOf(',') + 1,
+      );
     }
   }
   if (form.Properties.NationalIds) {
@@ -120,10 +172,18 @@ const parseFormData = (form) => {
   return form;
 };
 
-const keysThatShouldBeObjects = ['Communication', 'CountrySpecific', 'Location'];
+const keysThatShouldBeObjects = [
+  'Communication',
+  'CountrySpecific',
+  'Location',
+];
 const keysThatShouldBeStrings = ['EnhancedProfile'];
 const keysThatShouldBeBooleans = ['AcceptIncompleteDocument'];
-const keysThatShouldBeFileData = ['LivePhoto', 'DocumentBackImage', 'DocumentFrontImage'];
+const keysThatShouldBeFileData = [
+  'LivePhoto',
+  'DocumentBackImage',
+  'DocumentFrontImage',
+];
 
 const parseAllFields = (obj) => {
   const parsedFields = parseFields(obj);
@@ -165,7 +225,9 @@ const parseFields = (obj) => {
 
 const parseAdditionalFieldRequired = (obj, key) => {
   if (key === 'NationalIds') {
-    obj.NationalIds.required = obj.NationalIds.required.filter(element => element !== 'nationalid').concat('Type', 'Number');
+    obj.NationalIds.required = obj.NationalIds.required
+      .filter(element => element !== 'nationalid')
+      .concat('Type', 'Number');
   }
 };
 
@@ -191,7 +253,9 @@ const removeAdditionalFields = (obj) => {
     if (obj[k] !== null && typeof obj[k] === 'object') {
       if (obj[k].AdditionalFields) {
         const requiredFields = obj[k].AdditionalFields.properties.required;
-        obj.required = obj.required.filter(requiredProp => requiredProp !== 'AdditionalFields').concat(requiredFields);
+        obj.required = obj.required
+          .filter(requiredProp => requiredProp !== 'AdditionalFields')
+          .concat(requiredFields);
         obj[k] = R.omit(['AdditionalFields'], obj[k]);
       }
       removeAdditionalFields(obj[k]);

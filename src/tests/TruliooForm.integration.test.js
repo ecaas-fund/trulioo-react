@@ -1,10 +1,11 @@
 import axios from 'axios';
 
 // note: proxy server must be running for this integration test to pass successfully
-it('makes requests to backend', async () => {
+it('makes requests to backend', async (done) => {
   expect.assertions(1);
   const response = await requestCountries();
   expect(response).toBeTruthy();
+  done();
 });
 
 // adjust the BASE_URL to match the address of your proxy server
