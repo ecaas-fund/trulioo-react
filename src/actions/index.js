@@ -55,6 +55,41 @@ const requestSubdivisions = async (countryCode) => {
   )(subdivisions);
 };
 
+const requestConsents = async (countryCode) => {
+  if (countryCode === '' || !countryCode) {
+    return;
+  }
+  const URL = `${BASE_URL}/api/getDetailedConsents/${countryCode}`;
+  const response = await axios.get(URL);
+  const consents = JSON.parse(response.data.response);
+  return consents;
+};
+
+const appendConsentFields = (fields, consents) => {
+  if (consents === undefined || consents.length <= 0) {
+    return;
+  }
+  fields.Consents = generateConsentSchema(consents);
+};
+
+const generateConsentSchema = (consents) => {
+  const schema = {
+    title: 'Consents',
+    type: 'object',
+    required: [],
+    properties: {},
+  };
+  consents.forEach((x) => {
+    schema.required.push(x.Name);
+    schema.properties[x.Name] = {
+      title: x.Text,
+      type: 'boolean',
+      default: false,
+    };
+  });
+  return schema;
+};
+
 const validateCustomFields = (customFields) => {
   if (customFields) {
     Object.keys(customFields).forEach((key) => {
@@ -84,6 +119,8 @@ export const getFields = (countryCode, customFields) => async (dispatch) => {
   validateCustomFields(customFields);
   const fields = await requestFields(countryCode);
   const subdivisions = await requestSubdivisions(countryCode);
+  const consents = await requestConsents(countryCode);
+  appendConsentFields(fields, consents);
   if (fields && fields.properties) {
     updateStateProvince(fields.properties, subdivisions);
   }
@@ -126,6 +163,18 @@ const parseFormData = (form) => {
   return form;
 };
 
+const parseConsents = (consents) => {
+  const result = [];
+  if (consents === undefined) {
+    return result;
+  }
+  Object.keys(consents).forEach((x) => {
+    if (consents[x]) {
+      result.push(x);
+    }
+  });
+};
+
 const getBody = (form) => {
   const countryCode = getCountryCode(form);
   form = parseFormData(form);
@@ -136,6 +185,7 @@ const getBody = (form) => {
     ConfigurationName: 'Identity Verification',
     CountryCode: countryCode,
     DataFields: form.TruliooFields,
+    ConsentForDataSources: parseConsents(form.Consents),
   };
 };
 

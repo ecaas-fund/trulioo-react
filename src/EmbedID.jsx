@@ -8,10 +8,7 @@ import TruliooForm from './components/TruliooForm';
 
 /* eslint-disable no-underscore-dangle */
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-const store = createStore(
-  reducers,
-  composeEnhancers(applyMiddleware(reduxThunk)),
-);
+const store = createStore(reducers, composeEnhancers(applyMiddleware(reduxThunk)));
 /* eslint-enable */
 
 export default function EmbedID({ handleResponse, url }) {

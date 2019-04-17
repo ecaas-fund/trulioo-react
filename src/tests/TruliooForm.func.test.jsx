@@ -25,7 +25,7 @@ axios.get.mockImplementation((url) => {
 
 it('renders countries as a select element', async () => {
   const embedID = await renderer.create(
-    <EmbedID url="http://localhost:3111" handleResponse={() => { }} />,
+    <EmbedID url="http://localhost:3111" handleResponse={() => {}} />,
   );
   expect(axios.get).toBeCalled();
   const instance = embedID.root;
