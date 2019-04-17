@@ -121,7 +121,6 @@ export const getFields = (countryCode, customFields) => async (dispatch) => {
   const subdivisions = await requestSubdivisions(countryCode);
   let consents = await requestConsents(countryCode);
   consents = generateConsentSchema(consents);
-  // appendConsentFields(fields, consents);
   if (fields && fields.properties) {
     updateStateProvince(fields.properties, subdivisions);
   }

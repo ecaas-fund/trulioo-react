@@ -21,8 +21,6 @@ export class TruliooForm extends React.Component {
 
   handleSubmit = (e) => {
     this.props.handleSubmit && this.props.handleSubmit(e);
-    console.log('submit');
-    console.log(e.formData);
     this.props.submitForm(e.formData).then((res) => {
       this.props.handleResponse(res);
     });
