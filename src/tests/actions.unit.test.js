@@ -22,7 +22,7 @@ axios.get.mockImplementation((url) => {
   if (url.includes('countrysubdivisions')) {
     return Promise.resolve(response(subDivisions));
   }
-  return undefined;
+  return Promise.reject();
 });
 
 const middlewares = [thunk];

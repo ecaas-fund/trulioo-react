@@ -4,6 +4,7 @@ import * as R from 'ramda';
 import { GET_COUNTRIES, GET_FIELDS } from './types';
 
 let BASE_URL;
+const reservedFormDataKeys = ['countries', 'TruliooFields'];
 
 export const getCountries = url => async (dispatch) => {
   BASE_URL = url;
@@ -11,10 +12,7 @@ export const getCountries = url => async (dispatch) => {
   const URL = `${BASE_URL}/api/countryCodes`;
   const promise = await axios.get(URL);
 
-  dispatch({
-    type: GET_COUNTRIES,
-    payload: JSON.parse(promise.data.response).sort(),
-  });
+  dispatch({ type: GET_COUNTRIES, payload: JSON.parse(promise.data.response).sort() });
 };
 
 const requestFields = async (countryCode) => {
@@ -57,10 +55,24 @@ const requestSubdivisions = async (countryCode) => {
   )(subdivisions);
 };
 
-export const getFields = countryCode => async (dispatch) => {
+const validateCustomFields = (customFields) => {
+  if (customFields) {
+    Object.keys(customFields).forEach((key) => {
+      console.log(key);
+      if (reservedFormDataKeys.includes(key)) {
+        throw Error(
+          `${key} is a reserved field key. Please use another key for your custom field.`,
+        );
+      }
+    });
+  }
+};
+
+export const getFields = (countryCode, customFields) => async (dispatch) => {
   if (countryCode === '' || !countryCode) {
     return;
   }
+  validateCustomFields(customFields);
   const fields = await requestFields(countryCode);
   const subdivisions = await requestSubdivisions(countryCode);
   if (fields && fields.properties) {
@@ -70,6 +82,7 @@ export const getFields = countryCode => async (dispatch) => {
     type: GET_FIELDS,
     payload: {
       fields,
+      customFields,
       formData: {
         countries: countryCode,
       },
@@ -78,11 +91,24 @@ export const getFields = countryCode => async (dispatch) => {
 };
 
 const getCountryCode = (form) => {
+  console.log('@getCountryCode: ', form);
   for (const [key, value] of Object.entries(form)) {
     if (key === 'countries') {
       return value;
     }
   }
+};
+
+const getBody = (form) => {
+  const countryCode = getCountryCode(form);
+  form = parseFormData(form);
+  return {
+    AcceptTruliooTermsAndConditions: true,
+    CleansedAddress: true,
+    ConfigurationName: 'Identity Verification',
+    CountryCode: countryCode,
+    DataFields: form.Properties,
+  };
 };
 
 const parseFormData = (form) => {
@@ -104,20 +130,8 @@ const parseFormData = (form) => {
   return form;
 };
 
-const getBody = (form) => {
-  const countryCode = getCountryCode(form);
-  form = parseFormData(form);
-  return {
-    AcceptTruliooTermsAndConditions: true,
-    CleansedAddress: true,
-    ConfigurationName: 'Identity Verification',
-    CountryCode: countryCode,
-    DataFields: form.Properties,
-  };
-};
-
 export const submitForm = form => async () => {
-  const body = getBody(form.formData);
+  const body = getBody(form);
   const URL = `${BASE_URL}/api/verify`;
   const promiseResult = await axios.post(URL, body).then(response => ({
     ...response,
