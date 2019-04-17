@@ -73,6 +73,9 @@ const appendConsentFields = (fields, consents) => {
 };
 
 const generateConsentSchema = (consents) => {
+  if (consents === undefined || consents.length <= 0) {
+    return;
+  }
   const schema = {
     title: 'Consents',
     type: 'object',
