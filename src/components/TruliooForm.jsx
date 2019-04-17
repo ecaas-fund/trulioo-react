@@ -21,6 +21,8 @@ export class TruliooForm extends React.Component {
 
   handleSubmit = (e) => {
     this.props.handleSubmit && this.props.handleSubmit(e);
+    console.log('submit');
+    console.log(e.formData);
     this.props.submitForm(e.formData).then((res) => {
       this.props.handleResponse(res);
     });
@@ -70,8 +72,8 @@ const mapStateToProps = (state) => {
     if (state.fields.customFields) {
       schema.properties = { ...schema.properties, ...state.fields.customFields };
     }
-    if (state.fields.fields.Consents) {
-      schema.properties.Consents = state.fields.fields.Consents;
+    if (state.fields.consents) {
+      schema.properties.Consents = state.fields.consents;
     }
   }
   return {

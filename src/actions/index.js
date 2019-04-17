@@ -4,7 +4,7 @@ import * as R from 'ramda';
 import { GET_COUNTRIES, GET_FIELDS } from './types';
 
 let BASE_URL;
-const reservedFormDataKeys = ['countries', 'TruliooFields'];
+const reservedFormDataKeys = ['countries', 'TruliooFields', 'Consents'];
 
 export const getCountries = url => async (dispatch) => {
   BASE_URL = url;
@@ -119,8 +119,9 @@ export const getFields = (countryCode, customFields) => async (dispatch) => {
   validateCustomFields(customFields);
   const fields = await requestFields(countryCode);
   const subdivisions = await requestSubdivisions(countryCode);
-  const consents = await requestConsents(countryCode);
-  appendConsentFields(fields, consents);
+  let consents = await requestConsents(countryCode);
+  consents = generateConsentSchema(consents);
+  // appendConsentFields(fields, consents);
   if (fields && fields.properties) {
     updateStateProvince(fields.properties, subdivisions);
   }
@@ -128,6 +129,7 @@ export const getFields = (countryCode, customFields) => async (dispatch) => {
     type: GET_FIELDS,
     payload: {
       fields,
+      consents,
       customFields,
       formData: {
         countries: countryCode,
@@ -173,6 +175,7 @@ const parseConsents = (consents) => {
       result.push(x);
     }
   });
+  return result;
 };
 
 const getBody = (form) => {
@@ -190,7 +193,8 @@ const getBody = (form) => {
 };
 
 export const submitForm = form => async () => {
-  const truliooFormData = parseTruliooFields(form);
+  const formClone = JSON.parse(JSON.stringify(form));
+  const truliooFormData = parseTruliooFields(formClone);
 
   const body = getBody(truliooFormData);
   const URL = `${BASE_URL}/api/verify`;
