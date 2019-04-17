@@ -58,7 +58,6 @@ const requestSubdivisions = async (countryCode) => {
 const validateCustomFields = (customFields) => {
   if (customFields) {
     Object.keys(customFields).forEach((key) => {
-      console.log(key);
       if (reservedFormDataKeys.includes(key)) {
         throw Error(
           `${key} is a reserved field key. Please use another key for your custom field.`,
@@ -66,6 +65,16 @@ const validateCustomFields = (customFields) => {
       }
     });
   }
+};
+
+const parseTruliooFields = (formData) => {
+  const truliooFields = {};
+  Object.keys(formData).forEach((key) => {
+    if (reservedFormDataKeys.includes(key)) {
+      truliooFields[key] = formData[key];
+    }
+  });
+  return truliooFields;
 };
 
 export const getFields = (countryCode, customFields) => async (dispatch) => {
@@ -91,7 +100,6 @@ export const getFields = (countryCode, customFields) => async (dispatch) => {
 };
 
 const getCountryCode = (form) => {
-  console.log('@getCountryCode: ', form);
   for (const [key, value] of Object.entries(form)) {
     if (key === 'countries') {
       return value;
@@ -99,39 +107,42 @@ const getCountryCode = (form) => {
   }
 };
 
+const parseFormData = (form) => {
+  if (form.TruliooFields.Document) {
+    const docFront = form.TruliooFields.Document.DocumentFrontImage;
+    form.TruliooFields.Document.DocumentFrontImage = docFront.substr(docFront.indexOf(',') + 1);
+    const docBack = form.TruliooFields.Document.DocumentBackImage;
+    if (docBack) {
+      form.TruliooFields.Document.DocumentBackImage = docBack.substr(docBack.indexOf(',') + 1);
+    }
+    const livePhoto = form.TruliooFields.Document.LivePhoto;
+    if (livePhoto) {
+      form.TruliooFields.Document.LivePhoto = livePhoto.substr(livePhoto.indexOf(',') + 1);
+    }
+  }
+  if (form.TruliooFields.NationalIds) {
+    form.TruliooFields.NationalIds = [form.TruliooFields.NationalIds];
+  }
+  return form;
+};
+
 const getBody = (form) => {
   const countryCode = getCountryCode(form);
   form = parseFormData(form);
+
   return {
     AcceptTruliooTermsAndConditions: true,
     CleansedAddress: true,
     ConfigurationName: 'Identity Verification',
     CountryCode: countryCode,
-    DataFields: form.Properties,
+    DataFields: form.TruliooFields,
   };
 };
 
-const parseFormData = (form) => {
-  if (form.Properties.Document) {
-    const docFront = form.Properties.Document.DocumentFrontImage;
-    form.Properties.Document.DocumentFrontImage = docFront.substr(docFront.indexOf(',') + 1);
-    const docBack = form.Properties.Document.DocumentBackImage;
-    if (docBack) {
-      form.Properties.Document.DocumentBackImage = docBack.substr(docBack.indexOf(',') + 1);
-    }
-    const livePhoto = form.Properties.Document.LivePhoto;
-    if (livePhoto) {
-      form.Properties.Document.LivePhoto = livePhoto.substr(livePhoto.indexOf(',') + 1);
-    }
-  }
-  if (form.Properties.NationalIds) {
-    form.Properties.NationalIds = [form.Properties.NationalIds];
-  }
-  return form;
-};
-
 export const submitForm = form => async () => {
-  const body = getBody(form);
+  const truliooFormData = parseTruliooFields(form);
+
+  const body = getBody(truliooFormData);
   const URL = `${BASE_URL}/api/verify`;
   const promiseResult = await axios.post(URL, body).then(response => ({
     ...response,
