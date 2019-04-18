@@ -4,12 +4,12 @@ import * as R from 'ramda';
 import { GET_COUNTRIES, GET_FIELDS } from './types';
 
 let BASE_URL;
-const reservedFormDataKeys = ['countries', 'TruliooFields'];
+const reservedFormDataKeys = ['countries', 'TruliooFields', 'Consents'];
 
 export const getCountries = url => async (dispatch) => {
   BASE_URL = url;
 
-  const URL = `${BASE_URL}/api/countryCodes`;
+  const URL = `${BASE_URL}/api/getcountrycodes`;
   const promise = await axios.get(URL);
 
   dispatch({ type: GET_COUNTRIES, payload: JSON.parse(promise.data.response).sort() });
@@ -19,7 +19,7 @@ const requestFields = async (countryCode) => {
   if (countryCode === '' || !countryCode) {
     return;
   }
-  const URL = `${BASE_URL}/api/getFields/${countryCode}`;
+  const URL = `${BASE_URL}/api/getrecommendedfields/${countryCode}`;
   const response = await axios.get(URL);
   return JSON.parse(response.data.response);
 };
@@ -42,7 +42,7 @@ const requestSubdivisions = async (countryCode) => {
   if (countryCode === '' || !countryCode) {
     return;
   }
-  const URL = `${BASE_URL}/api/getCountrySubdivisions/${countryCode}`;
+  const URL = `${BASE_URL}/api/getcountrysubdivisions/${countryCode}`;
   const response = await axios.get(URL);
   const subdivisions = JSON.parse(response.data.response);
 
@@ -53,6 +53,44 @@ const requestSubdivisions = async (countryCode) => {
       R.prop('Name'),
     ),
   )(subdivisions);
+};
+
+const requestConsents = async (countryCode) => {
+  if (countryCode === '' || !countryCode) {
+    return;
+  }
+  const URL = `${BASE_URL}/api/getdetailedconsents/${countryCode}`;
+  const response = await axios.get(URL);
+  const consents = JSON.parse(response.data.response);
+  return consents;
+};
+
+const appendConsentFields = (fields, consents) => {
+  if (consents === undefined || consents.length <= 0) {
+    return;
+  }
+  fields.Consents = generateConsentSchema(consents);
+};
+
+const generateConsentSchema = (consents) => {
+  if (consents === undefined || consents.length <= 0) {
+    return;
+  }
+  const schema = {
+    title: 'Consents',
+    type: 'object',
+    required: [],
+    properties: {},
+  };
+  consents.forEach((x) => {
+    schema.required.push(x.Name);
+    schema.properties[x.Name] = {
+      title: x.Text,
+      type: 'boolean',
+      default: false,
+    };
+  });
+  return schema;
 };
 
 const validateCustomFields = (customFields) => {
@@ -84,6 +122,8 @@ export const getFields = (countryCode, customFields) => async (dispatch) => {
   validateCustomFields(customFields);
   const fields = await requestFields(countryCode);
   const subdivisions = await requestSubdivisions(countryCode);
+  let consents = await requestConsents(countryCode);
+  consents = generateConsentSchema(consents);
   if (fields && fields.properties) {
     updateStateProvince(fields.properties, subdivisions);
   }
@@ -91,6 +131,7 @@ export const getFields = (countryCode, customFields) => async (dispatch) => {
     type: GET_FIELDS,
     payload: {
       fields,
+      consents,
       customFields,
       formData: {
         countries: countryCode,
@@ -126,6 +167,19 @@ const parseFormData = (form) => {
   return form;
 };
 
+const parseConsents = (consents) => {
+  const result = [];
+  if (consents === undefined) {
+    return result;
+  }
+  Object.keys(consents).forEach((x) => {
+    if (consents[x]) {
+      result.push(x);
+    }
+  });
+  return result;
+};
+
 const getBody = (form) => {
   const countryCode = getCountryCode(form);
   form = parseFormData(form);
@@ -136,11 +190,13 @@ const getBody = (form) => {
     ConfigurationName: 'Identity Verification',
     CountryCode: countryCode,
     DataFields: form.TruliooFields,
+    ConsentForDataSources: parseConsents(form.Consents),
   };
 };
 
 export const submitForm = form => async () => {
-  const truliooFormData = parseTruliooFields(form);
+  const formClone = JSON.parse(JSON.stringify(form));
+  const truliooFormData = parseTruliooFields(formClone);
 
   const body = getBody(truliooFormData);
   const URL = `${BASE_URL}/api/verify`;
