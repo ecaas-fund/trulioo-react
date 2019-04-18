@@ -30,10 +30,12 @@ EmbedID.propTypes = {
   handleResponse: PropTypes.func,
   handleSubmit: PropTypes.func,
   url: PropTypes.string,
-  customFields: PropTypes.object,
+  customFields: PropTypes.objectOf(PropTypes.object),
 };
 
 EmbedID.defaultProps = {
   handleResponse: false,
   url: true,
+  handleSubmit: undefined,
+  customFields: undefined,
 };

@@ -5,7 +5,7 @@ import axios from 'axios';
 const BASE_URL = 'http://localhost:3111';
 
 it('countryCodes endpoint works', async (done) => {
-  const endpoint = '/api/countryCodes';
+  const endpoint = '/api/getcountrycodes';
   const response = await makeRequest(endpoint);
   expect(response).toBeTruthy();
   expect.assertions(1);
@@ -14,7 +14,7 @@ it('countryCodes endpoint works', async (done) => {
 
 it('getConsents endpoint works', async (done) => {
   const country = 'IN';
-  const endpoint = `/api/getDetailedConsents/${country}`;
+  const endpoint = `/api/getdetailedconsents/${country}`;
   const response = await makeRequest(endpoint);
   expect(response).toBeTruthy();
   expect.assertions(1);
