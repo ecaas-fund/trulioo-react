@@ -12,7 +12,23 @@ export const getCountries = url => async (dispatch) => {
   const URL = `${BASE_URL}/api/getcountrycodes`;
   const promise = await axios.get(URL);
 
-  dispatch({ type: GET_COUNTRIES, payload: JSON.parse(promise.data.response).sort() });
+  dispatch({
+    type: GET_COUNTRIES,
+    payload: JSON.parse(promise.data.response).sort(),
+  });
+};
+
+const parseFields = (obj) => {
+  for (const [key, _] of Object.entries(obj)) {
+    if (key == 0) {
+      return;
+    }
+    if (key === 'label') {
+      obj.title = obj[key];
+    }
+    parseFields(obj[key]);
+  }
+  return obj;
 };
 
 const requestFields = async (countryCode) => {
@@ -21,7 +37,8 @@ const requestFields = async (countryCode) => {
   }
   const URL = `${BASE_URL}/api/getrecommendedfields/${countryCode}`;
   const response = await axios.get(URL);
-  return JSON.parse(response.data.response);
+  const parsedFields = parseFields(JSON.parse(response.data.response));
+  return parsedFields;
 };
 
 const updateStateProvince = (obj, subdivisions) => {
@@ -55,7 +72,7 @@ const requestSubdivisions = async (countryCode) => {
   )(subdivisions);
 };
 
-const requestConsents = async (countryCode) => {
+async function requestConsents(countryCode) {
   if (countryCode === '' || !countryCode) {
     return;
   }
@@ -63,7 +80,7 @@ const requestConsents = async (countryCode) => {
   const response = await axios.get(URL);
   const consents = JSON.parse(response.data.response);
   return consents;
-};
+}
 
 const appendConsentFields = (fields, consents) => {
   if (consents === undefined || consents.length <= 0) {
@@ -151,14 +168,20 @@ const getCountryCode = (form) => {
 const parseFormData = (form) => {
   if (form.TruliooFields.Document) {
     const docFront = form.TruliooFields.Document.DocumentFrontImage;
-    form.TruliooFields.Document.DocumentFrontImage = docFront.substr(docFront.indexOf(',') + 1);
+    form.TruliooFields.Document.DocumentFrontImage = docFront.substr(
+      docFront.indexOf(',') + 1,
+    );
     const docBack = form.TruliooFields.Document.DocumentBackImage;
     if (docBack) {
-      form.TruliooFields.Document.DocumentBackImage = docBack.substr(docBack.indexOf(',') + 1);
+      form.TruliooFields.Document.DocumentBackImage = docBack.substr(
+        docBack.indexOf(',') + 1,
+      );
     }
     const livePhoto = form.TruliooFields.Document.LivePhoto;
     if (livePhoto) {
-      form.TruliooFields.Document.LivePhoto = livePhoto.substr(livePhoto.indexOf(',') + 1);
+      form.TruliooFields.Document.LivePhoto = livePhoto.substr(
+        livePhoto.indexOf(',') + 1,
+      );
     }
   }
   if (form.TruliooFields.NationalIds) {
