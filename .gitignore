@@ -28,8 +28,7 @@ yarn-error.log*
 /App.js
 App.test.js
 EmbedID.js
-/index.js
-index.css
+index.js
 logo.svg
 serviceWorker.js
 

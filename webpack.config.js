@@ -1,29 +1,35 @@
-const path = require("path");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
 const htmlWebpackPlugin = new HtmlWebpackPlugin({
-  template: path.join(__dirname, "examples/src/index.html"),
-  filename: "./index.html"
+  template: path.join(__dirname, 'examples/src/index.html'),
+  filename: './index.html',
 });
 module.exports = {
-  entry: path.join(__dirname, "examples/src/index.js"),
+  entry: path.join(__dirname, 'examples/src/index.jsx'),
   module: {
     rules: [
       {
         test: /\.(js|jsx)$/,
-        use: ["babel-loader", "eslint-loader"],
-        exclude: /node_modules/
+        use: ['babel-loader', 'eslint-loader'],
+        exclude: /node_modules/,
       },
       {
         test: /\.css$/,
-        use: ["style-loader", "css-loader"]
-      }
-    ]
+        use: ['style-loader', 'css-loader'],
+      },
+      {
+        test: /\.(png|svg|jpg|jpeg|gif|ico)$/,
+        exclude: /node_modules/,
+        use: ['file-loader?name=[name].[ext]'],
+      },
+    ],
   },
   plugins: [htmlWebpackPlugin],
   resolve: {
-    extensions: [".js", ".jsx"]
+    extensions: ['.js', '.jsx'],
   },
   devServer: {
-    port: 3001
-  }
+    port: 3001,
+  },
 };
