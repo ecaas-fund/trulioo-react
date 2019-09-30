@@ -52,11 +52,6 @@ const sectionExample = {
 };
 
 render(
-  <EmbedID
-    url="http://localhost:3111"
-    handleResponse={handleResponse}
-    customFields={sectionExample}
-    handleSubmit={handleSubmit}
-  />,
+  <EmbedID url="http://localhost:3111" handleResponse={handleResponse} customFields={sectionExample} handleSubmit={handleSubmit} />,
   document.getElementById('root'),
 );

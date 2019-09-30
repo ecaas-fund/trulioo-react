@@ -1,3 +1,6 @@
+[![npm version](https://img.shields.io/npm/v/trulioo-react.svg?style=flat-square)](https://www.npmjs.com/package/react-dnd)
+[![npm downloads](https://img.shields.io/npm/dy/trulioo-react.svg?style=flat-square)](https://www.npmjs.com/package/react-dnd)
+
 # Trulioo Embed ID
 
 ## Install

@@ -38,8 +38,8 @@ export class TruliooForm extends React.Component {
       <div css={style}>
         <Form
           schema={this.props.schema}
-          onChange={e => this.handleChange(e)}
-          onSubmit={e => this.handleSubmit(e)}
+          onChange={(e) => this.handleChange(e)}
+          onSubmit={(e) => this.handleSubmit(e)}
           formData={this.props.fields.formData}
         />
       </div>
@@ -57,7 +57,7 @@ const mapStateToProps = (state) => {
         enum: state.getCountries.countries,
         enumNames:
           state.getCountries.countries
-          && state.getCountries.countries.map(country => getName(country)),
+          && state.getCountries.countries.map((country) => getName(country)),
       },
     },
   };
