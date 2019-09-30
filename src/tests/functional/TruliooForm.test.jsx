@@ -1,8 +1,8 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 import axios from 'axios';
-import EmbedID from '../EmbedID';
-import mockApi from './mockApi';
+import EmbedID from '../../EmbedID';
+import mockApi from './MockApi';
 
 jest.mock('axios');
 mockApi();
