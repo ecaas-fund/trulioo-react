@@ -2,7 +2,7 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import * as actions from '../../actions/index';
 import * as types from '../../actions/types';
-import mockApi from '../functional/MockApi';
+import mockApi from './mockApi';
 
 // mocking proxy server responses
 jest.mock('axios');
