@@ -20,13 +20,74 @@ const handleResponse = (e) => {
 <EmbedID url='TRULIOO_PROXY_SERVER_URL' handleResponse={handleResponse} />
 ```
 
+## Customize your fields
+
+### example of custom fields on base level:
+
+```
+const simpleExample = {
+  field1: {
+    title: 'What is your name?',
+    type: 'string',
+  },
+  field2: {
+    title: 'What is your age?',
+    type: 'number',
+  },
+  field3: {
+    title: 'What is your favourite color?',
+    type: 'string',
+    enum: ['red', 'yellow', 'blue'],
+  },
+};
+```
+
+### example of custom fields section with **required** fields:
+
+```
+const sectionExample = {
+  CustomFieldObj: {
+    title: 'Custom Fields',
+    type: 'object',
+    required: ['name', 'age'],
+    properties: {
+      name: {
+        title: 'What is your name?',
+        type: 'string',
+      },
+      age: {
+        title: 'What is your age?',
+        type: 'number',
+      },
+      color: {
+        title: 'What is your favourite color?',
+        type: 'string',
+        enum: ['red', 'yellow', 'blue'],
+      },
+    },
+  },
+};
+```
+Render `<EmbedID/>` :
+```
+render(
+  <EmbedID
+    url="http://localhost:3111"
+    handleResponse={handleResponse}
+    customFields={sectionExample}
+    handleSubmit={handleSubmit}
+  />,
+  document.getElementById('root'),
+);
+```
+
 ## Add Bootstrap CSS for better looks 💇🏼
 
 `<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">`
 
 # Quickstart
 
-You have the option to develop your own, or simply use [trulioo-quickstart project](https://github.com/Trulioo/trulioo-react-sample-app), an easy to follow guide to boostrap your server 🚀.
+You have the option to develop your own or use [trulioo-quickstart project](https://github.com/Trulioo/trulioo-react-sample-app), an easy to follow guide to boostrap your server 🚀.
 
 # Best Practice
 

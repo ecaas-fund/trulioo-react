@@ -1,12 +1,12 @@
-Contributing to `trulioo-react`
+# Contributing to `trulioo-react`
 
 Thanks for contributing to trulioo-react!
 
-#### Run tests:
+### Run tests:
 
 `npm test`
 
-#### Run tests from a specific folder i.e. `"src/tests/snapshot" and "src/tests/unit"`:
+### Run tests from a specific folder i.e. `"src/tests/snapshot" and "src/tests/unit"`:
 
 `npm test -- src/tests/snapshot src/tests/unit`
 

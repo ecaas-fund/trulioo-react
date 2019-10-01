@@ -1,8 +1,3 @@
-/* eslint-disable consistent-return */
-/* eslint-disable no-param-reassign */
-/* eslint-disable eqeqeq */
-/* eslint-disable no-restricted-syntax */
-/* eslint-disable no-unused-vars */
 import axios from 'axios';
 import 'core-js';
 import * as R from 'ramda';
@@ -87,6 +82,13 @@ async function requestConsents(countryCode) {
   return consents;
 }
 
+const appendConsentFields = (fields, consents) => {
+  if (consents === undefined || consents.length <= 0) {
+    return;
+  }
+  fields.Consents = generateConsentSchema(consents);
+};
+
 const generateConsentSchema = (consents) => {
   if (consents === undefined || consents.length <= 0) {
     return;
@@ -106,13 +108,6 @@ const generateConsentSchema = (consents) => {
     };
   });
   return schema;
-};
-
-const appendConsentFields = (fields, consents) => {
-  if (consents === undefined || consents.length <= 0) {
-    return;
-  }
-  fields.Consents = generateConsentSchema(consents);
 };
 
 const validateCustomFields = (customFields) => {

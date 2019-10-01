@@ -3,4 +3,5 @@ import reducer from './apiReducers';
 
 export default combineReducers({
   getCountries: reducer,
+  fields: reducer,
 });

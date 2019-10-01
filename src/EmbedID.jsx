@@ -4,7 +4,7 @@ import { createStore, applyMiddleware } from 'redux';
 import reduxThunk from 'redux-thunk';
 import PropTypes from 'prop-types';
 import reducers from './reducers';
-import { TruliooForm } from './components/TruliooForm';
+import TruliooForm from './components/TruliooForm';
 
 const store = createStore(reducers, applyMiddleware(reduxThunk));
 

@@ -21,5 +21,6 @@ module.exports = {
     "jsx-a11y/label-has-for": 0,
     'no-console': 'off',
     "max-len": ["error", { "code": 130 }],
+    "import/no-named-as-default": 0
   },
 };
