@@ -1,3 +1,7 @@
+Contributing to `trulioo-react`
+
+Thanks for contributing to react-stripe-elements!
+
 #### Run tests:
 
 `npm test`
