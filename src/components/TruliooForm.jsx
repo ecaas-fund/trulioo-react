@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 import React from 'react';
 import { connect } from 'react-redux';
 import Form from 'react-jsonschema-form';
@@ -34,6 +35,7 @@ export class TruliooForm extends React.Component {
     const style = css`
       padding: 2rem;
     `;
+
     return (
       <div css={style}>
         <Form

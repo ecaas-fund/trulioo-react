@@ -11,21 +11,21 @@ const handleSubmit = (e) => {
 };
 
 // example custom fields on base level
-const simpleExample = {
-  field1: {
-    title: 'What is your name?',
-    type: 'string',
-  },
-  field2: {
-    title: 'What is your age?',
-    type: 'number',
-  },
-  field3: {
-    title: 'What is your favourite color?',
-    type: 'string',
-    enum: ['red', 'yellow', 'blue'],
-  },
-};
+// const simpleExample = {
+//   field1: {
+//     title: 'What is your name?',
+//     type: 'string',
+//   },
+//   field2: {
+//     title: 'What is your age?',
+//     type: 'number',
+//   },
+//   field3: {
+//     title: 'What is your favourite color?',
+//     type: 'string',
+//     enum: ['red', 'yellow', 'blue'],
+//   },
+// };
 
 // example custom fields section with required fields
 const sectionExample = {
@@ -52,6 +52,11 @@ const sectionExample = {
 };
 
 render(
-  <EmbedID url="http://localhost:3111" handleResponse={handleResponse} customFields={sectionExample} handleSubmit={handleSubmit} />,
+  <EmbedID
+    url="http://localhost:3111"
+    handleResponse={handleResponse}
+    customFields={sectionExample}
+    handleSubmit={handleSubmit}
+  />,
   document.getElementById('root'),
 );
