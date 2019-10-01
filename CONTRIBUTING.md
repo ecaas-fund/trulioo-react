@@ -6,6 +6,6 @@ Thanks for contributing to trulioo-react!
 
 `npm test`
 
-#### Run tests from a specific folder i.e. `"./src/tests/unit" and src/tests/snapshot`:
+#### Run tests from a specific folder i.e. `"src/tests/snapshot" and "src/tests/unit"`:
 
 `npm test -- src/tests/snapshot src/tests/unit`
