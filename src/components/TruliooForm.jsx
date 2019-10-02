@@ -40,8 +40,8 @@ export class TruliooForm extends React.Component {
       <div css={style}>
         <Form
           schema={this.props.schema}
-          onChange={e => this.handleChange(e)}
-          onSubmit={e => this.handleSubmit(e)}
+          onChange={(e) => this.handleChange(e)}
+          onSubmit={(e) => this.handleSubmit(e)}
           formData={this.props.fields.formData}
         />
       </div>
