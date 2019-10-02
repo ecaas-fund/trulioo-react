@@ -4,6 +4,7 @@ import { createStore, applyMiddleware } from 'redux';
 import reduxThunk from 'redux-thunk';
 import PropTypes from 'prop-types';
 import reducers from './reducers';
+// eslint-disable-next-line import/no-named-as-default
 import TruliooForm from './components/TruliooForm';
 
 const store = createStore(reducers, applyMiddleware(reduxThunk));

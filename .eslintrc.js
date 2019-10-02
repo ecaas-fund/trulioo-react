@@ -16,11 +16,5 @@ module.exports = {
     'react',
   ],
   rules: {
-    "linebreak-style": 0,
-    "import/no-cycle": 0,
-    "jsx-a11y/label-has-for": 0,
-    'no-console': 'off',
-    "max-len": ["error", { "code": 130 }],
-    "import/no-named-as-default": 0
   },
 };

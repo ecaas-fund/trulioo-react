@@ -6,18 +6,18 @@
 
 ## Description
 
-⚡**Trulioo EmbedID**⚡ provides identity verification utilizing Trulioo.  For demonstration purposes Trulioo provides the **[trulioo-react-sample-app](https://github.com/Trulioo/trulioo-react-sample-app)** (sample code of a lightweight Node.js proxy server). Get your API key from [gateway-admin.trulioo.com](https://gateway-admin.trulioo.com).
+⚡**Trulioo EmbedID**⚡ provides identity verification utilizing Trulioo.  For demonstration purposes Trulioo provides the **[trulioo-react-sample-app](https://github.com/Trulioo/trulioo-react-sample-app)** (sample code of a lightweight Node.js server). Get your API key from [gateway-admin.trulioo.com](https://gateway-admin.trulioo.com).
 
 ## Use
 
 ```
-import EmbedID from 'trulioo-react/EmbedID'
+import EmbedID from 'trulioo-react';
 
 const handleResponse = (e) => {
     // handle verification submission result here ...
 }
 
-<EmbedID url='TRULIOO_PROXY_SERVER_URL' handleResponse={handleResponse} />
+<EmbedID url='SERVER_URL' handleResponse={handleResponse} />
 ```
 
 ## Customize your fields

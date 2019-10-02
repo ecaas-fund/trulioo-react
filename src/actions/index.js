@@ -6,7 +6,7 @@ import { GET_COUNTRIES, GET_FIELDS } from './types';
 let BASE_URL;
 const reservedFormDataKeys = ['countries', 'TruliooFields', 'Consents'];
 
-export const getCountries = (url) => async (dispatch) => {
+export const getCountries = url => async (dispatch) => {
   BASE_URL = url;
 
   const URL = `${BASE_URL}/api/getcountrycodes`;
@@ -46,8 +46,8 @@ const updateStateProvince = (obj, subdivisions) => {
     if (k === 'StateProvinceCode' && subdivisions.length > 0) {
       obj[k] = {
         ...obj[k],
-        enum: subdivisions.map((x) => x.Code),
-        enumNames: subdivisions.map((x) => x.Name),
+        enum: subdivisions.map(x => x.Code),
+        enumNames: subdivisions.map(x => x.Name),
       };
     } else if (obj[k] !== null && typeof obj[k] === 'object') {
       updateStateProvince(obj[k], subdivisions);
@@ -217,13 +217,13 @@ const getBody = (form) => {
   };
 };
 
-export const submitForm = (form) => async () => {
+export const submitForm = form => async () => {
   const formClone = JSON.parse(JSON.stringify(form));
   const truliooFormData = parseTruliooFields(formClone);
 
   const body = getBody(truliooFormData);
   const URL = `${BASE_URL}/api/verify`;
-  const promiseResult = await axios.post(URL, body).then((response) => ({
+  const promiseResult = await axios.post(URL, body).then(response => ({
     ...response,
     body,
   }));
