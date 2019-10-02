@@ -31,6 +31,9 @@ EmbedID.js
 index.js
 logo.svg
 serviceWorker.js
+EmbedID.js.map
+index.js.map
+/dist
 
 # snapshot tests
 src/components/__snapshots__/

@@ -1,8 +1,7 @@
 import { combineReducers } from 'redux';
-import getCountriesReducer from './apiReducers';
-import getFieldsReducer from './apiReducers';
+import reducer from './apiReducers';
 
 export default combineReducers({
-  getCountries: getCountriesReducer,
-  fields: getFieldsReducer,
+  getCountries: reducer,
+  fields: reducer,
 });

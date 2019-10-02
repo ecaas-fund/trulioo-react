@@ -4,6 +4,16 @@ import axios from 'axios';
 // adjust the BASE_URL to match the address of your proxy server
 const BASE_URL = 'http://localhost:3111';
 
+const makeRequest = async (endpoint) => {
+  const URL = BASE_URL + endpoint;
+  try {
+    const response = await axios.get(URL);
+    return response;
+  } catch (err) {
+    return false;
+  }
+};
+
 it('countryCodes endpoint works', async (done) => {
   const endpoint = '/api/getcountrycodes';
   const response = await makeRequest(endpoint);
@@ -20,13 +30,3 @@ it('getConsents endpoint works', async (done) => {
   expect.assertions(1);
   done();
 });
-
-const makeRequest = async (endpoint) => {
-  const URL = BASE_URL + endpoint;
-  try {
-    const response = await axios.get(URL);
-    return response;
-  } catch (err) {
-    return false;
-  }
-};

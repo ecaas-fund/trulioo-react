@@ -1,20 +1,4 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import { createStore, applyMiddleware } from 'redux';
-import reduxThunk from 'redux-thunk';
-import * as serviceWorker from './serviceWorker';
-import App from './App';
-import reducers from './reducers';
+import EmbedID from './EmbedID';
 
-const store = createStore(
-  reducers, applyMiddleware(reduxThunk),
-);
-
-ReactDOM.render(
-  <Provider store={store}>
-    <App />
-  </Provider>, document.getElementById('root'),
-);
-
-serviceWorker.unregister();
+// eslint-disable-next-line import/prefer-default-export
+export { EmbedID };

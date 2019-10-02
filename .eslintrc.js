@@ -1,24 +1,20 @@
 module.exports = {
+  parser: "babel-eslint",
   env: {
     browser: true,
     es6: true,
     jest: true
   },
-  extends: "airbnb",
+  extends: [
+    'airbnb',
+  ],
   globals: {
-    Atomics: "readonly",
-    SharedArrayBuffer: "readonly"
+    Atomics: 'readonly',
+    SharedArrayBuffer: 'readonly',
   },
-  parser: "babel-eslint",
-  parserOptions: {
-    ecmaFeatures: {
-      jsx: true
-    },
-    ecmaVersion: 2018,
-    sourceType: "module"
-  },
-  plugins: ["react"],
+  plugins: [
+    'react',
+  ],
   rules: {
-    "linebreak-style": 0,
-  }
+  },
 };

@@ -20,6 +20,7 @@ export class TruliooForm extends React.Component {
   };
 
   handleSubmit = (e) => {
+    // eslint-disable-next-line no-unused-expressions
     this.props.handleSubmit && this.props.handleSubmit(e);
     this.props.submitForm(e.formData).then((res) => {
       this.props.handleResponse(res);
@@ -34,6 +35,7 @@ export class TruliooForm extends React.Component {
     const style = css`
       padding: 2rem;
     `;
+
     return (
       <div css={style}>
         <Form
@@ -57,7 +59,7 @@ const mapStateToProps = (state) => {
         enum: state.getCountries.countries,
         enumNames:
           state.getCountries.countries
-          && state.getCountries.countries.map(country => getName(country)),
+          && state.getCountries.countries.map(getName),
       },
     },
   };
