@@ -4,7 +4,7 @@
   "author": "Menelaos Kotsollaris",
   "description": "React components for integrating with the Trulioo GlobalGateway API https://www.trulioo.com/",
   "license": "Apache-2.0",
-  "main": "index.js",
+  "main": "dist/index.js",
   "homepage": "https://www.trulioo.com",
   "repository": {
     "type": "git",
@@ -65,7 +65,8 @@
   "scripts": {
     "start": "webpack-dev-server --mode development",
     "test": "jest",
-    "transpile": "babel src -d ./ --copy-files",
+    "transpile": "babel src -d ./dist --source-maps",
+    "remove-transpiled": "rm -rf ./dist",
     "prepublishOnly": "npm run transpile",
     "lint": "eslint src/**/*.js src/**/*.jsx"
   },
