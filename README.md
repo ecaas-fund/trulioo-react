@@ -6,7 +6,7 @@
 
 ## Description
 
-⚡**Trulioo EmbedID**⚡ leverages the GlobalGateway RestFul API, this API can not be invoked directly through web browser, therefore an intermediary (proxy) hosted on your web server is required to complete the request. For demonstration purposes Trulioo provides the **[trulioo-react-sample-app](https://github.com/Trulioo/trulioo-react-sample-app)** (sample code of a lightweight Node.js proxy server). Trulioo recommends developing your own intermediary (proxy) for production purposes.
+⚡**Trulioo EmbedID**⚡ provides identity verification utilizing Trulioo.  For demonstration purposes Trulioo provides the **[trulioo-react-sample-app](https://github.com/Trulioo/trulioo-react-sample-app)** (sample code of a lightweight Node.js proxy server). Get your API key from [gateway-admin.trulioo.com](https://gateway-admin.trulioo.com).
 
 ## Use
 
@@ -22,7 +22,7 @@ const handleResponse = (e) => {
 
 ## Customize your fields
 
-### example of custom fields on base level:
+### Example of custom fields on base level:
 
 ```
 const simpleExample = {
@@ -42,7 +42,7 @@ const simpleExample = {
 };
 ```
 
-### example of custom fields section with **required** fields:
+### Example of custom fields section with **required** fields:
 
 ```
 const sectionExample = {
@@ -85,13 +85,9 @@ render(
 
 `<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">`
 
-# Quickstart
-
-You have the option to develop your own or use [trulioo-quickstart project](https://github.com/Trulioo/trulioo-react-sample-app), an easy to follow guide to boostrap your server 🚀.
-
 # Best Practice
 
-Trulioo EmbedID passes user input data to the "proxy" on your server. When developing systems that consume internet exposed fields for the purpose of data collection, ensure you take all necessary precautions to protect your system from from denial of service attacks, exploits or security vulnerabilities. Please refer to the [Legal disclaimer](https://developer.trulioo.com/docs/legal) on the Trulioo Developer Portal.
+Trulioo EmbedID passes user input data to your server. When developing systems that consume internet exposed fields for the purpose of data collection, ensure you take all necessary precautions to protect your system from from denial of service attacks, exploits or security vulnerabilities. Please refer to the [Legal disclaimer](https://developer.trulioo.com/docs/legal) on the Trulioo Developer Portal.
 
 ## Learn More <a href="https://twitter.com/intent/follow?screen_name=trulioo"><img align="right" src="https://img.shields.io/twitter/follow/trulioo.svg?style=social&label=Follow%20@trulioo" alt="Follow on Twitter"></a>
 
