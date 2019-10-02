@@ -11,7 +11,7 @@
 ## Use
 
 ```
-import EmbedID from 'trulioo-react';
+import { EmbedID } from 'trulioo-react';
 
 const handleResponse = (e) => {
     // handle verification submission result here ...
