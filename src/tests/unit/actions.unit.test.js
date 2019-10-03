@@ -1,7 +1,7 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import * as actions from '../../actions/index';
-import * as types from '../../actions/types';
+import { getFields } from '../../actions/index';
+import { GET_FIELDS } from '../../actions/types';
 import mockApi from './mockApi';
 
 // mocking proxy server responses
@@ -14,18 +14,13 @@ const mockStore = configureMockStore(middlewares);
 
 describe('async actions', () => {
   it('getFields makes getFields request and dispatches correct action', () => {
-    const expectedActions = [{ type: types.GET_FIELDS }];
+    const expectedActions = [{ type: GET_FIELDS }];
     const store = mockStore({});
-    console.log('store', store);
-    console.log('actions', actions);
-    const xx = actions.getFields(country);
-    console.log('xx', xx);
-    // store.dispatch(actions.getFields(country)).then(() => {
-    // const receivedActions = store.getActions();
-    // console.log('@receivedActions', receivedActions);
-    // expect(expectedActions.length).toEqual(receivedActions.length);
-    // expect(expectedActions[0].type).toEqual(receivedActions[0].type);
-    // expect(receivedActions[0].payload.fields).toBeDefined();
-    // });
+    return store.dispatch(getFields(country)).then(() => {
+      const receivedActions = store.getActions();
+      expect(expectedActions.length).toEqual(receivedActions.length);
+      expect(expectedActions[0].type).toEqual(receivedActions[0].type);
+      expect(receivedActions[0].payload.fields).toBeDefined();
+    });
   });
 });

@@ -14,4 +14,4 @@ Integration tests (`src/tests/integration`) require EmbedID endpoints to be exec
 
 To generate test coverage report:
 
-`npm test -- --coverage -u`
+`npm test -- --coverage`

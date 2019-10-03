@@ -1,0 +1,183 @@
+{
+    "title": "DataFields",
+    "type": "object",
+    "properties": {
+        "PersonInfo": {
+            "title": "PersonInfo",
+            "type": "object",
+            "properties": {
+                "FirstGivenName": {
+                    "type": "string",
+                    "description": "First name of the individual to be verified",
+                    "label": "First Name"
+                },
+                "MiddleName": {
+                    "type": "string",
+                    "description": "Second given name of the individual to be verified",
+                    "label": "Middle Name"
+                },
+                "FirstSurName": {
+                    "type": "string",
+                    "description": "Last name of the individual to be verified",
+                    "label": "Last Name"
+                },
+                "DayOfBirth": {
+                    "type": "integer",
+                    "description": "Day of birth date (e.g. 23 for a date of birth of 23/11/1975)",
+                    "label": "Day Of Birth"
+                },
+                "MonthOfBirth": {
+                    "type": "integer",
+                    "description": "Month of birth date (e.g. 11 for a date of birth of 23/11/1975)",
+                    "label": "Month Of Birth"
+                },
+                "YearOfBirth": {
+                    "type": "integer",
+                    "description": "Year of birth date (e.g. 1975 for a date of birth of 23/11/1975)",
+                    "label": "Year Of Birth"
+                }
+            },
+            "required": [
+                "FirstGivenName",
+                "FirstSurName"
+            ]
+        },
+        "Location": {
+            "title": "Location",
+            "type": "object",
+            "properties": {
+                "BuildingNumber": {
+                    "type": "string",
+                    "description": "House number of home address",
+                    "label": "House Number"
+                },
+                "UnitNumber": {
+                    "type": "string",
+                    "description": "Flat/Unit/Apartment number of primary residence",
+                    "label": "Unit Number"
+                },
+                "StreetName": {
+                    "type": "string",
+                    "description": "Street name of primary residence",
+                    "label": "Street Name"
+                },
+                "StreetType": {
+                    "type": "string",
+                    "description": "Street type of primary residence (e.g. St, Rd, etc.)",
+                    "label": "Street Type"
+                },
+                "City": {
+                    "type": "string",
+                    "description": "City of home address",
+                    "label": "City"
+                },
+                "StateProvinceCode": {
+                    "type": "string",
+                    "description": "State of primary residence. US sources expect 2 characters. Australian sources expect 2 or 3 characters.",
+                    "label": "State"
+                },
+                "PostalCode": {
+                    "type": "string",
+                    "description": "ZIP Code or Postal Code of primary residence",
+                    "label": "Postal Code"
+                },
+                "AdditionalFields": {
+                    "type": "object",
+                    "description": "Street address of primary residence",
+                    "label": "Address 1",
+                    "properties": {
+                        "Address1": {
+                            "type": "string",
+                            "description": "Street address of primary residence",
+                            "label": "Address 1"
+                        }
+                    },
+                    "required": []
+                }
+            },
+            "required": [
+                "City",
+                "PostalCode",
+                "StateProvinceCode"
+            ]
+        },
+        "Communication": {
+            "title": "Communication",
+            "type": "object",
+            "properties": {
+                "MobileNumber": {
+                    "type": "string",
+                    "description": "Cellular phone number",
+                    "label": "Cell Number"
+                },
+                "Telephone": {
+                    "type": "string",
+                    "description": "Telephone number of the individual to be verified",
+                    "label": "Telephone"
+                },
+                "EmailAddress": {
+                    "type": "string",
+                    "description": "Email Address",
+                    "label": "Email Address"
+                }
+            },
+            "required": []
+        },
+        "DriverLicence": {
+            "title": "DriverLicence",
+            "type": "object",
+            "properties": {
+                "Number": {
+                    "type": "string",
+                    "description": "Driver's Licence Number of the individual to be verified",
+                    "label": "Driver Licence Number"
+                }
+            },
+            "required": []
+        },
+        "NationalIds": {
+            "title": "NationalIds",
+            "type": "object",
+            "properties": {
+                "Number": {
+                    "type": "string",
+                    "description": "(Social Security Number of the individual to be verified (xxx-xx-xxxx))"
+                },
+                "Type": {
+                    "type": "string",
+                    "enum": [
+                        "NationalID",
+                        "Health",
+                        "SocialService",
+                        "TaxIDNumber"
+                    ],
+                    "value": "socialservice"
+                }
+            },
+            "required": []
+        },
+        "CountrySpecific": {
+            "title": "CountrySpecific",
+            "type": "object",
+            "properties": {
+                "US": {
+                    "title": "US",
+                    "type": "object",
+                    "properties": {
+                        "DriverLicenceNumber": {
+                            "type": "string",
+                            "description": "Driver's Licence Number of the individual to be verified",
+                            "label": "Driver Licence Number"
+                        },
+                        "IPAddress": {
+                            "type": "string",
+                            "description": "IP Address, either in IPv4 or IPv6 format",
+                            "label": "IP Address"
+                        }
+                    },
+                    "required": []
+                }
+            }
+        }
+    }
+}
