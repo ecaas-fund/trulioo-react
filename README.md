@@ -1,4 +1,4 @@
-# trulioo-react  &middot; [![GitHub license](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](https://github.com/Trulioo/trulioo-react/blob/master/LICENSE) [![npm version](https://img.shields.io/npm/v/trulioo-react.svg?style=flat-square)](https://www.npmjs.com/package/trulioo-react) [![npm downloads](https://img.shields.io/npm/dy/trulioo-react.svg?style=flat-square)](https://www.npmjs.com/package/trulioo-react) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-green.svg)](https://github.com/Trulioo/trulioo-react/pulls)
+# trulioo-react  &middot; [![GitHub license](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](https://github.com/Trulioo/trulioo-react/blob/master/LICENSE) [![npm version](https://img.shields.io/npm/v/trulioo-react.svg?style=flat-square)](https://www.npmjs.com/package/trulioo-react) [![npm downloads](https://img.shields.io/npm/dy/trulioo-react.svg?style=flat-square)](https://www.npmjs.com/package/trulioo-react) [![install size](https://packagephobia.now.sh/badge?p=trulioo-react)](https://packagephobia.now.sh/result?p=trulioo-react)  [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-green.svg)](https://github.com/Trulioo/trulioo-react/pulls) [![Try on RunKit](https://badge.runkitcdn.com/trulioo-react.svg)](https://npm.runkit.com/trulioo-react) [![Known Vulnerabilities](https://snyk.io//test/github/Trulioo/trulioo-react/badge.svg?targetFile=package.json)](https://snyk.io//test/github/Trulioo/trulioo-react?targetFile=package.json)
 
 ## Install
 
@@ -6,7 +6,7 @@
 
 ## Description
 
-⚡**Trulioo EmbedID**⚡ provides identity verification utilizing Trulioo.  For demonstration purposes Trulioo provides the **[trulioo-react-sample-app](https://github.com/Trulioo/trulioo-react-sample-app)** (sample code of a lightweight Node.js server). Get your API key from [gateway-admin.trulioo.com](https://gateway-admin.trulioo.com).
+⚡**Trulioo EmbedID**⚡ provides instant identity verification utilizing Trulioo's API. Get your API key from [Trulioo's Developers Portal](https://gateway-admin.trulioo.com).
 
 ## Use
 
