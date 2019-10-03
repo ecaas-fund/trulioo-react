@@ -19,6 +19,7 @@ module.exports = {
   },
   plugins: ["react"],
   rules: {
-    "linebreak-style": 0
+    "linebreak-style": 0,
+    "import/no-extraneous-dependencies": ["error", { "devDependencies": true }]
   }
 };
