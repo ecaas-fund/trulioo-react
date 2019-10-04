@@ -26,11 +26,11 @@
     "country-list": "^2.1.0",
     "prop-types": "^15.7.2",
     "ramda": "^0.26.1",
-    "react": "^16.6.3",
-    "react-dom": "^16.6.3",
     "react-jsonschema-form": "^1.0.6"
   },
   "devDependencies": {
+    "react": "^16.10",
+    "react-dom": "^16.10",
     "@babel/cli": "^7.0.0",
     "@babel/core": "^7.0.0",
     "@babel/plugin-proposal-class-properties": "^7.5.5",
@@ -61,6 +61,10 @@
     "redux": "^4.0.1",
     "react-redux": "^7.0.0",
     "redux-thunk": "^2.3.0"
+  },
+  "peerDependencies": {
+    "react": "^16.10",
+    "react-dom": "^16.10"
   },
   "scripts": {
     "start": "webpack-dev-server --mode development",
