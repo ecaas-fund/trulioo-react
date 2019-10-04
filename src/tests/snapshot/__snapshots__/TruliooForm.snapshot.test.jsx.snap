@@ -12,71 +12,44 @@ exports[`EmbedID did not change 1`] = `
     <div
       className="form-group field field-object"
     >
-      <div
-        className=""
+      <fieldset
+        id="root"
       >
         <div
-          className=""
+          className="form-group field field-string"
         >
-          <fieldset
-            id="root"
+          <label
+            className="control-label"
+            htmlFor="root_countries"
           >
-            <div
-              className="form-group field field-string"
-            >
-              <div
-                className=""
-              >
-                <div
-                  className=""
-                >
-                  <label
-                    className="control-label"
-                    htmlFor="root_countries"
-                  >
-                    Countries
-                  </label>
-                  <div />
-                  <input
-                    autoFocus={false}
-                    className="form-control"
-                    disabled={false}
-                    id="root_countries"
-                    label="Countries"
-                    onBlur={[Function]}
-                    onChange={[Function]}
-                    onFocus={[Function]}
-                    placeholder=""
-                    readOnly={false}
-                    required={false}
-                    type="text"
-                    value=""
-                  />
-                  <div />
-                  <div />
-                </div>
-                <div
-                  className="col-xs-2"
-                />
-              </div>
-            </div>
-          </fieldset>
-          <div />
-          <div />
+            Countries
+          </label>
+          <input
+            autoFocus={false}
+            className="form-control"
+            disabled={false}
+            id="root_countries"
+            label="Countries"
+            onBlur={[Function]}
+            onChange={[Function]}
+            onFocus={[Function]}
+            placeholder=""
+            readOnly={false}
+            required={false}
+            type="text"
+            value=""
+          />
         </div>
-        <div
-          className="col-xs-2"
-        />
-      </div>
+      </fieldset>
     </div>
-    <p>
+    <div>
       <button
         className="btn btn-info"
         type="submit"
       >
         Submit
       </button>
-    </p>
+    </div>
   </form>
 </div>
 `;

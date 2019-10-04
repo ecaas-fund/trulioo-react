@@ -18,15 +18,29 @@ it('countryCodes endpoint works', async (done) => {
   const endpoint = '/api/getcountrycodes';
   const response = await makeRequest(endpoint);
   expect(response).toBeTruthy();
-  expect.assertions(1);
   done();
 });
 
-it('getConsents endpoint works', async (done) => {
+it('getRecommendedFields endpoint works', async (done) => {
+  const country = 'IN';
+  const endpoint = `/api/getrecommendedfields/${country}`;
+  const response = await makeRequest(endpoint);
+  expect(response).toBeTruthy();
+  done();
+});
+
+it('getCountrySubdivisions endpoint works', async (done) => {
+  const country = 'IN';
+  const endpoint = `/api/getcountrysubdivisions/${country}`;
+  const response = await makeRequest(endpoint);
+  expect(response).toBeTruthy();
+  done();
+});
+
+it('getDetailedConsents endpoint works', async (done) => {
   const country = 'IN';
   const endpoint = `/api/getdetailedconsents/${country}`;
   const response = await makeRequest(endpoint);
   expect(response).toBeTruthy();
-  expect.assertions(1);
   done();
 });

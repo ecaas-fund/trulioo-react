@@ -3,10 +3,11 @@ import 'core-js';
 import * as R from 'ramda';
 import { GET_COUNTRIES, GET_FIELDS } from './types';
 
+// this is instantiated through BASE_URL
 let BASE_URL;
 const reservedFormDataKeys = ['countries', 'TruliooFields', 'Consents'];
 
-export const getCountries = url => async (dispatch) => {
+export const getCountries = (url) => async (dispatch) => {
   BASE_URL = url;
 
   const URL = `${BASE_URL}/api/getcountrycodes`;
@@ -14,7 +15,7 @@ export const getCountries = url => async (dispatch) => {
 
   dispatch({
     type: GET_COUNTRIES,
-    payload: JSON.parse(promise.data.response).sort(),
+    payload: promise.data.response.sort(),
   });
 };
 
@@ -37,7 +38,7 @@ const requestFields = async (countryCode) => {
   }
   const URL = `${BASE_URL}/api/getrecommendedfields/${countryCode}`;
   const response = await axios.get(URL);
-  const parsedFields = parseFields(JSON.parse(response.data.response));
+  const parsedFields = parseFields(response.data.response);
   return parsedFields;
 };
 
@@ -46,8 +47,8 @@ const updateStateProvince = (obj, subdivisions) => {
     if (k === 'StateProvinceCode' && subdivisions.length > 0) {
       obj[k] = {
         ...obj[k],
-        enum: subdivisions.map(x => x.Code),
-        enumNames: subdivisions.map(x => x.Name),
+        enum: subdivisions.map((x) => x.Code),
+        enumNames: subdivisions.map((x) => x.Name),
       };
     } else if (obj[k] !== null && typeof obj[k] === 'object') {
       updateStateProvince(obj[k], subdivisions);
@@ -61,7 +62,7 @@ const requestSubdivisions = async (countryCode) => {
   }
   const URL = `${BASE_URL}/api/getcountrysubdivisions/${countryCode}`;
   const response = await axios.get(URL);
-  const subdivisions = JSON.parse(response.data.response);
+  const subdivisions = response.data.response;
 
   // sorting subdivisions by 'Name'
   return R.sortBy(
@@ -78,16 +79,9 @@ async function requestConsents(countryCode) {
   }
   const URL = `${BASE_URL}/api/getdetailedconsents/${countryCode}`;
   const response = await axios.get(URL);
-  const consents = JSON.parse(response.data.response);
+  const consents = response.data.response;
   return consents;
 }
-
-const appendConsentFields = (fields, consents) => {
-  if (consents === undefined || consents.length <= 0) {
-    return;
-  }
-  fields.Consents = generateConsentSchema(consents);
-};
 
 const generateConsentSchema = (consents) => {
   if (consents === undefined || consents.length <= 0) {
@@ -217,13 +211,14 @@ const getBody = (form) => {
   };
 };
 
-export const submitForm = form => async () => {
+export const submitForm = (form) => async () => {
+  // deep copying form
   const formClone = JSON.parse(JSON.stringify(form));
   const truliooFormData = parseTruliooFields(formClone);
 
   const body = getBody(truliooFormData);
   const URL = `${BASE_URL}/api/verify`;
-  const promiseResult = await axios.post(URL, body).then(response => ({
+  const promiseResult = await axios.post(URL, body).then((response) => ({
     ...response,
     body,
   }));

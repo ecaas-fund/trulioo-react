@@ -1,0 +1,287 @@
+[
+    {
+        "Name": "Oklahoma",
+        "Code": "OK",
+        "ParentCode": ""
+    },
+    {
+        "Name": "Kentucky",
+        "Code": "KY",
+        "ParentCode": ""
+    },
+    {
+        "Name": "Louisiana",
+        "Code": "LA",
+        "ParentCode": ""
+    },
+    {
+        "Name": "Maine",
+        "Code": "ME",
+        "ParentCode": ""
+    },
+    {
+        "Name": "Maryland",
+        "Code": "MD",
+        "ParentCode": ""
+    },
+    {
+        "Name": "Massachusetts",
+        "Code": "MA",
+        "ParentCode": ""
+    },
+    {
+        "Name": "Michigan",
+        "Code": "MI",
+        "ParentCode": ""
+    },
+    {
+        "Name": "Minnesota",
+        "Code": "MN",
+        "ParentCode": ""
+    },
+    {
+        "Name": "Mississippi",
+        "Code": "MS",
+        "ParentCode": ""
+    },
+    {
+        "Name": "Missouri",
+        "Code": "MO",
+        "ParentCode": ""
+    },
+    {
+        "Name": "Montana",
+        "Code": "MT",
+        "ParentCode": ""
+    },
+    {
+        "Name": "Nebraska",
+        "Code": "NE",
+        "ParentCode": ""
+    },
+    {
+        "Name": "Nevada",
+        "Code": "NV",
+        "ParentCode": ""
+    },
+    {
+        "Name": "Iowa",
+        "Code": "IA",
+        "ParentCode": ""
+    },
+    {
+        "Name": "Indiana",
+        "Code": "IN",
+        "ParentCode": ""
+    },
+    {
+        "Name": "Alaska",
+        "Code": "AK",
+        "ParentCode": ""
+    },
+    {
+        "Name": "Arizona",
+        "Code": "AZ",
+        "ParentCode": ""
+    },
+    {
+        "Name": "Arkansas",
+        "Code": "AR",
+        "ParentCode": ""
+    },
+    {
+        "Name": "California",
+        "Code": "CA",
+        "ParentCode": ""
+    },
+    {
+        "Name": "Colorado",
+        "Code": "CO",
+        "ParentCode": ""
+    },
+    {
+        "Name": "Connecticut",
+        "Code": "CT",
+        "ParentCode": ""
+    },
+    {
+        "Name": "Delaware",
+        "Code": "DE",
+        "ParentCode": ""
+    },
+    {
+        "Name": "Florida",
+        "Code": "FL",
+        "ParentCode": ""
+    },
+    {
+        "Name": "Georgia",
+        "Code": "GA",
+        "ParentCode": ""
+    },
+    {
+        "Name": "Hawaii",
+        "Code": "HI",
+        "ParentCode": ""
+    },
+    {
+        "Name": "Idaho",
+        "Code": "ID",
+        "ParentCode": ""
+    },
+    {
+        "Name": "Illinois",
+        "Code": "IL",
+        "ParentCode": ""
+    },
+    {
+        "Name": "New Hampshire",
+        "Code": "NH",
+        "ParentCode": ""
+    },
+    {
+        "Name": "New Jersey",
+        "Code": "NJ",
+        "ParentCode": ""
+    },
+    {
+        "Name": "New Mexico",
+        "Code": "NM",
+        "ParentCode": ""
+    },
+    {
+        "Name": "Virginia",
+        "Code": "VA",
+        "ParentCode": ""
+    },
+    {
+        "Name": "Washington",
+        "Code": "WA",
+        "ParentCode": ""
+    },
+    {
+        "Name": "West Virginia",
+        "Code": "WV",
+        "ParentCode": ""
+    },
+    {
+        "Name": "Wisconsin",
+        "Code": "WI",
+        "ParentCode": ""
+    },
+    {
+        "Name": "Wyoming",
+        "Code": "WY",
+        "ParentCode": ""
+    },
+    {
+        "Name": "District of Columbia",
+        "Code": "DC",
+        "ParentCode": ""
+    },
+    {
+        "Name": "American Samoa",
+        "Code": "AS",
+        "ParentCode": ""
+    },
+    {
+        "Name": "Guam",
+        "Code": "GU",
+        "ParentCode": ""
+    },
+    {
+        "Name": "Northern Mariana Islands",
+        "Code": "MP",
+        "ParentCode": ""
+    },
+    {
+        "Name": "Puerto Rico",
+        "Code": "PR",
+        "ParentCode": ""
+    },
+    {
+        "Name": "United States Minor Outlying Islands",
+        "Code": "UM",
+        "ParentCode": ""
+    },
+    {
+        "Name": "Virgin Islands, U.S.",
+        "Code": "VI",
+        "ParentCode": ""
+    },
+    {
+        "Name": "Vermont",
+        "Code": "VT",
+        "ParentCode": ""
+    },
+    {
+        "Name": "Utah",
+        "Code": "UT",
+        "ParentCode": ""
+    },
+    {
+        "Name": "Alabama",
+        "Code": "AL",
+        "ParentCode": ""
+    },
+    {
+        "Name": "New York",
+        "Code": "NY",
+        "ParentCode": ""
+    },
+    {
+        "Name": "North Carolina",
+        "Code": "NC",
+        "ParentCode": ""
+    },
+    {
+        "Name": "North Dakota",
+        "Code": "ND",
+        "ParentCode": ""
+    },
+    {
+        "Name": "Ohio",
+        "Code": "OH",
+        "ParentCode": ""
+    },
+    {
+        "Name": "Oregon",
+        "Code": "OR",
+        "ParentCode": ""
+    },
+    {
+        "Name": "Pennsylvania",
+        "Code": "PA",
+        "ParentCode": ""
+    },
+    {
+        "Name": "Rhode Island",
+        "Code": "RI",
+        "ParentCode": ""
+    },
+    {
+        "Name": "Kansas",
+        "Code": "KS",
+        "ParentCode": ""
+    },
+    {
+        "Name": "South Carolina",
+        "Code": "SC",
+        "ParentCode": ""
+    },
+    {
+        "Name": "South Dakota",
+        "Code": "SD",
+        "ParentCode": ""
+    },
+    {
+        "Name": "Tennessee",
+        "Code": "TN",
+        "ParentCode": ""
+    },
+    {
+        "Name": "Texas",
+        "Code": "TX",
+        "ParentCode": ""
+    }
+]
