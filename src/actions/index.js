@@ -197,7 +197,7 @@ const parseConsents = (consents) => {
   return result;
 };
 
-const getBody = (form) => {
+export const getBody = (form) => {
   const countryCode = getCountryCode(form);
   form = parseFormData(form);
 
