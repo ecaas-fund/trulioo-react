@@ -4,12 +4,7 @@ import EmbedID from '../../EmbedID';
 
 it('EmbedID did not change', () => {
   const embedID = renderer
-    .create(<EmbedID
-      url="http://localhost:3111"
-      handleResponse={() => { }}
-      handleSubmit={() => { }}
-      customFields={() => { }}
-    />)
+    .create(<EmbedID />)
     .toJSON();
   expect(embedID).toMatchSnapshot();
 });

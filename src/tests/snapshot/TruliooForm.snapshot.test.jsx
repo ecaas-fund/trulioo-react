@@ -6,8 +6,6 @@ it('TruliooForm did not change', () => {
   const embedID = renderer
     .create(
       <TruliooForm
-        url="http://localhost:3111"
-        handleResponse={jest.fn()}
         schema={{ type: 'object', properties: { countries: [] } }}
         fields={{}}
         getCountries={jest.fn()}
