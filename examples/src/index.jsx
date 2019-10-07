@@ -10,23 +10,6 @@ const handleSubmit = (e) => {
   console.log('Submitted form: ', e);
 };
 
-// example custom fields on base level
-const simpleExample = {
-  field1: {
-    title: 'What is your name?',
-    type: 'string',
-  },
-  field2: {
-    title: 'What is your age?',
-    type: 'number',
-  },
-  field3: {
-    title: 'What is your favourite color?',
-    type: 'string',
-    enum: ['red', 'yellow', 'blue'],
-  },
-};
-
 // example custom fields section with required fields
 const sectionExample = {
   CustomFieldObj: {

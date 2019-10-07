@@ -1,0 +1,20 @@
+{
+    "TruliooFields": {
+        "PersonInfo": {
+            "FirstGivenName": "daw",
+            "FirstSurName": "dw"
+        },
+        "Location": {
+            "BuildingNumber": "dw",
+            "StreetName": "23",
+            "City": "2",
+            "PostalCode": "2"
+        },
+        "Communication": {}
+    },
+    "CustomFieldObj": {
+        "name": "3",
+        "age": 2
+    },
+    "countries": "DE"
+}
