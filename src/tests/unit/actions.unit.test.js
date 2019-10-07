@@ -30,9 +30,13 @@ describe('async actions', () => {
   });
 
   it('submit form action makes verify request and correctly parses results', () => {
+    // submit triggers no other actions
+    const expectedActions = [];
     const store = mockStore({});
 
     return store.dispatch(submitForm(formSubmitPayload)).then((result) => {
+      const receivedActions = store.getActions();
+      expect(expectedActions.length).toEqual(receivedActions.length);
       const expectedResult = {
         ...verifyResponse,
         body: getBody(formSubmitPayload),
