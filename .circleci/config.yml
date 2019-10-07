@@ -21,4 +21,4 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
 
       # run tests!
-      - run: npm test -- src/tests/snapshot src/tests/unit
+      - run: npm test
