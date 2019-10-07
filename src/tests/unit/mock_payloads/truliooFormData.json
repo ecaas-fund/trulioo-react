@@ -1,0 +1,18 @@
+{
+    "TruliooFields": {
+        "PersonInfo": {
+            "FirstGivenName": "a",
+            "FirstSurName": "a"
+        },
+        "Location": {
+            "BuildingNumber": "30",
+            "StreetName": "Richards Street",
+            "PostalCode": "V6X3E1"
+        },
+        "Communication": {},
+        "CountrySpecific": {
+            "US": {}
+        }
+    },
+    "countries": "US"
+}

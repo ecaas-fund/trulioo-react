@@ -1,0 +1,29 @@
+{
+    "TruliooFields": {
+        "PersonInfo": {
+            "FirstGivenName": "a",
+            "FirstSurName": "2",
+            "DayOfBirth": 2,
+            "MonthOfBirth": 3,
+            "YearOfBirth": 1
+        },
+        "Location": {
+            "StreetName": "2",
+            "PostalCode": "2"
+        },
+        "Communication": {},
+        "Passport": {
+            "Number": "2"
+        },
+        "CountrySpecific": {
+            "AU": {
+                "PassportCountry": "2",
+                "PassportNumber": "2"
+            }
+        }
+    },
+    "Consents": {
+        "Visa Verification": false
+    },
+    "countries": "AU"
+}

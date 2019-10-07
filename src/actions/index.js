@@ -127,7 +127,7 @@ const parseTruliooFields = (formData) => {
 };
 
 export const getFields = (countryCode, customFields) => async (dispatch) => {
-  if (countryCode === '' || !countryCode) {
+  if (countryCode === '' || countryCode === undefined) {
     return;
   }
   validateCustomFields(customFields);
@@ -185,6 +185,7 @@ const parseFormData = (form) => {
 };
 
 const parseConsents = (consents) => {
+  console.log('@CONSENTS', consents);
   const result = [];
   if (consents === undefined) {
     return result;
@@ -198,6 +199,7 @@ const parseConsents = (consents) => {
 };
 
 export const getBody = (form) => {
+  console.log('@FORM', form);
   const countryCode = getCountryCode(form);
   form = parseFormData(form);
 
