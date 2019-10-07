@@ -4,14 +4,7 @@ import { TruliooForm } from '../../components/TruliooForm';
 
 it('TruliooForm did not change', () => {
   const embedID = renderer
-    .create(
-      <TruliooForm
-        schema={{ type: 'object', properties: { countries: [] } }}
-        fields={{}}
-        getCountries={jest.fn()}
-        getFields={jest.fn()}
-      />,
-    )
+    .create(<TruliooForm />)
     .toJSON();
   expect(embedID).toMatchSnapshot();
 });

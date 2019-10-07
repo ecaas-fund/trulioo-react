@@ -1,29 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`TruliooForm did not change 1`] = `
-<div
-  className="css-nqor5a"
->
-  <form
-    className="rjsf"
-    noValidate={false}
-    onSubmit={[Function]}
-  >
-    <div
-      className="form-group field field-object"
-    >
-      <fieldset
-        id="root"
-      />
-    </div>
-    <div>
-      <button
-        className="btn btn-info"
-        type="submit"
-      >
-        Submit
-      </button>
-    </div>
-  </form>
+<div>
+  No Schema Defiend
 </div>
 `;

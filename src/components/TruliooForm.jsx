@@ -8,10 +8,15 @@ import { getCountries, getFields, submitForm } from '../actions';
 
 export class TruliooForm extends React.Component {
   componentDidMount() {
-    this.props.getCountries(this.props.url);
+    if (this.props.getCountries) {
+      this.props.getCountries(this.props.url);
+    }
   }
 
   handleChange = (e) => {
+    if (!this.props.getFields) {
+      return;
+    }
     const shouldUpdateFormData = this.props.fields.formData === undefined
       || e.formData.countries !== this.props.fields.formData.countries;
     if (shouldUpdateFormData) {
@@ -36,6 +41,9 @@ export class TruliooForm extends React.Component {
       padding: 2rem;
     `;
     const formData = this.props.fields && this.props.fields.formData;
+    if (!this.props.schema) {
+      return <div>No Schema Defiend</div>;
+    }
     return (
       <div css={style}>
         <Form

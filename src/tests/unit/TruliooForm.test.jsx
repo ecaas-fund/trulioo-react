@@ -1,25 +1,17 @@
 import React from 'react';
-import renderer from 'react-test-renderer';
-import axios from 'axios';
-import EmbedID from '../../EmbedID';
-import mockApi from './mockApi';
+import TestRenderer from 'react-test-renderer';
+import { TruliooForm } from '../../components/TruliooForm';
 
-jest.mock('axios');
-mockApi();
-
-it('renders countries as a select element', async () => {
-  const embedID = await renderer.create(
-    <EmbedID url="http://localhost:3111" handleResponse={() => { }} />,
-  );
-  expect(axios.get).toBeCalled();
-  const instance = embedID.root;
-
-  instance.find((e) => {
-    const { props } = e;
-    if (props === undefined) {
-      return false;
-    }
-    return props.id === 'root_countries';
-    // TODO FIX && e.type === 'select'
-  });
+it('renders and node server URl are set correctly', async () => {
+  const proxyURL = 'http://localhost:3111';
+  const testRenderer = TestRenderer.create(<TruliooForm
+    url={proxyURL}
+    handleResponse={() => { }}
+    schema={{ type: 'object', properties: { countries: [] } }}
+    fields={{}}
+    getCountries={jest.fn()}
+    getFields={jest.fn()}
+  />);
+  const testInstance = testRenderer.root;
+  expect(testInstance.findByType(TruliooForm).props.url).toBe(proxyURL);
 });
