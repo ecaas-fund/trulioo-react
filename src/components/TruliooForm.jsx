@@ -35,14 +35,14 @@ export class TruliooForm extends React.Component {
     const style = css`
       padding: 2rem;
     `;
-
+    const formData = this.props.fields && this.props.fields.formData;
     return (
       <div css={style}>
         <Form
           schema={this.props.schema}
           onChange={(e) => this.handleChange(e)}
           onSubmit={(e) => this.handleSubmit(e)}
-          formData={this.props.fields.formData}
+          formData={formData}
         />
       </div>
     );
