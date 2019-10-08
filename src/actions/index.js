@@ -199,7 +199,6 @@ const parseConsents = (consents) => {
 };
 
 export const getBody = (form) => {
-  console.log('@FORM', form);
   const countryCode = getCountryCode(form);
   form = parseFormData(form);
 
@@ -216,6 +215,7 @@ export const getBody = (form) => {
 export const submitForm = (form) => async () => {
   // deep copying form
   const formClone = JSON.parse(JSON.stringify(form));
+  console.log('@FormClone');
   const truliooFormData = parseTruliooFields(formClone);
 
   const body = getBody(truliooFormData);
