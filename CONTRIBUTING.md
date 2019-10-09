@@ -6,9 +6,13 @@ Thanks for contributing to trulioo-react!
 
 `npm test`
 
-To Run tests from a specific folder i.e. `"src/tests/snapshot" and "src/tests/unit"`:
+Run tests from a specific folder i.e. `"src/tests/snapshot" and "src/tests/unit"`:
 
 `npm test -- src/tests/snapshot src/tests/unit`
+
+Run a certain test by title
+
+`npm test src/tests/unit/TruliooForm.test.jsx -- -t "mapStateToProps"`
 
 Integration tests (`src/tests/integration`) require EmbedID endpoints to be executed successfully.
 
