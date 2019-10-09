@@ -21,12 +21,14 @@ const mockApi = () => {
     if (url.includes('getdetailedconsents')) {
       return Promise.resolve(response(getDetailedConsents));
     }
+    /* istanbul ignore next */
     return Promise.reject();
   });
   axios.post.mockImplementation((url) => {
     if (url.includes('verify')) {
       return Promise.resolve(verifyResponse);
     }
+    /* istanbul ignore next */
     return Promise.reject();
   });
 };

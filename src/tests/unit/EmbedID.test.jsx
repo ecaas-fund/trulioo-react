@@ -46,6 +46,5 @@ it('renders countries as a select element', async () => {
       return false;
     }
     return props.id === 'root_countries';
-    // TODO FIX && e.type === 'select'
   });
 });
