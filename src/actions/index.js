@@ -33,9 +33,6 @@ const parseFields = (obj) => {
 };
 
 const requestFields = async (countryCode) => {
-  if (countryCode === '' || !countryCode) {
-    return;
-  }
   const URL = `${BASE_URL}/api/getrecommendedfields/${countryCode}`;
   const response = await axios.get(URL);
   const parsedFields = parseFields(response.data.response);
@@ -57,9 +54,6 @@ const updateStateProvince = (obj, subdivisions) => {
 };
 
 const requestSubdivisions = async (countryCode) => {
-  if (countryCode === '' || !countryCode) {
-    return;
-  }
   const URL = `${BASE_URL}/api/getcountrysubdivisions/${countryCode}`;
   const response = await axios.get(URL);
   const subdivisions = response.data.response;
@@ -74,9 +68,6 @@ const requestSubdivisions = async (countryCode) => {
 };
 
 async function requestConsents(countryCode) {
-  if (countryCode === '' || !countryCode) {
-    return;
-  }
   const URL = `${BASE_URL}/api/getdetailedconsents/${countryCode}`;
   const response = await axios.get(URL);
   const consents = response.data.response;
@@ -84,7 +75,7 @@ async function requestConsents(countryCode) {
 }
 
 const generateConsentSchema = (consents) => {
-  if (consents === undefined || consents.length <= 0) {
+  if (consents === undefined || consents.length <= 0 || consents.length === undefined) {
     return;
   }
   const schema = {
@@ -127,7 +118,7 @@ const parseTruliooFields = (formData) => {
 };
 
 export const getFields = (countryCode, customFields) => async (dispatch) => {
-  if (countryCode === '' || countryCode === undefined) {
+  if (countryCode === '' || !countryCode) {
     return;
   }
   validateCustomFields(customFields);

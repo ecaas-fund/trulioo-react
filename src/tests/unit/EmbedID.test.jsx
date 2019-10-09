@@ -2,10 +2,8 @@ import React from 'react';
 import TestRenderer from 'react-test-renderer';
 import axios from 'axios';
 import EmbedID from '../../EmbedID';
-import mockApi from './mockApi';
 
 jest.mock('axios');
-mockApi();
 
 it('renders countries as a select element', async () => {
   const sectionExamplePayload = {
