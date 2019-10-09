@@ -44,7 +44,7 @@ export const mockApiWithDetailedConstents = () => mockApi(
   getRecommendedFields,
   getCountrySubdivisions,
   getDetailedConsents,
-  verifyResponse, // should this change?
+  verifyResponse,
 );
 
 export const mockApiWithoutConsents = () => mockApi(

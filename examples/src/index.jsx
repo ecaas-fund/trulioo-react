@@ -11,7 +11,7 @@ const handleSubmit = (e) => {
 };
 
 // example custom fields section with required fields
-const sectionExample = {
+const customFields = {
   CustomFieldObj: {
     title: 'Custom Fields',
     type: 'object',
@@ -39,6 +39,7 @@ render(
     url="http://localhost:3111"
     handleResponse={handleResponse}
     handleSubmit={handleSubmit}
+    customFields={customFields}
   />,
   document.getElementById('root'),
 );

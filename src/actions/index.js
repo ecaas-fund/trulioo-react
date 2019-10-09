@@ -151,6 +151,7 @@ const getCountryCode = (form) => {
 };
 
 const parseFormData = (form) => {
+  console.log('@@@parseFORMDATA', form);
   if (form.TruliooFields.Document) {
     const docFront = form.TruliooFields.Document.DocumentFrontImage;
     form.TruliooFields.Document.DocumentFrontImage = docFront.substr(
@@ -188,7 +189,7 @@ const parseConsents = (consents) => {
   return result;
 };
 
-export const getBody = (form) => {
+export const getSubmitBody = (form) => {
   const countryCode = getCountryCode(form);
   form = parseFormData(form);
 
@@ -207,7 +208,7 @@ export const submitForm = (form) => async () => {
   const formClone = JSON.parse(JSON.stringify(form));
   const truliooFormData = parseTruliooFields(formClone);
 
-  const body = getBody(truliooFormData);
+  const body = getSubmitBody(truliooFormData);
   const URL = `${BASE_URL}/api/verify`;
   const promiseResult = await axios.post(URL, body).then((response) => ({
     ...response,
