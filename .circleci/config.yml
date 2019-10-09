@@ -6,7 +6,8 @@ jobs:
         environment:
           TZ: "America/Los_Angeles"
     working_directory: ~/repo
-
+    environment:
+      TZ: "America/Los_Angeles"
     steps:
       - checkout
 
