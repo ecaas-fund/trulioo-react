@@ -96,4 +96,13 @@ describe('Testing actions without detailed consents', () => {
       expect(result).toEqual(expectedResult);
     });
   });
+
+  it('customFields are passed properly', () => {
+    const store = mockStore({});
+    const expectedActions = [{ type: GET_FIELDS }];
+    return store.dispatch(getFields(countryCode, customFields)).then(() => {
+      const receivedActions = store.getActions();
+      expect(expectedActions.length).toEqual(receivedActions.length);
+    });
+  });
 });

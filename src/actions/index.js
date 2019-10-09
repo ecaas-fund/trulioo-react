@@ -151,7 +151,6 @@ const getCountryCode = (form) => {
 };
 
 const parseFormData = (form) => {
-  console.log('@@@parseFORMDATA', form);
   if (form.TruliooFields.Document) {
     const docFront = form.TruliooFields.Document.DocumentFrontImage;
     form.TruliooFields.Document.DocumentFrontImage = docFront.substr(
