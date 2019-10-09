@@ -1,25 +1,60 @@
 import React from 'react';
-import renderer from 'react-test-renderer';
-import axios from 'axios';
-import EmbedID from '../../EmbedID';
-import mockApi from './mockApi';
+import TestRenderer from 'react-test-renderer';
+import { TruliooForm, mapStateToProps } from '../../components/TruliooForm';
 
-jest.mock('axios');
-mockApi();
-
-it('renders countries as a select element', async () => {
-  const embedID = await renderer.create(
-    <EmbedID url="http://localhost:3111" handleResponse={() => { }} />,
+it('renders and node server URL are set correctly', async () => {
+  const proxyURL = 'http://localhost:3111';
+  const truliooForm = TestRenderer.create(
+    <TruliooForm
+      url={proxyURL}
+      handleResponse={() => { }}
+      schema={{}}
+      fields={{}}
+      getCountries={jest.fn()}
+      getFields={jest.fn()}
+    />,
   );
-  expect(axios.get).toBeCalled();
-  const instance = embedID.root;
+  const rootInstance = truliooForm.root;
+  expect(rootInstance.findByType(TruliooForm).props.url).toBe(proxyURL);
+});
 
-  instance.find((e) => {
-    const { props } = e;
-    if (props === undefined) {
-      return false;
-    }
-    return props.id === 'root_countries';
-    // TODO FIX && e.type === 'select'
-  });
+
+it('mapStateToProps generates JSON schema correctly', async () => {
+  const customFields = {
+    customFieldsProperty: 'customFieldsValue',
+  };
+  const consents = {
+    consentProperty: 'consentValue',
+  };
+
+  const initialState = {
+    getCountries: {},
+    fields: {
+      fields: {
+        properties: {
+        },
+      },
+      customFields,
+      consents,
+    },
+  };
+
+  const result = mapStateToProps(initialState);
+  const expectedSchema = {
+    type: 'object',
+    properties:
+    {
+      countries:
+      {
+        title: 'Countries',
+        type: 'string',
+        enum: undefined,
+        enumNames: undefined,
+      },
+      TruliooFields: { title: 'Properties', type: 'object', properties: {} },
+      customFieldsProperty: 'customFieldsValue',
+      Consents: { consentProperty: 'consentValue' },
+    },
+  };
+  expect(result.schema).toEqual(expectedSchema);
 });

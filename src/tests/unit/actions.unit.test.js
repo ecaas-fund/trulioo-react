@@ -6,7 +6,9 @@ import {
 import { GET_FIELDS } from '../../actions/types';
 import mockApi from './mockApi';
 import formSubmitPayload from './mock_payloads/formSubmit';
+import formSubmitPayloadWithConsents from './mock_payloads/formSubmitWithConsents';
 import verifyResponse from './mock_payloads/verifyResponse';
+import verifyResponseWithConsents from './mock_payloads/verifyResponseWithConsents';
 
 // mocking proxy server responses
 jest.mock('axios');
@@ -34,12 +36,12 @@ describe('async actions', () => {
     const expectedActions = [];
     const store = mockStore({});
 
-    return store.dispatch(submitForm(formSubmitPayload)).then((result) => {
+    return store.dispatch(submitForm(formSubmitPayloadWithConsents)).then((result) => {
       const receivedActions = store.getActions();
       expect(expectedActions.length).toEqual(receivedActions.length);
       const expectedResult = {
-        ...verifyResponse,
-        body: getBody(formSubmitPayload),
+        ...verifyResponseWithConsents,
+        body: getBody(formSubmitPayloadWithConsents),
       };
       expect(result).toEqual(expectedResult);
     });

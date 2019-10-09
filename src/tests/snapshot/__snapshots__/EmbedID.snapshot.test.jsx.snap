@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`EmbedID did not change 1`] = `
+<div
+  className="css-nqor5a"
+>
+  <form
+    className="rjsf"
+    noValidate={false}
+    onSubmit={[Function]}
+  >
+    <div
+      className="form-group field field-object"
+    >
+      <fieldset
+        id="root"
+      >
+        <div
+          className="form-group field field-string"
+        >
+          <label
+            className="control-label"
+            htmlFor="root_countries"
+          >
+            Countries
+          </label>
+          <input
+            autoFocus={false}
+            className="form-control"
+            disabled={false}
+            id="root_countries"
+            label="Countries"
+            onBlur={[Function]}
+            onChange={[Function]}
+            onFocus={[Function]}
+            placeholder=""
+            readOnly={false}
+            required={false}
+            type="text"
+            value=""
+          />
+        </div>
+      </fieldset>
+    </div>
+    <div>
+      <button
+        className="btn btn-info"
+        type="submit"
+      >
+        Submit
+      </button>
+    </div>
+  </form>
+</div>
+`;

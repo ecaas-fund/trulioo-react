@@ -1,10 +1,10 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import { TruliooForm } from '../../components/TruliooForm';
+import EmbedID from '../../EmbedID';
 
-it('TruliooForm did not change', () => {
+it('EmbedID did not change', () => {
   const embedID = renderer
-    .create(<TruliooForm />)
+    .create(<EmbedID />)
     .toJSON();
   expect(embedID).toMatchSnapshot();
 });

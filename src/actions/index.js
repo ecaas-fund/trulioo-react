@@ -127,7 +127,7 @@ const parseTruliooFields = (formData) => {
 };
 
 export const getFields = (countryCode, customFields) => async (dispatch) => {
-  if (countryCode === '' || !countryCode) {
+  if (countryCode === '' || countryCode === undefined) {
     return;
   }
   validateCustomFields(customFields);
