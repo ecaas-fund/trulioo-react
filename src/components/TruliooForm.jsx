@@ -14,9 +14,6 @@ export class TruliooForm extends React.Component {
   }
 
   handleChange = (e) => {
-    if (!this.props.getFields) {
-      return;
-    }
     const shouldUpdateFormData = this.props.fields.formData === undefined
       || e.formData.countries !== this.props.fields.formData.countries;
     if (shouldUpdateFormData) {
@@ -26,6 +23,7 @@ export class TruliooForm extends React.Component {
 
   handleSubmit = (e) => {
     // eslint-disable-next-line no-unused-expressions
+    console.log('@HANDLESUBMIT', this.props.handleSubmit);
     this.props.handleSubmit && this.props.handleSubmit(e);
     this.props.submitForm(e.formData).then((res) => {
       this.props.handleResponse(res);
@@ -37,7 +35,6 @@ export class TruliooForm extends React.Component {
   };
 
   render() {
-    console.log('@RENDER!', this.props);
     const style = css`
       padding: 2rem;
     `;

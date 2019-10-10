@@ -1,11 +1,13 @@
 import React from 'react';
 import TestRenderer from 'react-test-renderer';
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, prettyDOM } from '@testing-library/react';
 import axios from 'axios';
 import { mockApiWithDetailedConstents } from './mockApi';
 import EmbedID from '../../EmbedID';
 
 jest.mock('axios');
+mockApiWithDetailedConstents();
+
 it('renders countries as a select element', async () => {
   const sectionExamplePayload = {
     CustomFieldObj: {
@@ -50,10 +52,11 @@ it('renders countries as a select element', async () => {
 describe('EmbedID events function properly', () => {
   beforeAll(() => mockApiWithDetailedConstents());
   // TODO define getFields and see how DOM changes
-  it('renders with minimal props', async () => {
-    const { getByLabelText } = render(<EmbedID />);
-    const element = getByLabelText('US');
-    // const element = getByText('US');
-    console.log('Element', element);
+  it('is able to select from dropdown', async () => {
+    const { container } = render(<EmbedID />);
+
+    const dropdown = container.querySelector('.form-control');// select
+    // console.log('dropdown', dropdown);
+    fireEvent.change(dropdown, { target: { value: 'Canada' } });
   });
 });
