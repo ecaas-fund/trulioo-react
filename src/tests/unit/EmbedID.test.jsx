@@ -49,6 +49,7 @@ it('renders countries as a select element', async () => {
     return props.id === 'root_countries';
   });
 });
+
 describe('EmbedID events function properly', () => {
   beforeAll(() => mockApiWithDetailedConstents());
   // TODO define getFields and see how DOM changes
@@ -56,7 +57,21 @@ describe('EmbedID events function properly', () => {
     const { container } = render(<EmbedID />);
 
     const dropdown = container.querySelector('.form-control');// select
-    // console.log('dropdown', dropdown);
+    expect(dropdown).toBeTruthy();
     fireEvent.change(dropdown, { target: { value: 'Canada' } });
+  });
+  it('is able to submit ', async () => {
+    const { container } = render(<EmbedID handleResponse={jest.fn()} />);
+
+    const submitBtn = container.querySelector('.btn.btn-info');
+    expect(submitBtn).toBeTruthy();
+    fireEvent.click(submitBtn, { target: { value: 'your_value_goes_here' } });
+  });
+  it('is able to submit without a define handleResponse function', async () => {
+    const { container } = render(<EmbedID />);
+
+    const submitBtn = container.querySelector('.btn.btn-info');
+    expect(submitBtn).toBeTruthy();
+    fireEvent.click(submitBtn, { target: { value: 'your_value_goes_here' } });
   });
 });

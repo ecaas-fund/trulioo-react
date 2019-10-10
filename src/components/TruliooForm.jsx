@@ -23,10 +23,11 @@ export class TruliooForm extends React.Component {
 
   handleSubmit = (e) => {
     // eslint-disable-next-line no-unused-expressions
-    console.log('@HANDLESUBMIT', this.props.handleSubmit);
     this.props.handleSubmit && this.props.handleSubmit(e);
     this.props.submitForm(e.formData).then((res) => {
-      this.props.handleResponse(res);
+      if (this.props.handleResponse) {
+        this.props.handleResponse(res);
+      }
     });
   };
 
