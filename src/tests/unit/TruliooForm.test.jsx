@@ -3,17 +3,6 @@ import TestRenderer from 'react-test-renderer';
 import { TruliooForm, mapStateToProps } from '../../components/TruliooForm';
 
 describe('TruliooForm works correctly', () => {
-  it('renders with minimal props', async () => {
-    const truliooForm = TestRenderer.create(
-      <TruliooForm
-        schema={{}}
-        fields={{}}
-      />,
-    );
-    console.log('truliooform', truliooForm.root);
-    const rootInstance = truliooForm.root;
-    expect(rootInstance).not.toBe(undefined);
-  });
   it('renders and node server URL are set correctly', async () => {
     const proxyURL = 'http://localhost:3111';
     const truliooForm = TestRenderer.create(

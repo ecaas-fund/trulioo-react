@@ -37,12 +37,13 @@ export class TruliooForm extends React.Component {
   };
 
   render() {
+    console.log('@RENDER!', this.props);
     const style = css`
       padding: 2rem;
     `;
     const formData = this.props.fields && this.props.fields.formData;
     if (!this.props.schema) {
-      return <div>No Schema Defiend</div>;
+      return <div>No Schema Defined</div>;
     }
     return (
       <div css={style}>
