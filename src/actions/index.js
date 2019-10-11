@@ -1,3 +1,7 @@
+/* eslint-disable consistent-return */
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-restricted-syntax */
+
 import axios from 'axios';
 import 'core-js';
 import * as R from 'ramda';
@@ -19,7 +23,8 @@ export const getCountries = (url) => async (dispatch) => {
 };
 
 const parseFields = (obj) => {
-  for (const [key, _] of Object.entries(obj)) {
+  for (const [key] of Object.entries(obj)) {
+    // eslint-disable-next-line eqeqeq
     if (key == 0) {
       return;
     }
@@ -118,7 +123,7 @@ const parseTruliooFields = (formData) => {
 };
 
 export const getFields = (countryCode, customFields) => async (dispatch) => {
-  if (countryCode === '' || !countryCode) {
+  if (!countryCode) {
     return;
   }
   validateCustomFields(customFields);

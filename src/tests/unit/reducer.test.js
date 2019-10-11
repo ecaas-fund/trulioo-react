@@ -2,7 +2,7 @@ import reducer from '../../reducers/apiReducers';
 import { GET_FIELDS } from '../../actions/types';
 
 describe('reducer functions correctly', () => {
-  it('GET_FIELDS works', async () => {
+  it('right payload is returned when GET_FIELDS is fired', async () => {
     const action = {
       payload: {
         testGetFields: 'testGetFields',

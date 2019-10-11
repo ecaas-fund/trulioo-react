@@ -25,6 +25,7 @@ export class TruliooForm extends React.Component {
 
   handleSubmit = (e) => {
     /* istanbul ignore next */
+    // eslint-disable-next-line no-unused-expressions
     this.props.handleSubmit && this.props.handleSubmit(e);
     this.props.submitForm(e.formData).then((res) => {
       /* istanbul ignore if */
