@@ -1,4 +1,3 @@
-/* istanbul ignore file */
 import { GET_COUNTRIES, GET_FIELDS } from '../actions/types';
 
 const INTIAL_STATE = {};
