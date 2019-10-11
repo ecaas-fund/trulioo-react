@@ -1,3 +1,7 @@
+/* eslint-disable consistent-return */
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-restricted-syntax */
+
 import axios from 'axios';
 import 'core-js';
 import * as R from 'ramda';
@@ -12,7 +16,6 @@ export const getCountries = (url) => async (dispatch) => {
 
   const URL = `${BASE_URL}/api/getcountrycodes`;
   const promise = await axios.get(URL);
-
   dispatch({
     type: GET_COUNTRIES,
     payload: promise.data.response.sort(),
@@ -20,7 +23,8 @@ export const getCountries = (url) => async (dispatch) => {
 };
 
 const parseFields = (obj) => {
-  for (const [key, _] of Object.entries(obj)) {
+  for (const [key] of Object.entries(obj)) {
+    // eslint-disable-next-line eqeqeq
     if (key == 0) {
       return;
     }
@@ -33,9 +37,6 @@ const parseFields = (obj) => {
 };
 
 const requestFields = async (countryCode) => {
-  if (countryCode === '' || !countryCode) {
-    return;
-  }
   const URL = `${BASE_URL}/api/getrecommendedfields/${countryCode}`;
   const response = await axios.get(URL);
   const parsedFields = parseFields(response.data.response);
@@ -57,9 +58,6 @@ const updateStateProvince = (obj, subdivisions) => {
 };
 
 const requestSubdivisions = async (countryCode) => {
-  if (countryCode === '' || !countryCode) {
-    return;
-  }
   const URL = `${BASE_URL}/api/getcountrysubdivisions/${countryCode}`;
   const response = await axios.get(URL);
   const subdivisions = response.data.response;
@@ -74,9 +72,6 @@ const requestSubdivisions = async (countryCode) => {
 };
 
 async function requestConsents(countryCode) {
-  if (countryCode === '' || !countryCode) {
-    return;
-  }
   const URL = `${BASE_URL}/api/getdetailedconsents/${countryCode}`;
   const response = await axios.get(URL);
   const consents = response.data.response;
@@ -84,7 +79,7 @@ async function requestConsents(countryCode) {
 }
 
 const generateConsentSchema = (consents) => {
-  if (consents === undefined || consents.length <= 0) {
+  if (!consents || !consents.length) {
     return;
   }
   const schema = {
@@ -119,6 +114,7 @@ const validateCustomFields = (customFields) => {
 const parseTruliooFields = (formData) => {
   const truliooFields = {};
   Object.keys(formData).forEach((key) => {
+    /* istanbul ignore else */
     if (reservedFormDataKeys.includes(key)) {
       truliooFields[key] = formData[key];
     }
@@ -127,7 +123,7 @@ const parseTruliooFields = (formData) => {
 };
 
 export const getFields = (countryCode, customFields) => async (dispatch) => {
-  if (countryCode === '' || countryCode === undefined) {
+  if (!countryCode) {
     return;
   }
   validateCustomFields(customFields);
@@ -135,6 +131,7 @@ export const getFields = (countryCode, customFields) => async (dispatch) => {
   const subdivisions = await requestSubdivisions(countryCode);
   let consents = await requestConsents(countryCode);
   consents = generateConsentSchema(consents);
+  /* istanbul ignore else */
   if (fields && fields.properties) {
     updateStateProvince(fields.properties, subdivisions);
   }
@@ -160,6 +157,9 @@ const getCountryCode = (form) => {
 };
 
 const parseFormData = (form) => {
+  if (form === undefined || form.TruliooFields === undefined) {
+    return form;
+  }
   if (form.TruliooFields.Document) {
     const docFront = form.TruliooFields.Document.DocumentFrontImage;
     form.TruliooFields.Document.DocumentFrontImage = docFront.substr(
@@ -190,6 +190,7 @@ const parseConsents = (consents) => {
     return result;
   }
   Object.keys(consents).forEach((x) => {
+    /* istanbul ignore else */
     if (consents[x]) {
       result.push(x);
     }
@@ -197,7 +198,7 @@ const parseConsents = (consents) => {
   return result;
 };
 
-export const getBody = (form) => {
+export const getSubmitBody = (form) => {
   const countryCode = getCountryCode(form);
   form = parseFormData(form);
 
@@ -216,7 +217,7 @@ export const submitForm = (form) => async () => {
   const formClone = JSON.parse(JSON.stringify(form));
   const truliooFormData = parseTruliooFields(formClone);
 
-  const body = getBody(truliooFormData);
+  const body = getSubmitBody(truliooFormData);
   const URL = `${BASE_URL}/api/verify`;
   const promiseResult = await axios.post(URL, body).then((response) => ({
     ...response,

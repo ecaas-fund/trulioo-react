@@ -3,15 +3,17 @@ import { render } from 'react-dom';
 import EmbedID from '../../src/EmbedID';
 
 const handleResponse = (e) => {
+  // eslint-disable-next-line no-console
   console.log('Client Recieved Response: ', e);
 };
 
 const handleSubmit = (e) => {
+  // eslint-disable-next-line no-console
   console.log('Submitted form: ', e);
 };
 
 // example custom fields section with required fields
-const sectionExample = {
+const customFields = {
   CustomFieldObj: {
     title: 'Custom Fields',
     type: 'object',
@@ -39,6 +41,7 @@ render(
     url="http://localhost:3111"
     handleResponse={handleResponse}
     handleSubmit={handleSubmit}
+    customFields={customFields}
   />,
   document.getElementById('root'),
 );

@@ -3,8 +3,11 @@ jobs:
   build:
     docker:
       - image: circleci/node:10
+        environment:
+          TZ: "America/Los_Angeles"
     working_directory: ~/repo
-
+    environment:
+      TZ: "America/Los_Angeles"
     steps:
       - checkout
 

@@ -1,0 +1,16 @@
+{
+    "TruliooFields": {
+        "PersonInfo": {
+            "FirstGivenName": "examoke"
+        },
+        "Document": {
+            "DocumentFrontImage": "VGhpcyBpcyBwZGZUZVgsIFZlcnNpb24gMy4xIFBERiBvdXRwdXQgb3V0IG9mIDEwMDAwIChtYXguIDEwMDAwMDAwKQoK",
+            "DocumentBackImage": "NDE1OTI2NS0yLjYtMS40MC4yMCAoVGVYIExpdmUgMjAxOS9XMzJUZVgpIChwcmVsb2FkZWQgZm9ybWF0PXBkZmxhdGV4IDIwMTkuNy4yKSAgMyBKVUwgMjAxOSAxMzoxOAplbnRlcmluZyBleHRlbmRlZCBtb2RlCiByZXN0cmljdGVkIFx3cml0ZTE4IGVuYWJsZWQuCiAlJi1saW5lIHBhcnNpbmcgZW5hYmxlZC4KKipoZWxsb193b3JsZC50ZXgKKC4vaGVsbG9fd29ybGQudGV4CkxhVGVYMmUgP",
+            "LivePhoto": "Ck91dHB1dCB3cml0dGVuIG9uIGhlbGxvX3dvcmxkLnBkZiAoMSBwYWdlLCA5ODg3IGJ5dGVzKS4KUERGIHN0YXRpc3RpY3M6CiAxMiBQREYgb2JqZWN0cyBvdXQgb2YgMTAwMCAobWF4LiA4Mzg4NjA3KQogNyBjb21wcmVzc2VkIG9iamVjdHMgd2l0aGluIDEgb2JqZWN0IHN0cmVhbQogMCBuYW1lZCBkZXN0aW5hdGlvbnMgb3V0IG9mIDEwMDAgKG1heC4gNTAwMDAwKQogMSB3b3JkcyBvZiBleHRyYSBtZW1vcnkgZm9y",
+            "DocumentType": "passport",
+            "AcceptIncompleteDocument": true
+        },
+        "NationalIds": "123"
+    },
+    "countries": "US"
+}
