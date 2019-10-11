@@ -79,7 +79,7 @@ async function requestConsents(countryCode) {
 }
 
 const generateConsentSchema = (consents) => {
-  if (consents === undefined || consents.length <= 0 || consents.length === undefined) {
+  if (!consents || !consents.length) {
     return;
   }
   const schema = {

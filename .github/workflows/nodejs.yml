@@ -16,9 +16,10 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - name: npm install, run test-coverage
+      - name: Run CI
         run: |
           npm install
+          npm run lint
           npm run test -- --coverage src/tests/snapshot src/tests/unit
 
       - name: Coveralls Parallel
