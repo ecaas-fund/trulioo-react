@@ -31,10 +31,6 @@ export class TruliooForm extends React.Component {
     });
   };
 
-  triggerSubmitResponse = (e) => {
-    this.props.handleResponse(e);
-  };
-
   render() {
     const style = css`
       padding: 2rem;
