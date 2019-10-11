@@ -35,6 +35,7 @@ it('renders countries as a select element', async () => {
     <EmbedID
       url="http://localhost:3111"
       handleResponse={() => { }}
+      handleSubmit={() => { }}
       customFields={sectionExamplePayload}
     />,
   );

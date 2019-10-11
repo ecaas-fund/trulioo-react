@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import axios from 'axios';
 import getCountryCodes from './mock_payloads/getCountryCodes';
 import getRecommendedFields from './mock_payloads/getRecommendedFields';

@@ -77,6 +77,32 @@ describe('async actions', () => {
       expect(expectedActions.length).toEqual(receivedActions.length);
     });
   });
+
+  it('getFields works correctly with a DocV payload without DocumentBackImage', () => {
+    const expectedActions = [];
+    const store = mockStore({});
+
+    // formSubmitDocV without BackImage
+    delete formSubmitDocV.TruliooFields.Document.DocumentBackImage;
+
+    return store.dispatch(submitForm(formSubmitDocV)).then(() => {
+      const receivedActions = store.getActions();
+      expect(expectedActions.length).toEqual(receivedActions.length);
+    });
+  });
+
+  it('getFields works correctly with a DocV payload without LivePhoto', () => {
+    const expectedActions = [];
+    const store = mockStore({});
+
+    // formSubmitDocV without BackImage
+    delete formSubmitDocV.TruliooFields.Document.LivePhoto;
+
+    return store.dispatch(submitForm(formSubmitDocV)).then(() => {
+      const receivedActions = store.getActions();
+      expect(expectedActions.length).toEqual(receivedActions.length);
+    });
+  });
 });
 
 describe('Testing actions without detailed consents', () => {

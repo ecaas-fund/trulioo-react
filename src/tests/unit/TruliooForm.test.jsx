@@ -8,11 +8,25 @@ describe('TruliooForm works correctly', () => {
     const truliooForm = TestRenderer.create(
       <TruliooForm
         url={proxyURL}
-        handleResponse={() => { }}
+        handleResponse={jest.fn()}
         schema={{}}
-        fields={{}}
+        fields={{ formData: { countries: ['CA', 'US'] } }}
         getCountries={jest.fn()}
         getFields={jest.fn()}
+        submitForm={jest.fn()}
+      />,
+    );
+    const rootInstance = truliooForm.root;
+    expect(rootInstance.findByType(TruliooForm).props.url).toBe(proxyURL);
+  });
+
+  it('renders TruliooForm', async () => {
+    const proxyURL = 'http://localhost:3111';
+    const truliooForm = TestRenderer.create(
+      <TruliooForm
+        url={proxyURL}
+        getFields={jest.fn()}
+        submitForm={jest.fn()}
       />,
     );
     const rootInstance = truliooForm.root;

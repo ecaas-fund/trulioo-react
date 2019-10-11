@@ -109,6 +109,7 @@ const validateCustomFields = (customFields) => {
 const parseTruliooFields = (formData) => {
   const truliooFields = {};
   Object.keys(formData).forEach((key) => {
+    /* istanbul ignore else */
     if (reservedFormDataKeys.includes(key)) {
       truliooFields[key] = formData[key];
     }
@@ -125,6 +126,7 @@ export const getFields = (countryCode, customFields) => async (dispatch) => {
   const subdivisions = await requestSubdivisions(countryCode);
   let consents = await requestConsents(countryCode);
   consents = generateConsentSchema(consents);
+  /* istanbul ignore else */
   if (fields && fields.properties) {
     updateStateProvince(fields.properties, subdivisions);
   }
@@ -183,6 +185,7 @@ const parseConsents = (consents) => {
     return result;
   }
   Object.keys(consents).forEach((x) => {
+    /* istanbul ignore else */
     if (consents[x]) {
       result.push(x);
     }
