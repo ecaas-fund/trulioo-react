@@ -1,12 +1,24 @@
+name: Publish
+
 on:
   release:
     types: [published]
-    branches:
-      - master
+  branches:
+    - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    steps:
       - name: npm publish
-    run: |
-      npm config set //registry.npmjs.org/:_authToken=$NPM_AUTH_TOKEN
-      npm publish || true
-    env:
-      CI: true
-      NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+        run: |
+          npm config set //registry.npmjs.org/:_authToken=$NPM_AUTH_TOKEN
+          npm publish || true
+        env:
+        CI: true
+        NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
