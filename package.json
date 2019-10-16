@@ -90,14 +90,15 @@
   },
   "files": [
     "/dist",
-    "/src"
+    "/src",
+    "index.js"
   ],
   "scripts": {
     "start": "webpack-dev-server --mode development",
     "test": "jest",
     "transpile": "babel src -d ./dist --source-maps",
     "remove-transpiled": "rm -rf ./dist",
-    "prepublishOnly": "npm run transpile",
+    "prepublish": "npm run transpile",
     "lint": "npm run lint:ts",
     "lint:css": "stylelint --fix \"./src/**/*.{js,ts,tsx}\"",
     "lint:ts": "eslint --fix \"./src/**/*.{js,ts,tsx}\""
