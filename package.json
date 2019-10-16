@@ -90,8 +90,7 @@
   },
   "files": [
     "/dist",
-    "/src",
-    "index.js"
+    "/src"
   ],
   "scripts": {
     "start": "webpack-dev-server --mode development",
@@ -101,7 +100,8 @@
     "prepare": "npm run transpile",
     "lint": "npm run lint:ts",
     "lint:css": "stylelint --fix \"./src/**/*.{js,ts,tsx}\"",
-    "lint:ts": "eslint --fix \"./src/**/*.{js,ts,tsx}\""
+    "lint:ts": "eslint --fix \"./src/**/*.{js,ts,tsx}\"",
+    "preversion": "npm test -- src/tests/snapshot src/tests/unit"
   },
   "eslintConfig": {
     "extends": "react-app"
