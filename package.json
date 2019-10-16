@@ -10,6 +10,9 @@
     "type": "git",
     "url": "https://github.com/Trulioo/trulioo-react"
   },
+  "bugs": {
+    "url": "https://github.com/Trulioo/trulioo-react/issues"
+  },
   "keywords": [
     "trulioo",
     "identity",
@@ -17,12 +20,8 @@
     "kyc"
   ],
   "dependencies": {
-    "@babel/runtime": "^7.6.2",
     "@emotion/core": "^10.0.6",
     "axios": "^0.19.0",
-    "babel-plugin-transform-class-properties": "^6.24.1",
-    "babel-plugin-transform-react-jsx": "^6.24.1",
-    "core-js": "^3.0.0",
     "country-list": "^2.1.0",
     "prop-types": "^15.7.2",
     "ramda": "^0.26.1",
@@ -38,11 +37,14 @@
     "@babel/plugin-transform-runtime": "^7.6.2",
     "@babel/preset-env": "^7.6.2",
     "@babel/preset-react": "^7.0.0",
+    "@babel/runtime": "^7.6.2",
     "@testing-library/dom": "^6.6.0",
     "@testing-library/react": "^9.3.0",
     "babel-eslint": "^10.0.0",
     "babel-jest": "^25.0.0",
     "babel-loader": "^8.0.5",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-react-jsx": "^6.24.1",
     "coveralls": "^3.0.6",
     "css-loader": "^3.0.0",
     "emotion": "^10.0.6",
@@ -54,7 +56,9 @@
     "eslint-plugin-react": "^7.14.3",
     "eslint-plugin-react-hooks": "^2.0.0",
     "html-webpack-plugin": "^3.2.0",
+    "husky": "^3.0.9",
     "jest": "^25.0.0",
+    "lint-staged": "^10.0.0-0",
     "prettier-eslint": "^9.0.0",
     "react": "^16.10",
     "react-dom": "^16.10",
@@ -73,16 +77,31 @@
     "react": "^16.10",
     "react-dom": "^16.10"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "./src/**/*.{js,jsx}": [
+      "npm run lint",
+      "git add"
+    ]
+  },
+  "files": [
+    "/dist",
+    "/src"
+  ],
   "scripts": {
     "start": "webpack-dev-server --mode development",
     "test": "jest",
-    "ci-coverage": "jest --coverage --coverageReporters=text-lcov | coveralls",
     "transpile": "babel src -d ./dist --source-maps",
     "remove-transpiled": "rm -rf ./dist",
-    "prepublishOnly": "npm run transpile",
-    "lint:ts": "eslint --fix \"./src/**/*.{js,ts,tsx}\"",
+    "prepare": "npm run transpile",
+    "lint": "npm run lint:ts",
     "lint:css": "stylelint --fix \"./src/**/*.{js,ts,tsx}\"",
-    "lint": "npm run lint:ts"
+    "lint:ts": "eslint --fix \"./src/**/*.{js,ts,tsx}\"",
+    "preversion": "npm test -- src/tests/snapshot src/tests/unit"
   },
   "eslintConfig": {
     "extends": "react-app"

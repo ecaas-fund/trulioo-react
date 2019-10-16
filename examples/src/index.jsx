@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from 'react-dom';
-import EmbedID from '../../src/EmbedID';
+import { EmbedID } from '../../src/index';
 
 const handleResponse = (e) => {
   // eslint-disable-next-line no-console
