@@ -10,6 +10,9 @@
     "type": "git",
     "url": "https://github.com/Trulioo/trulioo-react"
   },
+  "bugs": {
+    "url": "https://github.com/Trulioo/trulioo-react/issues"
+  },
   "keywords": [
     "trulioo",
     "identity",
@@ -17,12 +20,8 @@
     "kyc"
   ],
   "dependencies": {
-    "@babel/runtime": "^7.6.2",
     "@emotion/core": "^10.0.6",
     "axios": "^0.19.0",
-    "babel-plugin-transform-class-properties": "^6.24.1",
-    "babel-plugin-transform-react-jsx": "^6.24.1",
-    "core-js": "^3.0.0",
     "country-list": "^2.1.0",
     "prop-types": "^15.7.2",
     "ramda": "^0.26.1",
@@ -38,8 +37,11 @@
     "@babel/plugin-transform-runtime": "^7.6.2",
     "@babel/preset-env": "^7.6.2",
     "@babel/preset-react": "^7.0.0",
+    "@babel/runtime": "^7.6.2",
     "@testing-library/dom": "^6.6.0",
     "@testing-library/react": "^9.3.0",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-react-jsx": "^6.24.1",
     "babel-eslint": "^10.0.0",
     "babel-jest": "^25.0.0",
     "babel-loader": "^8.0.5",
@@ -73,16 +75,19 @@
     "react": "^16.10",
     "react-dom": "^16.10"
   },
+  "files": [
+    "/dist",
+    "/src"
+  ],
   "scripts": {
     "start": "webpack-dev-server --mode development",
     "test": "jest",
-    "ci-coverage": "jest --coverage --coverageReporters=text-lcov | coveralls",
     "transpile": "babel src -d ./dist --source-maps",
     "remove-transpiled": "rm -rf ./dist",
     "prepublishOnly": "npm run transpile",
-    "lint:ts": "eslint --fix \"./src/**/*.{js,ts,tsx}\"",
+    "lint": "npm run lint:ts",
     "lint:css": "stylelint --fix \"./src/**/*.{js,ts,tsx}\"",
-    "lint": "npm run lint:ts"
+    "lint:ts": "eslint --fix \"./src/**/*.{js,ts,tsx}\""
   },
   "eslintConfig": {
     "extends": "react-app"

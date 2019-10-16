@@ -3,7 +3,6 @@
 /* eslint-disable no-restricted-syntax */
 
 import axios from 'axios';
-import 'core-js';
 import * as R from 'ramda';
 import { GET_COUNTRIES, GET_FIELDS } from './types';
 

@@ -1,0 +1,12 @@
+on:
+  release:
+    types: [published]
+    branches:
+      - master
+      - name: npm publish
+    run: |
+      npm config set //registry.npmjs.org/:_authToken=$NPM_AUTH_TOKEN
+      npm publish || true
+    env:
+      CI: true
+      NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
