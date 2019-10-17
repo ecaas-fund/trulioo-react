@@ -1,8 +1,8 @@
 # Contributing to `trulioo-react`
 
-Thanks for contributing to trulioo-react!
+Thanks for wanting to contribute to trulioo-react!
 
-### Run tests:
+## Tests
 
 `npm test`
 
@@ -21,3 +21,11 @@ To generate test coverage report:
 `npm test -- --coverage`
 
 Please add your tests under `src/tests/*` for the file(s) you are trying to update.
+
+## Semantic Versioning (SemVer) [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://semver.org/)
+
+[Semantic Versioning](https://semver.org/) is utilized as means to versioning `trulioo-react`.
+
+## Commits
+
+Use [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) as means of naming commit messages.
