@@ -1,17 +1,17 @@
 name: Publish
 
 on:
-  release:
-    types: [published]
-  
+  push:
+    branches:
+      - master
 
 jobs:
   build:
-    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - name: Make prerelease to npm
-    uses: epeli/npm-release@v1
-    with:
-      type: prerelease
-      token: ${{ secrets.NPM_AUTH_TOKEN }}
+      - name: Run CI
+        run: |
+          npm install
+          npm run lint
+          npm run test -- --coverage src/tests/snapshot src/tests/unit
+          npm run semantic-release
