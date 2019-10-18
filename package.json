@@ -45,6 +45,7 @@
     "babel-loader": "^8.0.5",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-react-jsx": "^6.24.1",
+    "babel-preset-minify": "^0.5.1",
     "coveralls": "^3.0.6",
     "css-loader": "^3.0.0",
     "cz-conventional-changelog": "^3.0.2",
@@ -91,13 +92,12 @@
     ]
   },
   "files": [
-    "/dist",
-    "/src"
+    "/dist"
   ],
   "scripts": {
     "start": "webpack-dev-server --mode development",
     "test": "jest",
-    "transpile": "babel src -d ./dist --source-maps",
+    "transpile": "babel src -d ./dist --ignore **/tests/",
     "remove-transpiled": "rm -rf ./dist",
     "prepare": "npm run transpile",
     "lint": "npm run lint:ts",

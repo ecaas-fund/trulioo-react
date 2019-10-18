@@ -1,6 +1,6 @@
 import React from 'react';
 import TestRenderer from 'react-test-renderer';
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, getByText } from '@testing-library/react';
 import axios from 'axios';
 import { mockApiWithDetailedConstents } from './mockApi';
 import EmbedID from '../../EmbedID';
@@ -78,5 +78,17 @@ describe('EmbedID events function properly', () => {
     const submitBtn = container.querySelector('.btn.btn-info');
     expect(submitBtn).toBeTruthy();
     fireEvent.click(submitBtn, { target: { value: 'your_value_goes_here' } });
+  });
+
+  it('is able to apply styling provided an UISchema', async () => {
+    const uiSchema = {
+      countries: {
+        'ui:title': 'Testing Countries Element',
+        'ui:description': 'Testing Description',
+      },
+    };
+    const { container } = render(<EmbedID uiSchema={uiSchema} />);
+    const countriesLabel = getByText(container, /Testing Countries Element/); // substring match
+    expect(countriesLabel).toBeTruthy();
   });
 });
