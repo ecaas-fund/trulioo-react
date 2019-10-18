@@ -49,6 +49,7 @@
     "coveralls": "^3.0.6",
     "css-loader": "^3.0.0",
     "cz-conventional-changelog": "^3.0.2",
+    "doctoc": "^1.4.0",
     "emotion": "^10.0.6",
     "eslint": "^6.5.0",
     "eslint-config-airbnb": "^18.0.1",
@@ -106,6 +107,7 @@
     "preversion": "npm test -- src/tests/snapshot src/tests/unit",
     "commitizen": "^4.0.3",
     "cz-conventional-changelog": "^3.0.2",
+    "doctoc-styling": "doctoc STYLING.md",
     "semantic-release": "semantic-release"
   },
   "eslintConfig": {

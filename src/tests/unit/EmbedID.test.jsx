@@ -88,7 +88,7 @@ describe('EmbedID events function properly', () => {
       },
     };
     const { container } = render(<EmbedID uiSchema={uiSchema} />);
-    const countriesLabel = getByText(container, /Testing Countries Element/); // substring match
+    const countriesLabel = getByText(container, /Testing Countries Element/);
     expect(countriesLabel).toBeTruthy();
   });
 });
