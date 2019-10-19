@@ -13,6 +13,12 @@ const handleSubmit = (e) => {
 };
 
 // example custom fields section with required fields
+const uiSchema = {
+  countries: {
+    'ui:title': 'Please Select you country',
+  },
+};
+
 const customFields = {
   CustomFieldObj: {
     title: 'Custom Fields',
@@ -42,6 +48,7 @@ render(
     handleResponse={handleResponse}
     handleSubmit={handleSubmit}
     customFields={customFields}
+    uiSchema={uiSchema}
   />,
   document.getElementById('root'),
 );

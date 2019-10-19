@@ -87,6 +87,8 @@ render(
 );
 ```
 
+See [styling guide](https://github.com/Trulioo/trulioo-react/blob/master/STYLING.md) on how to style form according to your needs.
+
 ## Add Bootstrap CSS for better looks 💇🏼
 
 `<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">`
