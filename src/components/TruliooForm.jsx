@@ -43,10 +43,12 @@ export class TruliooForm extends React.Component {
     if (!this.props.schema) {
       return <div>No Schema Defined</div>;
     }
+
     return (
       <div css={style}>
         <Form
           schema={this.props.schema}
+          uiSchema={this.props.uiSchema}
           onChange={(e) => this.handleChange(e)}
           onSubmit={(e) => this.handleSubmit(e)}
           formData={formData}

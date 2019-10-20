@@ -6,13 +6,20 @@ on:
       - master
 
 jobs:
-  build:
+  release:
+    name: release
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: "12.x"
       - name: Run CI
         run: |
           npm install
           npm run lint
           npm run test -- --coverage src/tests/snapshot src/tests/unit
           npm run semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
