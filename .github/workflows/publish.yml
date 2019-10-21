@@ -14,6 +14,8 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: "12.x"
+          NODE_AUTH_TOKEN: ${{secrets.NPM_AUTH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
       - name: Run CI
         run: |
           npm ci
