@@ -19,7 +19,8 @@ jobs:
           npm install
           npm run lint
           npm run test -- --coverage src/tests/snapshot src/tests/unit
-          npm run semantic-release
+      - name: Publish
+        run: npm run semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
