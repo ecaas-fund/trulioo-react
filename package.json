@@ -108,7 +108,7 @@
     "commitizen": "^4.0.3",
     "cz-conventional-changelog": "^3.0.2",
     "doctoc-styling": "doctoc STYLING.md",
-    "semantic-release": "npm profile get && semantic-release"
+    "semantic-release": "semantic-release"
   },
   "eslintConfig": {
     "extends": "react-app"
