@@ -2,6 +2,8 @@ import React from 'react';
 import TestRenderer from 'react-test-renderer';
 import { render, fireEvent, getByText } from '@testing-library/react';
 import axios from 'axios';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faThLarge } from '@fortawesome/free-solid-svg-icons';
 import { mockApiWithDetailedConstents } from './mockApi';
 import EmbedID from '../../EmbedID';
 
@@ -90,5 +92,23 @@ describe('EmbedID events function properly', () => {
     const { container } = render(<EmbedID uiSchema={uiSchema} />);
     const countriesLabel = getByText(container, /Testing Countries Element/);
     expect(countriesLabel).toBeTruthy();
+  });
+
+  it('is able to provide a custom React element in the UISchema', async () => {
+    const complexElement = (
+      <div>
+        <FontAwesomeIcon icon={faThLarge} />
+        {' '}
+        Country select with custom Icon
+      </div>
+    );
+    const uiSchema = {
+      countries: {
+        'ui:title': complexElement,
+      },
+    };
+    const { container } = render(<EmbedID uiSchema={uiSchema} />);
+    const svg = container.querySelector('svg');
+    expect(svg.getAttribute('data-prefix')).toBe('fas');
   });
 });

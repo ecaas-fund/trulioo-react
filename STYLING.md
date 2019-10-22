@@ -1,3 +1,4 @@
+# Styling
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 - [Styling 🦩](#styling-%F0%9F%A6%A9)
@@ -76,7 +77,7 @@ No different to other DOM elements.
 
 [Codepen example](https://codepen.io/adamlaki/pen/VYpewx)
 
-### Alternate content
+## Alternate content
 
 Alternating EmbedID content is achieved through passing [uiSchema](https://rjsf-team.github.io/react-jsonschema-form/). For instance, assuming we want to achieve a rename of 'countries' name to 'Please select a country':
 
@@ -102,3 +103,23 @@ TruliooFields: {
   }
 }
 ```
+
+## Pass in custom Elements:
+
+Define a React component and pass it down to UISchema:
+
+```
+const reactComponent = (
+      <div>
+        <FontAwesomeIcon icon={faThLarge} />
+        {' '}
+        Country select with custom Icon
+      </div>
+    );
+    const uiSchema = {
+      countries: {
+        'ui:title': complexElement,
+      },
+    };
+```
+
