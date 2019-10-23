@@ -121,7 +121,7 @@ const parseTruliooFields = (formData) => {
   return truliooFields;
 };
 
-export const getFields = (countryCode, customFields) => async (dispatch) => {
+export const getFields = (countryCode, customFields, whiteListedTruliooFields) => async (dispatch) => {
   if (!countryCode) {
     return;
   }
@@ -134,16 +134,29 @@ export const getFields = (countryCode, customFields) => async (dispatch) => {
   if (fields && fields.properties) {
     updateStateProvince(fields.properties, subdivisions);
   }
+  const finalFields = fields;
+  if (whiteListedTruliooFields) {
+    finalFields = getWhiteListedFieldsOnly(fields, whiteListedTruliooFields);
+  }
+
   dispatch({
     type: GET_FIELDS,
     payload: {
-      fields,
+      finalFields,
       consents,
       customFields,
       formData: {
         countries: countryCode,
       },
     },
+  });
+};
+
+const getWhiteListedFieldsOnly = (fields, whiteListedTruliooFields) => {
+  Object.keys(fields).forEach((key) => {
+    if (typeof obj[key] === 'object') {
+      iterate(obj[key]);
+    }
   });
 };
 
@@ -224,3 +237,15 @@ export const submitForm = (form) => async () => {
   }));
   return promiseResult;
 };
+
+
+function checkNested(obj, ...args /* , level1, level2, ... levelN */) {
+  for (let i = 0; i < args.length; i += 1) {
+    const hasOwnProperty = Object.prototype.hasOwnProperty.call(obj, args[i]);
+    if (!obj || !hasOwnProperty) {
+      return false;
+    }
+    obj = obj[args[i]];
+  }
+  return true;
+}

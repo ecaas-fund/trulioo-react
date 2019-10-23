@@ -42,12 +42,22 @@ const customFields = {
   },
 };
 
+const truliooFields = {
+  Properties: {
+    PersonInfo: {
+      FirstGivenName: {
+      },
+    },
+  },
+};
+
 render(
   <EmbedID
     url="http://localhost:3111"
     handleResponse={handleResponse}
     handleSubmit={handleSubmit}
     customFields={customFields}
+    truliooFields={truliooFields}
     uiSchema={uiSchema}
   />,
   document.getElementById('root'),

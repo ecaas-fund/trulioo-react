@@ -36,6 +36,7 @@ export class TruliooForm extends React.Component {
   };
 
   render() {
+    console.log('props boy', this.props);
     const style = css`
       padding: 2rem;
     `;
