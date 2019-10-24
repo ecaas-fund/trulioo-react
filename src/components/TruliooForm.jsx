@@ -19,7 +19,7 @@ export class TruliooForm extends React.Component {
       || e.formData.countries !== this.props.fields.formData.countries;
     /* istanbul ignore next */
     if (shouldUpdateFormData) {
-      this.props.getFields(e.formData.countries, this.props.customFields);
+      this.props.getFields(e.formData.countries, this.props.customFields, this.props.whiteListedTruliooFields);
     }
   };
 
@@ -36,7 +36,6 @@ export class TruliooForm extends React.Component {
   };
 
   render() {
-    console.log('props boy', this.props);
     const style = css`
       padding: 2rem;
     `;

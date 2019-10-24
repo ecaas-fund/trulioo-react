@@ -42,10 +42,12 @@ const customFields = {
   },
 };
 
-const truliooFields = {
-  Properties: {
+const whiteListedTruliooFields = {
+  properties: {
     PersonInfo: {
-      FirstGivenName: {
+      properties: {
+        FirstGivenName: {
+        },
       },
     },
   },
@@ -57,7 +59,7 @@ render(
     handleResponse={handleResponse}
     handleSubmit={handleSubmit}
     customFields={customFields}
-    truliooFields={truliooFields}
+    whiteListedTruliooFields={whiteListedTruliooFields}
     uiSchema={uiSchema}
   />,
   document.getElementById('root'),

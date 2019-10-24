@@ -121,6 +121,30 @@ const parseTruliooFields = (formData) => {
   return truliooFields;
 };
 
+const getWhiteListedFieldsOnly = (fields, whiteListedTruliooFields, whiteListedComputedFields) => {
+  console.log('@INPUTS fields', fields, 'whiteListedTruliooFields', whiteListedTruliooFields);
+  Object.keys(whiteListedTruliooFields).forEach((key) => {
+    // console.log(`COMPARING key:${key} FOR :${JSON.stringify(fields)}`);
+    const keyExists = Object.prototype.hasOwnProperty.call(fields, key);
+    console.log('keyExists', keyExists);
+    // key is contained in fields
+    if (keyExists) {
+      const hasDefinedChildren = Object.keys(whiteListedTruliooFields[key]).length > 0;
+      console.log('hasDefinedChildren', hasDefinedChildren, 'curr', whiteListedComputedFields);
+      if (hasDefinedChildren) {
+        whiteListedComputedFields = {
+          [key]: {},
+        };
+        getWhiteListedFieldsOnly(fields[key], whiteListedTruliooFields[key], whiteListedComputedFields);
+      } else {
+        console.log('no kids! fields[key] curr', whiteListedComputedFields);
+        whiteListedComputedFields[key] = whiteListedTruliooFields[key];
+      }
+    }
+  });
+  return whiteListedComputedFields;
+};
+
 export const getFields = (countryCode, customFields, whiteListedTruliooFields) => async (dispatch) => {
   if (!countryCode) {
     return;
@@ -134,29 +158,21 @@ export const getFields = (countryCode, customFields, whiteListedTruliooFields) =
   if (fields && fields.properties) {
     updateStateProvince(fields.properties, subdivisions);
   }
-  const finalFields = fields;
+  let finalFields = fields;
   if (whiteListedTruliooFields) {
-    finalFields = getWhiteListedFieldsOnly(fields, whiteListedTruliooFields);
+    finalFields = getWhiteListedFieldsOnly(fields, whiteListedTruliooFields, {});
   }
-
+  console.log('finalFields', finalFields);
   dispatch({
     type: GET_FIELDS,
     payload: {
-      finalFields,
+      fields,
       consents,
       customFields,
       formData: {
         countries: countryCode,
       },
     },
-  });
-};
-
-const getWhiteListedFieldsOnly = (fields, whiteListedTruliooFields) => {
-  Object.keys(fields).forEach((key) => {
-    if (typeof obj[key] === 'object') {
-      iterate(obj[key]);
-    }
   });
 };
 
