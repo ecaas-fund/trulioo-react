@@ -80,7 +80,7 @@ render(
   <EmbedID
     url="http://localhost:3111"
     handleResponse={handleResponse}
-    customFields={sectionExample}
+    additionalFields={sectionExample}
     handleSubmit={handleSubmit}
   />,
   document.getElementById('root'),

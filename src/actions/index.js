@@ -10,7 +10,7 @@ import { GET_COUNTRIES, GET_FIELDS } from './types';
 let BASE_URL;
 const reservedFormDataKeys = ['countries', 'TruliooFields', 'Consents'];
 
-export const getCountries = (url) => async (dispatch) => {
+const getCountries = (url) => async (dispatch) => {
   BASE_URL = url;
 
   const URL = `${BASE_URL}/api/getcountrycodes`;
@@ -98,9 +98,9 @@ const generateConsentSchema = (consents) => {
   return schema;
 };
 
-const validateCustomFields = (customFields) => {
-  if (customFields) {
-    Object.keys(customFields).forEach((key) => {
+const validateAdditionalFields = (additionalFields) => {
+  if (additionalFields) {
+    Object.keys(additionalFields).forEach((key) => {
       if (reservedFormDataKeys.includes(key)) {
         throw Error(
           `${key} is a reserved field key. Please use another key for your custom field.`,
@@ -121,35 +121,51 @@ const parseTruliooFields = (formData) => {
   return truliooFields;
 };
 
+/**
+ * Returns the json-schema friendly whitelisted fields
+ *
+ * @param {TruliooFields} fields
+ * @param {white-listed Trulioo Fields} whiteListedTruliooFields
+ * @param {resulting object} whiteListedComputedFields
+ */
 const getWhiteListedFieldsOnly = (fields, whiteListedTruliooFields, whiteListedComputedFields) => {
-  console.log('@INPUTS fields', fields, 'whiteListedTruliooFields', whiteListedTruliooFields);
   Object.keys(whiteListedTruliooFields).forEach((key) => {
-    // console.log(`COMPARING key:${key} FOR :${JSON.stringify(fields)}`);
     const keyExists = Object.prototype.hasOwnProperty.call(fields, key);
-    console.log('keyExists', keyExists);
     // key is contained in fields
     if (keyExists) {
       const hasDefinedChildren = Object.keys(whiteListedTruliooFields[key]).length > 0;
-      console.log('hasDefinedChildren', hasDefinedChildren, 'curr', whiteListedComputedFields);
       if (hasDefinedChildren) {
-        whiteListedComputedFields = {
-          [key]: {},
-        };
-        getWhiteListedFieldsOnly(fields[key], whiteListedTruliooFields[key], whiteListedComputedFields);
+        whiteListedComputedFields[key] = {};
+        if (fields.title) {
+          whiteListedComputedFields.title = fields.title;
+        }
+        if (fields.type) {
+          whiteListedComputedFields.type = fields.type;
+        }
+        if (fields.required) {
+          const childProperties = Object.keys(whiteListedTruliooFields.properties);
+          const whiteListedRequiredFields = fields.required
+            .filter((requiredField) => childProperties.includes(requiredField));
+          whiteListedComputedFields.required = whiteListedRequiredFields;
+        }
+        getWhiteListedFieldsOnly(
+          fields[key], whiteListedTruliooFields[key], whiteListedComputedFields[key],
+        );
       } else {
-        console.log('no kids! fields[key] curr', whiteListedComputedFields);
-        whiteListedComputedFields[key] = whiteListedTruliooFields[key];
+        whiteListedComputedFields[key] = fields[key];
       }
     }
   });
   return whiteListedComputedFields;
 };
 
-export const getFields = (countryCode, customFields, whiteListedTruliooFields) => async (dispatch) => {
+const getFields = (
+  countryCode, additionalFields, whiteListedTruliooFields,
+) => async (dispatch) => {
   if (!countryCode) {
     return;
   }
-  validateCustomFields(customFields);
+  validateAdditionalFields(additionalFields);
   const fields = await requestFields(countryCode);
   const subdivisions = await requestSubdivisions(countryCode);
   let consents = await requestConsents(countryCode);
@@ -162,13 +178,12 @@ export const getFields = (countryCode, customFields, whiteListedTruliooFields) =
   if (whiteListedTruliooFields) {
     finalFields = getWhiteListedFieldsOnly(fields, whiteListedTruliooFields, {});
   }
-  console.log('finalFields', finalFields);
   dispatch({
     type: GET_FIELDS,
     payload: {
-      fields,
+      fields: finalFields,
       consents,
-      customFields,
+      additionalFields,
       formData: {
         countries: countryCode,
       },
@@ -226,7 +241,7 @@ const parseConsents = (consents) => {
   return result;
 };
 
-export const getSubmitBody = (form) => {
+const getSubmitBody = (form) => {
   const countryCode = getCountryCode(form);
   form = parseFormData(form);
 
@@ -240,7 +255,7 @@ export const getSubmitBody = (form) => {
   };
 };
 
-export const submitForm = (form) => async () => {
+const submitForm = (form) => async () => {
   // deep copying form
   const formClone = JSON.parse(JSON.stringify(form));
   const truliooFormData = parseTruliooFields(formClone);
@@ -254,14 +269,6 @@ export const submitForm = (form) => async () => {
   return promiseResult;
 };
 
-
-function checkNested(obj, ...args /* , level1, level2, ... levelN */) {
-  for (let i = 0; i < args.length; i += 1) {
-    const hasOwnProperty = Object.prototype.hasOwnProperty.call(obj, args[i]);
-    if (!obj || !hasOwnProperty) {
-      return false;
-    }
-    obj = obj[args[i]];
-  }
-  return true;
-}
+export {
+  submitForm, getSubmitBody, getCountries, getFields,
+};

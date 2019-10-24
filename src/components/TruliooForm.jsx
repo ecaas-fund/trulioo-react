@@ -19,7 +19,9 @@ export class TruliooForm extends React.Component {
       || e.formData.countries !== this.props.fields.formData.countries;
     /* istanbul ignore next */
     if (shouldUpdateFormData) {
-      this.props.getFields(e.formData.countries, this.props.customFields, this.props.whiteListedTruliooFields);
+      this.props.getFields(
+        e.formData.countries, this.props.additionalFields, this.props.whiteListedTruliooFields,
+      );
     }
   };
 
@@ -43,8 +45,8 @@ export class TruliooForm extends React.Component {
     if (!this.props.schema) {
       return <div>No Schema Defined</div>;
     }
-
     return (
+
       <div css={style}>
         <Form
           schema={this.props.schema}
@@ -80,8 +82,8 @@ export const mapStateToProps = (state) => {
       properties: state.fields && state.fields.fields && state.fields.fields.properties,
     };
     /* istanbul ignore if */
-    if (state.fields.customFields) {
-      schema.properties = { ...schema.properties, ...state.fields.customFields };
+    if (state.fields.additionalFields) {
+      schema.properties = { ...schema.properties, ...state.fields.additionalFields };
     }
     if (state.fields.consents) {
       schema.properties.Consents = state.fields.consents;

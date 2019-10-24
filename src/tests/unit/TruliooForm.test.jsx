@@ -34,8 +34,8 @@ describe('TruliooForm works correctly', () => {
   });
 
   it('mapStateToProps generates JSON schema correctly', async () => {
-    const customFields = {
-      customFieldsProperty: 'customFieldsValue',
+    const additionalFields = {
+      additionalFieldsProperty: 'additionalFieldsValue',
     };
     const consents = {
       consentProperty: 'consentValue',
@@ -48,7 +48,7 @@ describe('TruliooForm works correctly', () => {
           properties: {
           },
         },
-        customFields,
+        additionalFields,
         consents,
       },
     };
@@ -66,7 +66,7 @@ describe('TruliooForm works correctly', () => {
           enumNames: undefined,
         },
         TruliooFields: { title: 'Properties', type: 'object', properties: {} },
-        customFieldsProperty: 'customFieldsValue',
+        additionalFieldsProperty: 'additionalFieldsValue',
         Consents: { consentProperty: 'consentValue' },
       },
     };

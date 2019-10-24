@@ -19,7 +19,7 @@ const uiSchema = {
   },
 };
 
-const customFields = {
+const additionalFields = {
   CustomFieldObj: {
     title: 'Custom Fields',
     type: 'object',
@@ -58,7 +58,7 @@ render(
     url="http://localhost:3111"
     handleResponse={handleResponse}
     handleSubmit={handleSubmit}
-    customFields={customFields}
+    additionalFields={additionalFields}
     whiteListedTruliooFields={whiteListedTruliooFields}
     uiSchema={uiSchema}
   />,

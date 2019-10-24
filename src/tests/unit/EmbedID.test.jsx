@@ -39,7 +39,7 @@ describe('EmbedID renders correctly', () => {
         url="http://localhost:3111"
         handleResponse={() => { }}
         handleSubmit={() => { }}
-        customFields={sectionExamplePayload}
+        additionalFields={sectionExamplePayload}
       />,
     );
     expect(axios.get).toBeCalled();
@@ -92,6 +92,22 @@ describe('EmbedID events function properly', () => {
     const { container } = render(<EmbedID uiSchema={uiSchema} />);
     const countriesLabel = getByText(container, /Testing Countries Element/);
     expect(countriesLabel).toBeTruthy();
+  });
+
+  it('accepts whiteListedTruliooFields', async () => {
+    const whiteListedTruliooFields = {
+      properties: {
+        PersonInfo: {
+          properties: {
+            FirstGivenName: {
+            },
+          },
+        },
+      },
+    };
+    const { container } = render(<EmbedID whiteListedTruliooFields={whiteListedTruliooFields} />);
+    const submitBtn = container.querySelector('.btn.btn-info');
+    expect(submitBtn).toBeTruthy();
   });
 
   it('is able to provide a custom React element in the UISchema', async () => {
