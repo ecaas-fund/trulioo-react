@@ -1,7 +1,7 @@
-# Styling
+# Styling 🦩
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-- [Styling 🦩](#styling-%F0%9F%A6%A9)
+- [Styling](#styling-%F0%9F%A6%A9)
   - [Bg-colour](#bg-colour)
   - [Text Colour](#text-colour)
   - [Logo](#logo)
@@ -9,11 +9,13 @@
   - [Button](#button)
   - [Dropdown](#dropdown)
   - [File Upload](#file-upload)
-    - [Alternate content](#alternate-content)
+  - [Rename fields](#rename-fields)
+  - [Pass in custom Elements:](#pass-in-custom-elements)
+  - [Display (Whitelist) only specific fields (eg. display only "First Name"):](#display-whitelist-only-specific-fields-eg-display-only-first-name)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-# Styling 🦩
+## Styling
 Applying styling to `trulioo-react` components is no different than applying styling to HTML5 components, by utilzing CSS.
 
 ## Bg-colour 
@@ -44,7 +46,7 @@ input::placeholder {
 ## Logo
 
 ```
-return <div>
+<div>
     <img src="https://www.trulioo.com/wp-content/uploads/Trulioo_tagline_600px.png">
     <EmbedID/>
 </div>
@@ -77,14 +79,14 @@ No different to other DOM elements.
 
 [Codepen example](https://codepen.io/adamlaki/pen/VYpewx)
 
-## Alternate content
+## Rename fields
 
-Alternating EmbedID content is achieved through passing [uiSchema](https://rjsf-team.github.io/react-jsonschema-form/). For instance, assuming we want to achieve a rename of 'countries' name to 'Please select a country':
+Renaming of 'countries' name to 'Please select a country':
 
 ```
 const uiSchema = {
   countries: {
-    'ui:title': 'Testing Countries Element',
+    'ui:title': 'Please select your country of residence: ',
   },
 };
 <EmbedID uiSchema={uiSchema} />;
@@ -123,3 +125,21 @@ const reactComponent = (
     };
 ```
 
+## Display (Whitelist) only specific fields (eg. display only "First Name"):
+
+```
+const whiteListedTruliooFields = {
+  properties: {
+    PersonInfo: {
+      properties: {
+        FirstGivenName: {
+        },
+      },
+    },
+  },
+};
+
+<EmbedID whiteListedTruliooFields={whiteListedTruliooFields}/>
+```
+
+Labels contain a certain ID, which can be in [TRULIOO_FIELDS.md file]((https://github.com/Trulioo/trulioo-react/blob/master/TRULIOO_FIELDS)). The label-ID can also be retrieved by inspecting the id of the element in the DOM, right after `EmbedID` is rendered.
