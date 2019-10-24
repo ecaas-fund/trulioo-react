@@ -124,7 +124,7 @@ const parseTruliooFields = (formData) => {
 /**
  * Returns the json-schema friendly whitelisted fields
  *
- * @param {TruliooFields} fields
+ * @param {Trulioo fields} fields
  * @param {white-listed Trulioo Fields} whiteListedTruliooFields
  * @param {resulting object} whiteListedComputedFields
  */
