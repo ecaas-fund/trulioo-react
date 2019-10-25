@@ -1,7 +1,11 @@
 import React from 'react';
 import TestRenderer from 'react-test-renderer';
-import { render, fireEvent, getByText } from '@testing-library/react';
+import {
+  render, fireEvent, getByText,
+} from '@testing-library/react';
 import axios from 'axios';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faThLarge } from '@fortawesome/free-solid-svg-icons';
 import { mockApiWithDetailedConstents } from './mockApi';
 import EmbedID from '../../EmbedID';
 
@@ -11,8 +15,8 @@ describe('EmbedID renders correctly', () => {
   beforeAll(() => mockApiWithDetailedConstents());
   it('renders countries as a select element', async () => {
     const sectionExamplePayload = {
-      CustomFieldObj: {
-        title: 'Custom Fields',
+      AdditionalFields: {
+        title: 'Additional Fields',
         type: 'object',
         required: ['name', 'age'],
         properties: {
@@ -37,9 +41,10 @@ describe('EmbedID renders correctly', () => {
         url="http://localhost:3111"
         handleResponse={() => { }}
         handleSubmit={() => { }}
-        customFields={sectionExamplePayload}
+        additionalFields={sectionExamplePayload}
       />,
     );
+
     expect(axios.get).toBeCalled();
     const rootInstance = embedID.root;
 
@@ -83,12 +88,46 @@ describe('EmbedID events function properly', () => {
   it('is able to apply styling provided an UISchema', async () => {
     const uiSchema = {
       countries: {
-        'ui:title': 'Testing Countries Element',
-        'ui:description': 'Testing Description',
+        'ui:title': 'Please select your country of residence: ',
+        'ui:description': 'Country Selection',
       },
     };
     const { container } = render(<EmbedID uiSchema={uiSchema} />);
-    const countriesLabel = getByText(container, /Testing Countries Element/);
+    const countriesLabel = getByText(container, /Please select your country of residence:/);
     expect(countriesLabel).toBeTruthy();
+  });
+
+  it('accepts whiteListedTruliooFields', async () => {
+    const whiteListedTruliooFields = {
+      properties: {
+        PersonInfo: {
+          properties: {
+            FirstGivenName: {
+            },
+          },
+        },
+      },
+    };
+    const { container } = render(<EmbedID whiteListedTruliooFields={whiteListedTruliooFields} />);
+    const submitBtn = container.querySelector('.btn.btn-info');
+    expect(submitBtn).toBeTruthy();
+  });
+
+  it('is able to provide a custom React element in the UISchema', async () => {
+    const complexElement = (
+      <div>
+        <FontAwesomeIcon icon={faThLarge} />
+        {' '}
+        Country select with custom Icon
+      </div>
+    );
+    const uiSchema = {
+      countries: {
+        'ui:title': complexElement,
+      },
+    };
+    const { container } = render(<EmbedID uiSchema={uiSchema} />);
+    const svg = container.querySelector('svg');
+    expect(svg.getAttribute('data-prefix')).toBe('fas');
   });
 });

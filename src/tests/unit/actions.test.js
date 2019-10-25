@@ -8,7 +8,7 @@ import { mockApiWithDetailedConstents, mockApiWithoutConsents } from './mockApi'
 import formSubmitDocV from './mock_payloads/formSubmitDocV';
 import formSubmitPayloadWithConsents from './mock_payloads/formSubmitWithConsents';
 import verifyResponseWithConsents from './mock_payloads/verifyResponseWithConsents';
-import customFields from './mock_payloads/customFields';
+import additionalFields from './mock_payloads/additionalFields';
 
 // mocking proxy server responses
 jest.mock('axios');
@@ -32,24 +32,26 @@ describe('async actions', () => {
     });
   });
 
-  it('customFields are passed properly', () => {
+  it('additionalFields are passed properly', () => {
     const store = mockStore({});
     const expectedActions = [{ type: GET_FIELDS }];
-    return store.dispatch(getFields(countryCode, customFields)).then(() => {
+    return store.dispatch(getFields(countryCode, additionalFields)).then(() => {
       const receivedActions = store.getActions();
       expect(expectedActions.length).toEqual(receivedActions.length);
     });
   });
 
-  it('customFields cannot contain Trulioo reserved Fields', () => {
+  it('additionalFields cannot contain Trulioo reserved Fields', () => {
     const store = mockStore({});
-    const customFieldsWithReservedKey = {
-      ...customFields,
-      countries: [countryCode],
+    const additionalFieldsWithReservedKey = {
+      ...additionalFields,
+      properties: {
+        Consents: 'I can override consents',
+      },
     };
-    return store.dispatch(getFields(countryCode, customFieldsWithReservedKey))
-      .then(() => { }, (error) => {
-        expect(error.message).toEqual('countries is a reserved field key. Please use another key for your custom field.');
+    return store.dispatch(getFields(countryCode, additionalFieldsWithReservedKey))
+      .then(() => { throw new Error('Declared a reserved Trulioo Field and no error was thrown'); }, (error) => {
+        expect(error.message).toEqual('Consents is a reserved field key. Please use different naming for your additional fields.');
       });
   });
 
@@ -123,10 +125,43 @@ describe('Testing actions without detailed consents', () => {
     });
   });
 
-  it('customFields are passed properly', () => {
+  it('additionalFields are passed properly', () => {
     const store = mockStore({});
     const expectedActions = [{ type: GET_FIELDS }];
-    return store.dispatch(getFields(countryCode, customFields)).then(() => {
+    return store.dispatch(getFields(countryCode, additionalFields)).then(() => {
+      const receivedActions = store.getActions();
+      expect(expectedActions.length).toEqual(receivedActions.length);
+    });
+  });
+
+  it('whiteListedTruliooFields are passed properly', () => {
+    const whiteListedTruliooFields = {
+      properties: {
+        PersonInfo: {
+          properties: {
+            FirstGivenName: {
+            },
+          },
+        },
+      },
+    };
+    const store = mockStore({});
+    const expectedActions = [{ type: GET_FIELDS }];
+    return store.dispatch(
+      getFields(countryCode, additionalFields, whiteListedTruliooFields),
+    ).then(() => {
+      const receivedActions = store.getActions();
+      expect(expectedActions.length).toEqual(receivedActions.length);
+    });
+  });
+
+  it('non-existing whiteListedTruliooFields are handled correctly ', async () => {
+    const whiteListedTruliooFields = { nonExistingField: {} };
+    const store = mockStore({});
+    const expectedActions = [{ type: GET_FIELDS }];
+    return store.dispatch(
+      getFields(countryCode, additionalFields, whiteListedTruliooFields),
+    ).then(() => {
       const receivedActions = store.getActions();
       expect(expectedActions.length).toEqual(receivedActions.length);
     });

@@ -6,11 +6,12 @@ import axios from 'axios';
 import * as R from 'ramda';
 import { GET_COUNTRIES, GET_FIELDS } from './types';
 
-// this is instantiated through BASE_URL
+const deepCopy = (obj) => JSON.parse(JSON.stringify(obj));
+
 let BASE_URL;
 const reservedFormDataKeys = ['countries', 'TruliooFields', 'Consents'];
 
-export const getCountries = (url) => async (dispatch) => {
+const getCountries = (url) => async (dispatch) => {
   BASE_URL = url;
 
   const URL = `${BASE_URL}/api/getcountrycodes`;
@@ -98,15 +99,17 @@ const generateConsentSchema = (consents) => {
   return schema;
 };
 
-const validateCustomFields = (customFields) => {
-  if (customFields) {
-    Object.keys(customFields).forEach((key) => {
-      if (reservedFormDataKeys.includes(key)) {
-        throw Error(
-          `${key} is a reserved field key. Please use another key for your custom field.`,
-        );
-      }
-    });
+const validateAdditionalFields = (additionalFields) => {
+  if (!additionalFields || !additionalFields.properties) {
+    return;
+  }
+  const containsReservedKeys = R.intersection(
+    Object.keys(additionalFields.properties), reservedFormDataKeys,
+  );
+  if (containsReservedKeys.length > 0) {
+    throw Error(
+      `${containsReservedKeys.toString()} is a reserved field key. Please use different naming for your additional fields.`,
+    );
   }
 };
 
@@ -121,11 +124,52 @@ const parseTruliooFields = (formData) => {
   return truliooFields;
 };
 
-export const getFields = (countryCode, customFields) => async (dispatch) => {
+/**
+ * Returns the json-schema friendly whitelisted fields
+ *
+ * @param {Trulioo fields} fields
+ * @param {white-listed Trulioo Fields} whiteListedTruliooFields
+ * @param {resulting object} whiteListedComputedFields
+ */
+const getWhiteListedFieldsOnly = (fields, whiteListedTruliooFields, whiteListedComputedFields) => {
+  Object.keys(whiteListedTruliooFields).forEach((key) => {
+    const keyExists = Object.prototype.hasOwnProperty.call(fields, key);
+    // key is not contained in fields
+    if (!keyExists) {
+      return;
+    }
+    const hasDefinedChildren = Object.keys(whiteListedTruliooFields[key]).length > 0;
+    if (hasDefinedChildren) {
+      whiteListedComputedFields[key] = {};
+      if (fields.title) {
+        whiteListedComputedFields.title = fields.title;
+      }
+      if (fields.type) {
+        whiteListedComputedFields.type = fields.type;
+      }
+      if (fields.required) {
+        const childProperties = Object.keys(whiteListedTruliooFields.properties);
+        const whiteListedRequiredFields = fields.required
+          .filter((requiredField) => childProperties.includes(requiredField));
+        whiteListedComputedFields.required = whiteListedRequiredFields;
+      }
+      getWhiteListedFieldsOnly(
+        fields[key], whiteListedTruliooFields[key], whiteListedComputedFields[key],
+      );
+    } else {
+      whiteListedComputedFields[key] = fields[key];
+    }
+  });
+  return whiteListedComputedFields;
+};
+
+const getFields = (
+  countryCode, additionalFields, whiteListedTruliooFields,
+) => async (dispatch) => {
   if (!countryCode) {
     return;
   }
-  validateCustomFields(customFields);
+  validateAdditionalFields(additionalFields);
   const fields = await requestFields(countryCode);
   const subdivisions = await requestSubdivisions(countryCode);
   let consents = await requestConsents(countryCode);
@@ -134,12 +178,16 @@ export const getFields = (countryCode, customFields) => async (dispatch) => {
   if (fields && fields.properties) {
     updateStateProvince(fields.properties, subdivisions);
   }
+  let finalFields = fields;
+  if (whiteListedTruliooFields) {
+    finalFields = getWhiteListedFieldsOnly(fields, whiteListedTruliooFields, {});
+  }
   dispatch({
     type: GET_FIELDS,
     payload: {
-      fields,
+      fields: finalFields,
       consents,
-      customFields,
+      additionalFields,
       formData: {
         countries: countryCode,
       },
@@ -197,7 +245,7 @@ const parseConsents = (consents) => {
   return result;
 };
 
-export const getSubmitBody = (form) => {
+const getSubmitBody = (form) => {
   const countryCode = getCountryCode(form);
   form = parseFormData(form);
 
@@ -211,9 +259,9 @@ export const getSubmitBody = (form) => {
   };
 };
 
-export const submitForm = (form) => async () => {
+const submitForm = (form) => async () => {
   // deep copying form
-  const formClone = JSON.parse(JSON.stringify(form));
+  const formClone = deepCopy(form);
   const truliooFormData = parseTruliooFields(formClone);
 
   const body = getSubmitBody(truliooFormData);
@@ -223,4 +271,8 @@ export const submitForm = (form) => async () => {
     body,
   }));
   return promiseResult;
+};
+
+export {
+  submitForm, getSubmitBody, getCountries, getFields,
 };

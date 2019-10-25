@@ -1,10 +1,10 @@
 # trulioo-react
 [![Github](https://github.com/trulioo/trulioo-react/workflows/Build/badge.svg)](https://github.com/trulioo/trulioo-react/workflows/Build/badge.svg) <a href='https://coveralls.io/github/Trulioo/trulioo-react'><img src='https://coveralls.io/repos/github/Trulioo/trulioo-react/badge.svg' alt='Coverage Status' /></a> [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/Trulioo/trulioo-react.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/Trulioo/trulioo-react/context:javascript) [![Known Vulnerabilities](https://snyk.io//test/github/Trulioo/trulioo-react/badge.svg?targetFile=package.json)](https://snyk.io//test/github/Trulioo/trulioo-react?targetFile=package.json)
 
-[![npm downloads](https://img.shields.io/npm/dy/trulioo-react.svg?style=flat-square)](https://www.npmjs.com/package/trulioo-react) [![install size](https://packagephobia.now.sh/badge?p=trulioo-react)](https://packagephobia.now.sh/result?p=trulioo-react) [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FTrulioo%2Ftrulioo-react.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FTrulioo%2Ftrulioo-react?ref=badge_shield) [![dependencies Status](https://david-dm.org/trulioo/trulioo-react/status.svg)](https://david-dm.org/trulioo/trulioo-react) [![devDependencies Status](https://david-dm.org/trulioo/trulioo-react/dev-status.svg)](https://david-dm.org/trulioo/trulioo-react?type=dev) [![peerDependencies Status](https://david-dm.org/trulioo/trulioo-react/peer-status.svg)](https://david-dm.org/trulioo/trulioo-react?type=peer) [![Try on RunKit](https://badge.runkitcdn.com/trulioo-react.svg)](https://npm.runkit.com/trulioo-react)
+[![npm downloads](https://img.shields.io/npm/dy/trulioo-react.svg?style=flat-square)](https://www.npmjs.com/package/trulioo-react) [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FTrulioo%2Ftrulioo-react.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FTrulioo%2Ftrulioo-react?ref=badge_shield) [![dependencies Status](https://david-dm.org/trulioo/trulioo-react/status.svg)](https://david-dm.org/trulioo/trulioo-react) [![devDependencies Status](https://david-dm.org/trulioo/trulioo-react/dev-status.svg)](https://david-dm.org/trulioo/trulioo-react?type=dev) [![peerDependencies Status](https://david-dm.org/trulioo/trulioo-react/peer-status.svg)](https://david-dm.org/trulioo/trulioo-react?type=peer) [![Try on RunKit](https://badge.runkitcdn.com/trulioo-react.svg)](https://npm.runkit.com/trulioo-react)
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/df714a6127dc55cbf6a2/maintainability)](https://codeclimate.com/github/Trulioo/trulioo-react/maintainability) [![GitHub license](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](https://github.com/Trulioo/trulioo-react/blob/master/LICENSE) [![code style: eslint](https://badgen.net/badge/style/airbnb?icon=airbnb)](https://github.com/airbnb/javascript) [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://semver.org/)
- [![npm version](https://img.shields.io/npm/v/trulioo-react.svg?style=flat-square)](https://www.npmjs.com/package/trulioo-react)  [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-green.svg)](https://github.com/Trulioo/trulioo-react/pulls)
+ [![npm version](https://img.shields.io/npm/v/trulioo-react.svg?style=flat-square)](https://www.npmjs.com/package/trulioo-react) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
 ## Install
 
@@ -26,9 +26,9 @@ const handleResponse = (e) => {
 <EmbedID url='SERVER_URL' handleResponse={handleResponse} />
 ```
 
-## Customize your fields
+## Customize additional fields
 
-### Example of custom fields on base level:
+### Example of additional fields on base level:
 
 ```
 const simpleExample = {
@@ -48,28 +48,26 @@ const simpleExample = {
 };
 ```
 
-### Example of custom fields section with **required** fields:
+### Example of additional fields section with **required** fields:
 
 ```
 const sectionExample = {
-  CustomFieldObj: {
-    title: 'Custom Fields',
-    type: 'object',
-    required: ['name', 'age'],
-    properties: {
-      name: {
-        title: 'What is your name?',
-        type: 'string',
-      },
-      age: {
-        title: 'What is your age?',
-        type: 'number',
-      },
-      color: {
-        title: 'What is your favourite color?',
-        type: 'string',
-        enum: ['red', 'yellow', 'blue'],
-      },
+  title: 'Additional Fields',
+  type: 'object',
+  required: ['name', 'age'],
+  properties: {
+    name: {
+      title: 'What is your name?',
+      type: 'string',
+    },
+    age: {
+      title: 'What is your age?',
+      type: 'number',
+    },
+    color: {
+      title: 'What is your favourite color?',
+      type: 'string',
+      enum: ['red', 'yellow', 'blue'],
     },
   },
 };
@@ -80,7 +78,7 @@ render(
   <EmbedID
     url="http://localhost:3111"
     handleResponse={handleResponse}
-    customFields={sectionExample}
+    additionalFields={sectionExample}
     handleSubmit={handleSubmit}
   />,
   document.getElementById('root'),
