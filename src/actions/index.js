@@ -6,6 +6,7 @@ import axios from 'axios';
 import * as R from 'ramda';
 import { GET_COUNTRIES, GET_FIELDS } from './types';
 
+const deepCopy = (obj) => JSON.parse(JSON.stringify(obj));
 // this is instantiated through BASE_URL
 let BASE_URL;
 const reservedFormDataKeys = ['countries', 'TruliooFields', 'Consents'];
@@ -100,13 +101,12 @@ const generateConsentSchema = (consents) => {
 
 const validateAdditionalFields = (additionalFields) => {
   if (additionalFields) {
-    Object.keys(additionalFields).forEach((key) => {
-      if (reservedFormDataKeys.includes(key)) {
-        throw Error(
-          `${key} is a reserved field key. Please use another key for your custom field.`,
-        );
-      }
-    });
+    const containsReservedKeys = R.intersection(additionalFields, reservedFormDataKeys);
+    if (containsReservedKeys.length > 0) {
+      throw Error(
+        `${containsReservedKeys.toString()} is a reserved field key. Please use another key for your custom field.`,
+      );
+    }
   }
 };
 
@@ -131,29 +131,30 @@ const parseTruliooFields = (formData) => {
 const getWhiteListedFieldsOnly = (fields, whiteListedTruliooFields, whiteListedComputedFields) => {
   Object.keys(whiteListedTruliooFields).forEach((key) => {
     const keyExists = Object.prototype.hasOwnProperty.call(fields, key);
-    // key is contained in fields
-    if (keyExists) {
-      const hasDefinedChildren = Object.keys(whiteListedTruliooFields[key]).length > 0;
-      if (hasDefinedChildren) {
-        whiteListedComputedFields[key] = {};
-        if (fields.title) {
-          whiteListedComputedFields.title = fields.title;
-        }
-        if (fields.type) {
-          whiteListedComputedFields.type = fields.type;
-        }
-        if (fields.required) {
-          const childProperties = Object.keys(whiteListedTruliooFields.properties);
-          const whiteListedRequiredFields = fields.required
-            .filter((requiredField) => childProperties.includes(requiredField));
-          whiteListedComputedFields.required = whiteListedRequiredFields;
-        }
-        getWhiteListedFieldsOnly(
-          fields[key], whiteListedTruliooFields[key], whiteListedComputedFields[key],
-        );
-      } else {
-        whiteListedComputedFields[key] = fields[key];
+    // key is not contained in fields
+    if (!keyExists) {
+      return;
+    }
+    const hasDefinedChildren = Object.keys(whiteListedTruliooFields[key]).length > 0;
+    if (hasDefinedChildren) {
+      whiteListedComputedFields[key] = {};
+      if (fields.title) {
+        whiteListedComputedFields.title = fields.title;
       }
+      if (fields.type) {
+        whiteListedComputedFields.type = fields.type;
+      }
+      if (fields.required) {
+        const childProperties = Object.keys(whiteListedTruliooFields.properties);
+        const whiteListedRequiredFields = fields.required
+          .filter((requiredField) => childProperties.includes(requiredField));
+        whiteListedComputedFields.required = whiteListedRequiredFields;
+      }
+      getWhiteListedFieldsOnly(
+        fields[key], whiteListedTruliooFields[key], whiteListedComputedFields[key],
+      );
+    } else {
+      whiteListedComputedFields[key] = fields[key];
     }
   });
   return whiteListedComputedFields;
@@ -257,7 +258,7 @@ const getSubmitBody = (form) => {
 
 const submitForm = (form) => async () => {
   // deep copying form
-  const formClone = JSON.parse(JSON.stringify(form));
+  const formClone = deepCopy(form);
   const truliooFormData = parseTruliooFields(formClone);
 
   const body = getSubmitBody(truliooFormData);

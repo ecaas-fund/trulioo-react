@@ -30,11 +30,11 @@
         "BuildingName": "string",
         "BuildingNumber": "string"
     },
-        "Communication": {
-        "EmailAddress": "string",
-        "MobileNumber": "string",
-        "Telephone2": "string",
-        "Telephone": "string"
+    "Communication": {
+    "EmailAddress": "string",
+    "MobileNumber": "string",
+    "Telephone2": "string",
+    "Telephone": "string"
     },
     "NationalIds": [{ "Number": "string", "Type": "string" }],
     "Passport": {

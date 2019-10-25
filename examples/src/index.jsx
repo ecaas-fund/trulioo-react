@@ -46,8 +46,11 @@ const whiteListedTruliooFields = {
   properties: {
     PersonInfo: {
       properties: {
-        FirstGivenName: {
-        },
+        FirstGivenName: {},
+        FirstSurName: {},
+        YearOfBirth: {},
+        MonthOfBirth: {},
+        DayOfBirth: {},
       },
     },
   },
