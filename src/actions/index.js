@@ -100,15 +100,16 @@ const generateConsentSchema = (consents) => {
 };
 
 const validateAdditionalFields = (additionalFields) => {
-  if (additionalFields) {
-    const containsReservedKeys = R.intersection(
-      Object.keys(additionalFields.properties), reservedFormDataKeys,
+  if (!additionalFields || !additionalFields.properties) {
+    return;
+  }
+  const containsReservedKeys = R.intersection(
+    Object.keys(additionalFields.properties), reservedFormDataKeys,
+  );
+  if (containsReservedKeys.length > 0) {
+    throw Error(
+      `${containsReservedKeys.toString()} is a reserved field key. Please use different naming for your additional fields.`,
     );
-    if (containsReservedKeys.length > 0) {
-      throw Error(
-        `${containsReservedKeys.toString()} is a reserved field key. Please use another key for your custom field.`,
-      );
-    }
   }
 };
 

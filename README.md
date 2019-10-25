@@ -26,9 +26,9 @@ const handleResponse = (e) => {
 <EmbedID url='SERVER_URL' handleResponse={handleResponse} />
 ```
 
-## Customize your fields
+## Customize additional fields
 
-### Example of custom fields on base level:
+### Example of additional fields on base level:
 
 ```
 const simpleExample = {
@@ -48,28 +48,26 @@ const simpleExample = {
 };
 ```
 
-### Example of custom fields section with **required** fields:
+### Example of additional fields section with **required** fields:
 
 ```
 const sectionExample = {
-  CustomFieldObj: {
-    title: 'Custom Fields',
-    type: 'object',
-    required: ['name', 'age'],
-    properties: {
-      name: {
-        title: 'What is your name?',
-        type: 'string',
-      },
-      age: {
-        title: 'What is your age?',
-        type: 'number',
-      },
-      color: {
-        title: 'What is your favourite color?',
-        type: 'string',
-        enum: ['red', 'yellow', 'blue'],
-      },
+  title: 'Additional Fields',
+  type: 'object',
+  required: ['name', 'age'],
+  properties: {
+    name: {
+      title: 'What is your name?',
+      type: 'string',
+    },
+    age: {
+      title: 'What is your age?',
+      type: 'number',
+    },
+    color: {
+      title: 'What is your favourite color?',
+      type: 'string',
+      enum: ['red', 'yellow', 'blue'],
     },
   },
 };

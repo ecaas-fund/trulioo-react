@@ -1,5 +1,5 @@
 {
-    "title": "Custom Fields",
+    "title": "Additional Fields",
     "type": "object",
     "required": [
         "name",

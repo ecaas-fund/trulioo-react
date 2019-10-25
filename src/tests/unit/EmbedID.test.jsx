@@ -19,8 +19,8 @@ describe('EmbedID renders correctly', () => {
  */
   it('renders countries as a select element', async () => {
     const sectionExamplePayload = {
-      CustomFieldObj: {
-        title: 'Custom Fields',
+      AdditionalFields: {
+        title: 'Additional Fields',
         type: 'object',
         required: ['name', 'age'],
         properties: {

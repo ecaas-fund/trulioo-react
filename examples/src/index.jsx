@@ -12,7 +12,7 @@ const handleSubmit = (e) => {
   console.log('Submitted form: ', e);
 };
 
-// example custom fields section with required fields
+// example additional fields section with required fields
 const uiSchema = {
   countries: {
     'ui:title': 'Please select your country of residence: ',
@@ -20,8 +20,8 @@ const uiSchema = {
 };
 
 const additionalFields = {
-  CustomFieldObj: {
-    title: 'Custom Fields',
+  AdditionalFields: {
+    title: 'Additional Fields',
     type: 'object',
     required: ['name', 'age'],
     properties: {

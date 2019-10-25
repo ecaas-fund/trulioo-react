@@ -1,22 +1,24 @@
 # Styling 🦩
-## Table of Contents
+
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-- [Styling](#styling-%F0%9F%A6%A9)
-  - [Bg-colour](#bg-colour)
-  - [Text Colour](#text-colour)
-  - [Logo](#logo)
-  - [Fonts](#fonts)
-  - [Button](#button)
-  - [Dropdown](#dropdown)
-  - [File Upload](#file-upload)
-  - [Rename fields](#rename-fields)
-  - [Pass in custom Elements:](#pass-in-custom-elements)
-  - [Display (Whitelist) only specific fields (eg. display only "First Name"):](#display-whitelist-only-specific-fields-eg-display-only-first-name)
+**Table of Contents**
+
+- [Introduction](#introduction)
+- [Bg-colour](#bg-colour)
+- [Text Colour](#text-colour)
+- [Logo](#logo)
+- [Fonts](#fonts)
+- [Button](#button)
+- [Dropdown](#dropdown)
+- [File Upload](#file-upload)
+- [Rename fields](#rename-fields)
+- [Pass in custom DOM Elements:](#pass-in-custom-dom-elements)
+- [Display (Whitelist) only specific fields (eg. display only "First Name"):](#display-whitelist-only-specific-fields-eg-display-only-first-name)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-## Styling
+## Introduction
 Applying styling to `trulioo-react` components is no different than applying styling to HTML5 components, by utilzing CSS.
 
 ## Bg-colour 
@@ -107,7 +109,7 @@ TruliooFields: {
 }
 ```
 
-## Pass in custom Elements:
+## Pass in custom DOM Elements:
 
 Define a React component and pass it down to UISchema:
 

@@ -49,10 +49,9 @@ describe('async actions', () => {
         Consents: 'I can override consents',
       },
     };
-
     return store.dispatch(getFields(countryCode, additionalFieldsWithReservedKey))
       .then(() => { throw new Error('Declared a reserved Trulioo Field and no error was thrown'); }, (error) => {
-        expect(error.message).toEqual('Consents is a reserved field key. Please use another key for your custom field.');
+        expect(error.message).toEqual('Consents is a reserved field key. Please use different naming for your additional fields.');
       });
   });
 
