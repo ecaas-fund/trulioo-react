@@ -13,10 +13,6 @@ jest.mock('axios');
 
 describe('EmbedID renders correctly', () => {
   beforeAll(() => mockApiWithDetailedConstents());
-  /**
- * Suppress React act() warnings globally.
- * The react team is planning to fix the warning.
- */
   it('renders countries as a select element', async () => {
     const sectionExamplePayload = {
       AdditionalFields: {
