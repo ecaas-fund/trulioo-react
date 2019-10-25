@@ -19,5 +19,5 @@ jobs:
       - run: npm whoami
       - run: npm profile get
       - run: npm ci
-      - run: npm test
+      - run: npm run test -- --coverage src/tests/snapshot src/tests/unit
       - run: npm run semantic-release
