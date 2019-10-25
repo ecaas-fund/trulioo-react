@@ -15,7 +15,7 @@ const handleSubmit = (e) => {
 // example custom fields section with required fields
 const uiSchema = {
   countries: {
-    'ui:title': 'Please Select you country',
+    'ui:title': 'Please select your country of residence: ',
   },
 };
 

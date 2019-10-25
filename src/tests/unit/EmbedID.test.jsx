@@ -92,12 +92,12 @@ describe('EmbedID events function properly', () => {
   it('is able to apply styling provided an UISchema', async () => {
     const uiSchema = {
       countries: {
-        'ui:title': 'Please select your country of residence:',
+        'ui:title': 'Please select your country of residence: ',
         'ui:description': 'Country Selection',
       },
     };
     const { container } = render(<EmbedID uiSchema={uiSchema} />);
-    const countriesLabel = getByText(container, /Please select your country/);
+    const countriesLabel = getByText(container, /Please select your country of residence:/);
     expect(countriesLabel).toBeTruthy();
   });
 
