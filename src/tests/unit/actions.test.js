@@ -45,11 +45,14 @@ describe('async actions', () => {
     const store = mockStore({});
     const additionalFieldsWithReservedKey = {
       ...additionalFields,
-      countries: [countryCode],
+      properties: {
+        Consents: 'I can override consents',
+      },
     };
+
     return store.dispatch(getFields(countryCode, additionalFieldsWithReservedKey))
-      .then(() => { }, (error) => {
-        expect(error.message).toEqual('countries is a reserved field key. Please use another key for your custom field.');
+      .then(() => { throw new Error('Declared a reserved Trulioo Field and no error was thrown'); }, (error) => {
+        expect(error.message).toEqual('Consents is a reserved field key. Please use another key for your custom field.');
       });
   });
 

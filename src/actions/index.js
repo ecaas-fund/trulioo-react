@@ -7,7 +7,7 @@ import * as R from 'ramda';
 import { GET_COUNTRIES, GET_FIELDS } from './types';
 
 const deepCopy = (obj) => JSON.parse(JSON.stringify(obj));
-// this is instantiated through BASE_URL
+
 let BASE_URL;
 const reservedFormDataKeys = ['countries', 'TruliooFields', 'Consents'];
 
@@ -101,7 +101,9 @@ const generateConsentSchema = (consents) => {
 
 const validateAdditionalFields = (additionalFields) => {
   if (additionalFields) {
-    const containsReservedKeys = R.intersection(additionalFields, reservedFormDataKeys);
+    const containsReservedKeys = R.intersection(
+      Object.keys(additionalFields.properties), reservedFormDataKeys,
+    );
     if (containsReservedKeys.length > 0) {
       throw Error(
         `${containsReservedKeys.toString()} is a reserved field key. Please use another key for your custom field.`,

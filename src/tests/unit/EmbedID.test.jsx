@@ -1,6 +1,8 @@
 import React from 'react';
 import TestRenderer from 'react-test-renderer';
-import { render, fireEvent, getByText } from '@testing-library/react';
+import {
+  render, fireEvent, getByText,
+} from '@testing-library/react';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faThLarge } from '@fortawesome/free-solid-svg-icons';
@@ -11,6 +13,10 @@ jest.mock('axios');
 
 describe('EmbedID renders correctly', () => {
   beforeAll(() => mockApiWithDetailedConstents());
+  /**
+ * Suppress React act() warnings globally.
+ * The react team is planning to fix the warning.
+ */
   it('renders countries as a select element', async () => {
     const sectionExamplePayload = {
       CustomFieldObj: {
@@ -42,6 +48,7 @@ describe('EmbedID renders correctly', () => {
         additionalFields={sectionExamplePayload}
       />,
     );
+
     expect(axios.get).toBeCalled();
     const rootInstance = embedID.root;
 
