@@ -3,8 +3,8 @@
 
 [![npm downloads](https://img.shields.io/npm/dy/trulioo-react.svg?style=flat-square)](https://www.npmjs.com/package/trulioo-react) [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FTrulioo%2Ftrulioo-react.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FTrulioo%2Ftrulioo-react?ref=badge_shield) [![dependencies Status](https://david-dm.org/trulioo/trulioo-react/status.svg)](https://david-dm.org/trulioo/trulioo-react) [![devDependencies Status](https://david-dm.org/trulioo/trulioo-react/dev-status.svg)](https://david-dm.org/trulioo/trulioo-react?type=dev) [![peerDependencies Status](https://david-dm.org/trulioo/trulioo-react/peer-status.svg)](https://david-dm.org/trulioo/trulioo-react?type=peer) [![Try on RunKit](https://badge.runkitcdn.com/trulioo-react.svg)](https://npm.runkit.com/trulioo-react)
 
-[![Maintainability](https://api.codeclimate.com/v1/badges/df714a6127dc55cbf6a2/maintainability)](https://codeclimate.com/github/Trulioo/trulioo-react/maintainability) [![GitHub license](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](https://github.com/Trulioo/trulioo-react/blob/master/LICENSE) [![code style: eslint](https://badgen.net/badge/style/airbnb?icon=airbnb)](https://github.com/airbnb/javascript) [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://semver.org/)
- [![npm version](https://img.shields.io/npm/v/trulioo-react.svg?style=flat-square)](https://www.npmjs.com/package/trulioo-react) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+[![code style: eslint](https://badgen.net/badge/style/airbnb?icon=airbnb)](https://github.com/airbnb/javascript) [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://semver.org/)
+[![npm version](https://img.shields.io/npm/v/trulioo-react.svg?style=flat-square)](https://www.npmjs.com/package/trulioo-react) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
 ## Install
 
