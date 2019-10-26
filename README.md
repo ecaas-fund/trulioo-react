@@ -51,7 +51,7 @@ const simpleExample = {
 ### Example of additional fields section with **required** fields:
 
 ```
-const sectionExample = {
+const additionalFields = {
   title: 'Additional Fields',
   type: 'object',
   required: ['name', 'age'],
@@ -78,7 +78,7 @@ render(
   <EmbedID
     url="http://localhost:3111"
     handleResponse={handleResponse}
-    additionalFields={sectionExample}
+    additionalFields={additionalFields}
     handleSubmit={handleSubmit}
   />,
   document.getElementById('root'),
