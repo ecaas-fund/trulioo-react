@@ -145,4 +145,4 @@ const whiteListedTruliooFields = {
 <EmbedID whiteListedTruliooFields={whiteListedTruliooFields}/>
 ```
 
-Labels contain a certain ID, which can be found in [TRULIOO_FIELDS.md file](https://github.com/Trulioo/trulioo-react/blob/master/TRULIOO_FIELDS). The label-ID can also be retrieved by inspecting the id of the element in the DOM, right after `EmbedID` is rendered.
+Labels contain a certain ID, which can be found in [TRULIOO_FIELDS.md file](https://github.com/Trulioo/trulioo-react/blob/master/TRULIOO_FIELDS.md). The label-ID can also be retrieved by inspecting the id of the element in the DOM, right after `EmbedID` is rendered.
