@@ -19,10 +19,8 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       - run: npm config set '//registry.npmjs.org/:_authToken' "${{ secrets.NPM_TOKEN }}"
       - run: npm whoami
-      - run: npm profile get
       - run: npm ci
       - run: npm run test -- --coverage src/tests/snapshot src/tests/unit
-      - run: echo $GH_TOKEN $NPM_TOKEN
       - run: npm run semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
