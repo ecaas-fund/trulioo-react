@@ -1,7 +1,6 @@
 # Trulioo Fields
 ```
 {
-{
   "DataFields": {
     "PersonInfo": {
       "AdditionalFields": {
