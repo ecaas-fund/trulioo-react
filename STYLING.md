@@ -13,8 +13,9 @@
 - [Dropdown](#dropdown)
 - [File Upload](#file-upload)
 - [Rename fields](#rename-fields)
-- [Pass in custom DOM Elements:](#pass-in-custom-dom-elements)
-- [Display (Whitelist) only specific fields (eg. display only "First Name"):](#display-whitelist-only-specific-fields-eg-display-only-first-name)
+- [Pass in custom DOM Elements](#pass-in-custom-dom-elements)
+- [Display (Whitelist) only specific fields (eg. display only "First Name")](#display-whitelist-only-specific-fields-eg-display-only-first-name)
+- [Define Input Types](#define-input-types)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -109,7 +110,7 @@ TruliooFields: {
 }
 ```
 
-## Pass in custom DOM Elements:
+## Pass in custom DOM Elements
 
 Define a React component and pass it down to UISchema:
 
@@ -128,7 +129,7 @@ const reactComponent = (
     };
 ```
 
-## Display (Whitelist) only specific fields (eg. display only "First Name"):
+## Display (Whitelist) only specific fields (eg. display only "First Name")
 
 ```
 const whiteListedTruliooFields = {
@@ -146,3 +147,26 @@ const whiteListedTruliooFields = {
 ```
 
 Labels contain a certain ID, which can be found in [TRULIOO_FIELDS.md file](https://github.com/Trulioo/trulioo-react/blob/master/TRULIOO_FIELDS.md). The label-ID can also be retrieved by inspecting the id of the element in the DOM, right after `EmbedID` is rendered.
+
+## Define Input Types
+
+You can define input HTML input types through the UISchema:
+
+```
+const uiSchema = {
+  TruliooFields: {
+    Communication: {
+      Telephone: {
+        'ui:options': {
+          inputType: 'tel',
+        },
+      },
+      EmailAddress: {
+        'ui:options': {
+          inputType: 'email',
+        },
+      },
+    },
+  },
+};
+```
