@@ -62,9 +62,7 @@ const whiteListedTruliooFields = {
       properties: {
         FirstGivenName: {},
         FirstSurName: {},
-        YearOfBirth: {},
-        MonthOfBirth: {},
-        DayOfBirth: {},
+        DOB: {},
       },
     },
     Communication: {
@@ -81,7 +79,6 @@ render(
     url="http://localhost:3111"
     handleResponse={handleResponse}
     handleSubmit={handleSubmit}
-    additionalFields={additionalFields}
     whiteListedTruliooFields={whiteListedTruliooFields}
     uiSchema={uiSchema}
   />,
