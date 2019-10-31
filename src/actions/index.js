@@ -4,7 +4,6 @@
 
 import axios from 'axios';
 import * as R from 'ramda';
-import moment from 'moment';
 import { GET_COUNTRIES, GET_FIELDS } from './types';
 import {
   DAY_OF_BIRTH, MONTH_OF_BIRTH, YEAR_OF_BIRTH, DOBTitle as DOB_TITLE, DOB,
@@ -62,20 +61,17 @@ const updateDateRequiredArray = (obj) => {
     return;
   }
   const containsDOB = containsDOBField(obj.required);
-  console.log('b4 REQUIRED', obj.required, 'containsDOB', containsDOB);
   if (containsDOB) {
     obj.required = required.filter((requiredField) => (requiredField !== DAY_OF_BIRTH
       && requiredField !== MONTH_OF_BIRTH && requiredField !== YEAR_OF_BIRTH));
     obj.required.push(DOB);
   }
-  console.log('after', obj.required);
 };
 
 /**
  * @param {*} obj the parsedFields objects to be converted, and their sequence
  */
 const parseFieldDates = (obj) => {
-  console.log('OBJ!', obj);
   updateDateRequiredArray(obj);
   for (const [key] of Object.entries(obj)) {
     // eslint-disable-next-line eqeqeq
@@ -189,10 +185,12 @@ const parseSubmitTruliooDateFields = (obj) => {
   Object.keys(obj).forEach((key) => {
     if (key === DOB) {
       // TODO parametrize this
-      const date = moment(obj[key], 'YYYY-MM-DD');
-      const month = date.month() + 1;
-      const day = date.date();
-      const year = date.year();
+      // this doesn't ignore timzone...
+      console.log('obj[key]', obj[key]);
+      const date = new Date(obj[key]);
+      const day = date.getDate();
+      const month = date.getMonth() + 1;
+      const year = date.getFullYear();
       obj[DAY_OF_BIRTH] = day;
       obj[MONTH_OF_BIRTH] = month;
       obj[YEAR_OF_BIRTH] = year;
@@ -248,7 +246,6 @@ const getWhiteListedFieldsOnly = (fields, whiteListedTruliooFields, whiteListedC
       }
       if (fields.required) {
         const childProperties = Object.keys(whiteListedTruliooFields.properties);
-        console.log('fields.required', fields);
         const whiteListedRequiredFields = fields.required
           .filter((requiredField) => childProperties.includes(requiredField));
         whiteListedComputedFields.required = whiteListedRequiredFields;
@@ -363,7 +360,6 @@ const submitForm = (form) => async () => {
   // deep copying form
   const formClone = deepCopy(form);
   const truliooFormData = parseTruliooFields(formClone, dateFieldsMap);
-  console.log('PARSED!', truliooFormData);
   const body = getSubmitBody(truliooFormData);
   const URL = `${BASE_URL}/api/verify`;
   const promiseResult = await axios.post(URL, body).then((response) => ({
