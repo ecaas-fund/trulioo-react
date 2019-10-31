@@ -184,13 +184,10 @@ const validateAdditionalFields = (additionalFields) => {
 const parseSubmitTruliooDateFields = (obj) => {
   Object.keys(obj).forEach((key) => {
     if (key === DOB) {
-      // TODO parametrize this
-      // this doesn't ignore timzone...
-      console.log('obj[key]', obj[key]);
-      const date = new Date(obj[key]);
-      const day = date.getDate();
-      const month = date.getMonth() + 1;
-      const year = date.getFullYear();
+      const splitDate = obj[key].split('-');
+      const day = splitDate[2];
+      const month = splitDate[1];
+      const year = splitDate[0];
       obj[DAY_OF_BIRTH] = day;
       obj[MONTH_OF_BIRTH] = month;
       obj[YEAR_OF_BIRTH] = year;
@@ -212,7 +209,6 @@ const parseTruliooFields = (formData) => {
     }
   });
   // user has inserted DOB data
-
   if (hasDOBInMap()) {
     const parsedFieldsWithDates = parseSubmitTruliooDateFields(truliooFields);
     return parsedFieldsWithDates;
