@@ -6,7 +6,7 @@ import axios from 'axios';
 import * as R from 'ramda';
 import { GET_COUNTRIES, GET_FIELDS } from './types';
 import {
-  DAY_OF_BIRTH, MONTH_OF_BIRTH, YEAR_OF_BIRTH, DOBTitle as DOB_TITLE, DOB,
+  DAY_OF_BIRTH, MONTH_OF_BIRTH, YEAR_OF_BIRTH, DOB, DOB_TITLE,
 } from './constantDateFields';
 
 const dateFieldsMap = new Map();
@@ -53,13 +53,12 @@ const containsDOBRequired = (required) => required && required.includes(DAY_OF_B
   && required.includes(MONTH_OF_BIRTH) && required.includes(YEAR_OF_BIRTH);
 
 const updateDateRequiredArray = (obj) => {
-  if (!obj.properties) {
-    return;
-  }
   const { required } = obj;
-  if (!required) {
+
+  if (!obj.properties || !required) {
     return;
   }
+
   const containsDOB = containsDOBRequired(obj.required);
   if (containsDOB) {
     obj.required = required.filter((requiredField) => (requiredField !== DAY_OF_BIRTH
@@ -185,9 +184,7 @@ const parseSubmitTruliooDateFields = (obj) => {
   Object.keys(obj).forEach((key) => {
     if (key === DOB) {
       const splitDate = obj[key].split('-');
-      const day = splitDate[2];
-      const month = splitDate[1];
-      const year = splitDate[0];
+      const [year, month, day] = splitDate;
       obj[DAY_OF_BIRTH] = day;
       obj[MONTH_OF_BIRTH] = month;
       obj[YEAR_OF_BIRTH] = year;
