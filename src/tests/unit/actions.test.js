@@ -166,8 +166,4 @@ describe('Testing actions without detailed consents', () => {
       expect(expectedActions.length).toEqual(receivedActions.length);
     });
   });
-
-  it('getFields displays DOB as an unique field when given Day, Month and Year field combincation', () => {
-    // TODO
-  });
 });

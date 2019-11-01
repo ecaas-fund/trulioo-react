@@ -1,7 +1,7 @@
 {
     "TruliooFields": {
         "PersonInfo": {
-            "FirstGivenName": "examle",
+            "FirstGivenName": "example",
             "DOB": "2019-10-31"
         },
         "Document": {
