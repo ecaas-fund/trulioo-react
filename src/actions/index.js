@@ -49,7 +49,7 @@ const hasDOBInMap = () => {
   return dayOfBirthInMap && monthOfBirthInMap && yearOfBirthInMap;
 };
 
-const containsDOBField = (required) => required && required.includes(DAY_OF_BIRTH)
+const containsDOBRequired = (required) => required && required.includes(DAY_OF_BIRTH)
   && required.includes(MONTH_OF_BIRTH) && required.includes(YEAR_OF_BIRTH);
 
 const updateDateRequiredArray = (obj) => {
@@ -60,7 +60,7 @@ const updateDateRequiredArray = (obj) => {
   if (!required) {
     return;
   }
-  const containsDOB = containsDOBField(obj.required);
+  const containsDOB = containsDOBRequired(obj.required);
   if (containsDOB) {
     obj.required = required.filter((requiredField) => (requiredField !== DAY_OF_BIRTH
       && requiredField !== MONTH_OF_BIRTH && requiredField !== YEAR_OF_BIRTH));

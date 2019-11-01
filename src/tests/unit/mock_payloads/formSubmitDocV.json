@@ -1,7 +1,8 @@
 {
     "TruliooFields": {
         "PersonInfo": {
-            "FirstGivenName": "examoke"
+            "FirstGivenName": "examle",
+            "DOB": "2019-10-31"
         },
         "Document": {
             "DocumentFrontImage": "VGhpcyBpcyBwZGZUZVgsIFZlcnNpb24gMy4xIFBERiBvdXRwdXQgb3V0IG9mIDEwMDAwIChtYXguIDEwMDAwMDAwKQoK",
