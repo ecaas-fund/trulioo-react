@@ -82,7 +82,7 @@ const parseFieldDates = (obj) => {
       obj.title = obj[key];
     }
     if (!dateFields.includes(key)) {
-      parseFieldDates(obj[key], dateFieldsMap);
+      parseFieldDates(obj[key]);
     } else {
       dateFieldsMap.set(key, true);
     }
@@ -355,7 +355,7 @@ const getSubmitBody = (form) => {
 const submitForm = (form) => async () => {
   // deep copying form
   const formClone = deepCopy(form);
-  const truliooFormData = parseTruliooFields(formClone, dateFieldsMap);
+  const truliooFormData = parseTruliooFields(formClone);
   const body = getSubmitBody(truliooFormData);
   const URL = `${BASE_URL}/api/verify`;
   const promiseResult = await axios.post(URL, body).then((response) => ({

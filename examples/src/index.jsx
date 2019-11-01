@@ -80,6 +80,7 @@ render(
     handleResponse={handleResponse}
     handleSubmit={handleSubmit}
     whiteListedTruliooFields={whiteListedTruliooFields}
+    additionalFields={additionalFields}
     uiSchema={uiSchema}
   />,
   document.getElementById('root'),
