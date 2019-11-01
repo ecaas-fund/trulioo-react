@@ -5,7 +5,11 @@
 import axios from 'axios';
 import * as R from 'ramda';
 import { GET_COUNTRIES, GET_FIELDS } from './types';
+import {
+  DAY_OF_BIRTH, MONTH_OF_BIRTH, YEAR_OF_BIRTH, DOBTitle as DOB_TITLE, DOB,
+} from './constantDateFields';
 
+const dateFieldsMap = new Map();
 const deepCopy = (obj) => JSON.parse(JSON.stringify(obj));
 
 let BASE_URL;
@@ -36,11 +40,75 @@ const parseFields = (obj) => {
   return obj;
 };
 
+const dateFields = ['DayOfBirth', 'MonthOfBirth', 'YearOfBirth'];
+
+const hasDOBInMap = () => {
+  const dayOfBirthInMap = dateFieldsMap.get(DAY_OF_BIRTH);
+  const monthOfBirthInMap = dateFieldsMap.get(MONTH_OF_BIRTH);
+  const yearOfBirthInMap = dateFieldsMap.get(YEAR_OF_BIRTH);
+  return dayOfBirthInMap && monthOfBirthInMap && yearOfBirthInMap;
+};
+
+const containsDOBRequired = (required) => required && required.includes(DAY_OF_BIRTH)
+  && required.includes(MONTH_OF_BIRTH) && required.includes(YEAR_OF_BIRTH);
+
+const updateDateRequiredArray = (obj) => {
+  if (!obj.properties) {
+    return;
+  }
+  const { required } = obj;
+  if (!required) {
+    return;
+  }
+  const containsDOB = containsDOBRequired(obj.required);
+  if (containsDOB) {
+    obj.required = required.filter((requiredField) => (requiredField !== DAY_OF_BIRTH
+      && requiredField !== MONTH_OF_BIRTH && requiredField !== YEAR_OF_BIRTH));
+    obj.required.push(DOB);
+  }
+};
+
+/**
+ * @param {*} obj the parsedFields objects to be converted, and their sequence
+ */
+const parseFieldDates = (obj) => {
+  updateDateRequiredArray(obj);
+  for (const [key] of Object.entries(obj)) {
+    // eslint-disable-next-line eqeqeq
+    if (key == 0) {
+      return;
+    }
+    if (key === 'label') {
+      obj.title = obj[key];
+    }
+    if (!dateFields.includes(key)) {
+      parseFieldDates(obj[key]);
+    } else {
+      dateFieldsMap.set(key, true);
+    }
+    if ((key === DAY_OF_BIRTH || key === MONTH_OF_BIRTH || key === YEAR_OF_BIRTH)
+      && hasDOBInMap()) {
+      delete obj[DAY_OF_BIRTH];
+      delete obj[MONTH_OF_BIRTH];
+      delete obj[YEAR_OF_BIRTH];
+      obj.DOB = {
+        title: DOB_TITLE,
+        type: 'string',
+        format: 'date',
+      };
+    }
+  }
+  return obj;
+};
+
 const requestFields = async (countryCode) => {
   const URL = `${BASE_URL}/api/getrecommendedfields/${countryCode}`;
   const response = await axios.get(URL);
   const parsedFields = parseFields(response.data.response);
-  return parsedFields;
+
+  const copiedParsedFields = deepCopy(parsedFields);
+  const parsedFieldDates = parseFieldDates(copiedParsedFields);
+  return parsedFieldDates;
 };
 
 const updateStateProvince = (obj, subdivisions) => {
@@ -113,6 +181,25 @@ const validateAdditionalFields = (additionalFields) => {
   }
 };
 
+const parseSubmitTruliooDateFields = (obj) => {
+  Object.keys(obj).forEach((key) => {
+    if (key === DOB) {
+      const splitDate = obj[key].split('-');
+      const day = splitDate[2];
+      const month = splitDate[1];
+      const year = splitDate[0];
+      obj[DAY_OF_BIRTH] = day;
+      obj[MONTH_OF_BIRTH] = month;
+      obj[YEAR_OF_BIRTH] = year;
+      delete obj[DOB];
+    }
+    if (typeof obj[key] === 'object') {
+      parseSubmitTruliooDateFields(obj[key]);
+    }
+  });
+  return obj;
+};
+
 const parseTruliooFields = (formData) => {
   const truliooFields = {};
   Object.keys(formData).forEach((key) => {
@@ -121,8 +208,14 @@ const parseTruliooFields = (formData) => {
       truliooFields[key] = formData[key];
     }
   });
+  // user has inserted DOB data
+  if (hasDOBInMap()) {
+    const parsedFieldsWithDates = parseSubmitTruliooDateFields(truliooFields);
+    return parsedFieldsWithDates;
+  }
   return truliooFields;
 };
+
 
 /**
  * Returns the json-schema friendly whitelisted fields
@@ -263,7 +356,6 @@ const submitForm = (form) => async () => {
   // deep copying form
   const formClone = deepCopy(form);
   const truliooFormData = parseTruliooFields(formClone);
-
   const body = getSubmitBody(truliooFormData);
   const URL = `${BASE_URL}/api/verify`;
   const promiseResult = await axios.post(URL, body).then((response) => ({

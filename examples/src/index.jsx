@@ -4,7 +4,7 @@ import { EmbedID } from '../../src/index';
 
 const handleResponse = (e) => {
   // eslint-disable-next-line no-console
-  console.log('Client Recieved Response: ', e);
+  console.log('Client Received Response: ', e);
 };
 
 const handleSubmit = (e) => {
@@ -16,6 +16,20 @@ const handleSubmit = (e) => {
 const uiSchema = {
   countries: {
     'ui:title': 'Please select your country of residence: ',
+  },
+  TruliooFields: {
+    Communication: {
+      Telephone: {
+        'ui:options': {
+          inputType: 'tel',
+        },
+      },
+      EmailAddress: {
+        'ui:options': {
+          inputType: 'email',
+        },
+      },
+    },
   },
 };
 
@@ -34,7 +48,7 @@ const additionalFields = {
         type: 'number',
       },
       color: {
-        title: 'What is your favourite color?',
+        title: 'What is your favorite color?',
         type: 'string',
         enum: ['red', 'yellow', 'blue'],
       },
@@ -48,9 +62,13 @@ const whiteListedTruliooFields = {
       properties: {
         FirstGivenName: {},
         FirstSurName: {},
-        YearOfBirth: {},
-        MonthOfBirth: {},
-        DayOfBirth: {},
+        DOB: {},
+      },
+    },
+    Communication: {
+      properties: {
+        Telephone: {},
+        EmailAddress: {},
       },
     },
   },
@@ -61,8 +79,8 @@ render(
     url="http://localhost:3111"
     handleResponse={handleResponse}
     handleSubmit={handleSubmit}
-    additionalFields={additionalFields}
     whiteListedTruliooFields={whiteListedTruliooFields}
+    additionalFields={additionalFields}
     uiSchema={uiSchema}
   />,
   document.getElementById('root'),
