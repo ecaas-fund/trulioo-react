@@ -18,6 +18,7 @@ export class TruliooForm extends React.Component {
     const shouldUpdateFormData = this.props.fields.formData === undefined
       || e.formData.countries !== this.props.fields.formData.countries;
     /* istanbul ignore next */
+    console.log(e.formData.countries);
     if (shouldUpdateFormData) {
       this.props.getFields(
         e.formData.countries, this.props.additionalFields, this.props.whiteListedTruliooFields,

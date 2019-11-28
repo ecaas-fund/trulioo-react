@@ -6,6 +6,7 @@
   "main": "dist/index.js",
   "homepage": "https://www.trulioo.com",
   "repository": "github:trulioo/trulioo-react",
+  "version": "1.0.0",
   "bugs": {
     "url": "https://github.com/Trulioo/trulioo-react/issues"
   },
@@ -125,5 +126,5 @@
   },
   "jest": {
     "testEnvironment": "jsdom"
- }
+  }
 }
