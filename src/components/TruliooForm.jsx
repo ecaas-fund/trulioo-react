@@ -19,11 +19,9 @@ export class TruliooForm extends React.Component {
       || e.formData.countries !== this.props.fields.formData.countries;
     /* istanbul ignore next */
     console.log(e.formData.countries);
-    if (shouldUpdateFormData) {
-      this.props.getFields(
-        e.formData.countries, this.props.additionalFields, this.props.whiteListedTruliooFields,
-      );
-    }
+    // if (shouldUpdateFormData) {
+    this.props.getFields('AU', this.props.additionalFields, this.props.whiteListedTruliooFields);
+    // }
   };
 
   handleSubmit = (e) => {

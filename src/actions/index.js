@@ -103,7 +103,7 @@ const parseFieldDates = (obj) => {
 const requestFields = async (countryCode) => {
   const URL = `${BASE_URL}/api/getrecommendedfields/${countryCode}`;
   const response = await axios.get(URL);
-  const parsedFields = parseFields(response.data.response);
+  const parsedFields = parseFields(response.data.data);
 
   const copiedParsedFields = deepCopy(parsedFields);
   const parsedFieldDates = parseFieldDates(copiedParsedFields);
@@ -127,7 +127,7 @@ const updateStateProvince = (obj, subdivisions) => {
 const requestSubdivisions = async (countryCode) => {
   const URL = `${BASE_URL}/api/getcountrysubdivisions/${countryCode}`;
   const response = await axios.get(URL);
-  const subdivisions = response.data.response;
+  const subdivisions = response.data.data;
 
   // sorting subdivisions by 'Name'
   return R.sortBy(
@@ -141,7 +141,7 @@ const requestSubdivisions = async (countryCode) => {
 async function requestConsents(countryCode) {
   const URL = `${BASE_URL}/api/getdetailedconsents/${countryCode}`;
   const response = await axios.get(URL);
-  const consents = response.data.response;
+  const consents = response.data.data;
   return consents;
 }
 
