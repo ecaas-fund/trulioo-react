@@ -63,7 +63,7 @@
     "lint-staged": "^10.0.0-0",
     "prettier-eslint": "^9.0.0",
     "react": "^16.10",
-    "react-dom": "^16.10",
+    "react-dom": "^17.0.0",
     "react-test-renderer": "^16.7.0",
     "redux-mock-store": "^1.5.3",
     "semantic-release": "^15.13.24",
@@ -78,7 +78,7 @@
   },
   "peerDependencies": {
     "react": "^16.10",
-    "react-dom": "^16.10"
+    "react-dom": "^17.0.0"
   },
   "husky": {
     "hooks": {
