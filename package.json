@@ -50,7 +50,7 @@
     "cz-conventional-changelog": "^3.0.2",
     "doctoc": "^1.4.0",
     "emotion": "^10.0.6",
-    "eslint": "^6.5.0",
+    "eslint": "^8.0.0",
     "eslint-config-airbnb": "^18.0.1",
     "eslint-loader": "^3.0.0",
     "eslint-plugin-import": "^2.18.2",
