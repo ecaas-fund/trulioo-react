@@ -46,7 +46,7 @@
     "babel-plugin-transform-react-jsx": "^6.24.1",
     "babel-preset-minify": "^0.5.1",
     "coveralls": "^3.0.6",
-    "css-loader": "^3.0.0",
+    "css-loader": "^6.0.0",
     "cz-conventional-changelog": "^3.0.2",
     "doctoc": "^1.4.0",
     "emotion": "^10.0.6",
